@@ -1,10 +1,76 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
-
+{% block title %}A propos - Plant&Flower{% endblock %}
+	{% block javascripts %}
+        {{ encore_entry_script_tags("app") }}
+    {% endblock %}
+{% block stylesheets %}
+    {{ encore_entry_link_tags("app") }}
+    {{ encore_entry_link_tags("about") }}
 {% endblock %}
 
-{% block title %}
+{% block body %}
+    <div class="container">
+        <div class="container-img-carte">
+            <img src="{{ asset('media/img/carte_histoire.png') }}" class="img-carte" alt="Image Notre Histoire"/>
+        </div>
 
+        <div class="container-txt">
+            <h2>
+                Qui sommes-nous ?
+            </h2>
+
+            <p class="txt">
+                PLANT&FLOWER est une plate-forme novatrice, qui permet de mettre en relation des particuliers entre eux
+                pour les aider à vendre des végétaux en toute sécurité ainsi que de réduire le gaspillage des végétaux
+                chez les particuliers.
+            </p>
+
+            <h2>
+                Notre idée
+            </h2>
+
+            <p class="txt">
+                Sauver des milliers de végétaux des poubelles en France,
+                ainsi qu'offrir à tout le monde la possibilité d'acheter des plantes diverses et variées à prix doux
+                entre particuliers.
+            </p>
+
+            <h2>
+                Particuliers
+            </h2>
+
+            <p class="txt">
+                Rejoignez dès maintenant notre communauté PLANT&FLOWER et vendez ou achetez des végétaux partout en
+                France en profitant de l’expédition par Mondial Relay.
+                <br><br>
+                Besoin de précisions ? Pas de soucis, un service dédié répondra le plus vite possible à toutes vos
+                questions.
+                Pour vous inscrire, rendez-vous dans la barre du menu en haut du site et cliquer sur "INSCRIPTION".
+            </p>
+
+            <h2>
+                Le mot du fondateur
+            </h2>
+
+            <p class="txt">
+                Véritable épicurien, et passionné par l'univers des végétaux, je décidais fin 2019 de me lancer dans la
+                création d'une aventure entrepreneuriale tout à fait excitante.
+                Lassé de voir l'écologie et les invendus au second plan dans des milliers de foyers français, j'étais
+                convaincu que l'on pouvait remédier en faisant autrement.<br><br>
+
+                Il fallait proposer une solution par l’intermédiaire d’une plate-forme gratuite qui aiderait les
+                particuliers à se mettre en relation.<br><br>
+
+                Bouleverser notre façon de consommer, en achetant des végétaux revalorisés et sauvés, préparés avec soin
+                par des particuliers qui comme vous sont de véritables passionnés à travers toute la France.<br><br>
+
+                Voilà, notre mission, agissons ensemble pour sauver nos végétaux des poubelles !
+                <br><br><br><br>
+            </p>
+        </div>
+
+
+    </div>
 {% endblock %}
 
