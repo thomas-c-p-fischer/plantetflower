@@ -1,10 +1,101 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}
-
+{% block title %}FAQ - Plant&Flower{% endblock %}
+	{% block javascripts %}
+        {{ encore_entry_script_tags("faq") }}
+        {{ encore_entry_script_tags("app") }}
+    {% endblock %}
+{% block stylesheets %}
+    {{ encore_entry_link_tags("app") }}
+    {{ encore_entry_link_tags("faq") }}
 {% endblock %}
 
-{% block body %}
 
+{% block body %}
+    <div class="container">
+        <div class="title-faq">
+            <div class="container-title">
+                <p class="title">Foire aux questions</p>
+            </div>
+        </div>
+
+        <div class="container-dropdown">
+            <div class="dropdown">
+                <div class="btn">
+                    <button id="myBtn" class="dropbtn">
+                        <p class="txt">Qu'est ce que Plant&Flower ?</p>
+                        <img id="myImageId" class="chevron-down" alt="Fleche bas"/>
+                    </button>
+                    <div id="myDropdown" class="dropdown-content">
+                        <p class="txt-dropdown">
+                            Plant&Flower est une jeune Start-up qui souhaite révolutionner la
+                            vente de végétaux entre particuliers. En la rendant sûre par un
+                            paiement en ligne sécurisé et en profitant de l’expédition (via
+                            Mondial Relay) pour pouvoir vendre des végétaux à travers toute la
+                            France. Faites des économies et réduisez considérablement le
+                            gaspillage chez vous de vos végétaux !
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <div class="btn">
+                    <button id="myBtn2" class="dropbtn">
+                        <p class="txt">Comment utiliser le site ?</p>
+                        <img id="myImageId2" class="chevron-down" alt="Fleche bas"/>
+                    </button>
+                    <div id="myDropdown2" class="dropdown-content">
+                        <p class="txt-dropdown">
+                            Connecte-toi sur notre site, cherche le végétal que tu souhaites.
+                            Découvre les offres et procède à la réservation puis l’achat
+                            directement sur notre site via notre solution de paiement sécurisé
+                            <a id="lienMango" href="https://www.mangopay.com/fr/" target="_blank">(MangoPay)</a>, et
+                            profite si tu le souhaites de l’expédition via Mondial
+                            Relay. Après confirmation de ta commande, tu recevras les
+                            coordonnées du vendeur ainsi que les informations du suivi de colis.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <div class="btn">
+                    <button id="myBtn3" class="dropbtn">
+                        <p class="txt">Plant&Flower, c’est gratuit ?</p>
+                        <img id="myImageId3" class="chevron-down" alt="Fleche bas"/>
+                    </button>
+                    <div id="myDropdown3" class="dropdown-content">
+                        <p class="txt-dropdown">
+                            Le site Plant&Flower est un site totalement gratuit pour les
+                            particuliers et vendeurs particuliers. Il y a ni abonnement à payer,
+                            ni de frais cachés. Des frais de service sont appliqués pour les
+                            utilisateurs clients. Cette commission sert à financer la
+                            maintenance du service (hébergement, domaines, équipes,
+                            matériel...).
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <div class="btn">
+                    <button id="myBtn4" class="dropbtn">
+                        <p class="txt">La qualité des végétaux :</p>
+                        <img id="myImageId4" class="chevron-down" alt="Fleche bas"/>
+                    </button>
+                    <div id="myDropdown4" class="dropdown-content">
+                        <p class="txt-dropdown">
+                            Tous les particuliers présents sur notre plate-forme sont des
+                            amoureux des végétaux comme vous ! Les offres promotionnelles ou «
+                            anti-gaspillages » seront détaillées sur l’annonce des végétaux,
+                            ainsi à l’aide des photos disponibles, vous pourrez avoir un rendu
+                            de votre achat.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
