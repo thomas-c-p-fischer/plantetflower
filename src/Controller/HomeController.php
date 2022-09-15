@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 //controller permettant l'accès aux pages principales de la barre de navigation
-#[Route('/', name: 'home_')]//utilisation des préfixes
+#[Route('/', name: 'home')]//utilisation des préfixes
 class HomeController extends AbstractController
 {
 
