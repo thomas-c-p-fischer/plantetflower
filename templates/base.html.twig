@@ -10,11 +10,130 @@
         {% block title %}Plant et flower{% endblock %}
     </title>
 
-    {% block javascripts %}
-        {{ encore_entry_script_tags('app') }}
-    {% endblock %}
+    <!--On charge Jquery depuis le CDN de google-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- Charger Leaflet pour l'affichage de la map-->
+    <link rel="stylesheet" type="text/css" href="//unpkg.com/leaflet/dist/leaflet.css"/>
+    <!--On charge le widget mondial relay depuis leurs serveurs-->
+    <script type="text/javascript"
+            src="https://widget.mondialrelay.com/parcelshop-picker/jquery.plugin.mondialrelay.parcelshoppicker.min.js"></script>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+
+    {# Favicon du site #}
+    <link rel="shortcut icon" href="{{ asset('media/img/favicon.ico') }}" type="images/x-icon"/>
+
+
 </head>
 <body>
-{% block body %}{% endblock %}
+
+{# Header du site, navbar #}
+<header>
+    <nav class="nav">
+        <div class="hamburger-menu" id="toggle-button">
+            <a href="#" class="close open">
+                <div class="menu-line"></div>
+                <div class="menu-line"></div>
+                <div class="menu-line"></div>
+            </a>
+        </div>
+        <div class="profil" id="toggle-button-profil">
+            <a href="#"><img class="img-profil" src="{{ asset('media/img/profil.png') }}" alt="Icon profil"/></a>
+        </div>
+        <a class="logo" href={{ path('home_homepage') }}><img src="{{ asset('media/img/Logo_plants.png') }}"
+                                                              alt="plante"/></a>
+        <div class="list">
+            <ul class="nav-list" id="navi-list">
+                <li class="list-item1">
+                    <a href={{ path('home_homepage') }}>Accueil</a>
+                </li>
+                <li class="list-item1">
+                    <a href={{ path('home_annonces') }}>Annonces</a>
+                </li>
+                <li class="list-item1">
+                    <a href={{ path('home_about') }}>À propos</a>
+                </li>
+                <li class="list-item1">
+                    <a href={{ path('home_contact') }}>Contact</a>
+                </li>
+                <li class="list-item1">
+                    <a href={{ path('home_faq') }}>FAQ</a>
+                </li>
+            </ul>
+            {% if app.user %}
+                <ul class="nav-list" id="navi-list-profil">
+                    <li class="list-item2">
+                        <a href={{ path('profil') }}>Profil</a>
+                    </li>
+                    <li class="list-item2">
+                        <a href={{ path('security_logout') }}>Déconnexion</a>
+                    </li>
+
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <li class="list-item2">
+                            <a href="{{ path('admin') }}">Admin</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            {% else %}
+                <ul class="nav-list" id="navi-list-profil">
+                    <li class="list-item2">
+                        {# <div class="btn-inscription"> #}
+                        <a href={{ path('registration_register') }} class="btn-inscription">Inscription</a>
+                        {# </div> #}
+                    </li>
+                    <li class="list-item2">
+                        <a href={{ path('security_login') }}>Connexion</a>
+                    </li>
+                </ul>
+            {% endif %}
+        </div>
+    </nav>
+</header>
+{# Fin header du site et de la navbar #}
+
+<div class="wrapper">
+    {% block body %}{% endblock %}
+</div>
+
+{# Footer du site #}
+<footer class="">
+    <a class="logoFooter titreFooter" href={{ path('home_homepage') }}><img
+                src="{{ asset('media/img/Logo_plants.png') }}"/></a>
+    <div class="displayFooter">
+        <div class="navFooter" style="flex-direction: row;">
+            <div class="lienFooter">
+                <h6 class="titreNavFoot">DÉCOUVRIR</h6>
+                <a href={{ path('home_homepage') }}>Rechercher son végétal</a>
+                <a href={{ path('security_login') }}>Connexion</a>
+                <a href={{ path('registration_register') }}>Inscription</a>
+            </div>
+            <div class="lienFooter">
+                <h6 class="titreNavFoot">EN SAVOIR PLUS</h6>
+                <a href={{ path('home_about') }}>Notre histoire</a>
+                <a href={{ path('home_contact') }}>Contact</a>
+                <a href={{ path('home_faq') }}>F.A.Q</a>
+            </div>
+            <div class="lienFooter">
+                <h6 class="titreNavFoot">LÉGAL</h6>
+                <a href={{ path('home_mentionsLegales') }}>Mentions légales</a>
+                <a href={{ path('home_cgu') }}>CGU - CGV</a>
+            </div>
+        </div>
+        <div class="footer row reseauSocial" style="flex-direction: column;">
+            <p>Echangez vos végétaux préférés partout en france</p>
+            <div class="row1 icons">
+                <a href="https://www.facebook.com/Plantetflower-110812368257334/" target="_BLANK"><img
+                            src="https://img.icons8.com/color/48/000000/facebook-new.png"
+                            alt="Page Facebook de Plant&Flower"/></a>
+                <a href="https://www.instagram.com/plantetflower/" target="_BLANK"><img
+                            src="https://img.icons8.com/fluency/48/000000/instagram-new.png"
+                            alt="Page Instagram de Plant&Flower"/></a>
+            </div>
+            <p>
+                © 2021-2022 Tous droits réservés — PLANT&FLOWER.COM
+            </p>
+        </div>
+    </div>
+</footer>
 </body>
 </html>
