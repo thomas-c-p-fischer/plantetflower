@@ -1,10 +1,96 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
-
+{% block title %}Mentions légales - Plant&Flower{% endblock %}
+	{% block javascripts %}
+        {{ encore_entry_script_tags("app") }}
+    {% endblock %}
+{% block stylesheets %}
+    {{ encore_entry_link_tags('app') }}
+    {{ encore_entry_link_tags('mentions') }}
 {% endblock %}
 
-{% block title %}
+{% block body %}
+    <div class="logoMentions">
+        <img src="{{ asset("media/img/Logo_PF.png") }}" alt="Logo Plant&Flower">
+        <h1 class="titleMentions">MENTIONS LÉGALES</h1>
+    </div>
 
+    <div class="allMentions">
+        <div class="texte">
+            <h2 class='h2Mentions'>
+                GROUPE MYFLOWERLIFE - PLANT & FLOWER</h2>
+            <p>
+                Siège social : 46 RUE MONSARRAT - 33800 - BORDEAUX<br/><br/>
+                La société mère MYFLOWERLIFE - SASU MYFLOWERLIFE.COM au capital de 1 000 euros, immatriculée au Registre
+                du<br/>
+                Commerce et des Sociétés de Bordeaux sous le numéro 888 834 637, et dont le siège social est situé au 46
+                RUE MONSARRAT<br/>
+                33800 Bordeaux, propose un site de type Marketplace (mise en relation) entre particuliers dans le but de
+                vendre des végétaux<br/>
+                entre particuliers.<br/>
+                <br/>
+                Voici les mentions légales de la marque de MYvFLOWERLIFE.COM, à la vente sur son site internet
+                www.myflowerlife.com :<br/>
+            </p>
+            <br/>
+            <div class="listMentions">
+                <ul>
+                    <li>Dénomination sociale : GROUPE SASU MYFLOWERLIFE.COM</li>
+                    <li>Dénomination commerciale : PLANT ET FLOWER</li>
+                    <li>N° SIRET : 888 834 637</li>
+                    <li>Numéro de Téléphone (non surtaxé) : 06 21 93 16 71</li>
+                    <li>Adresse électronique : contact@plantetflower.com</li>
+                    <li>N° TVA intracommunautaire : FR 09 80 35 83 889</li>
+                    <li>Fondateur : Erwann Huet</li>
+                    <br/>
+                </ul>
+            </div>
+            <div class="list2">
+                <p>
+                    Hébergement du site : Hébergeur OVH - 2 rue Kellermann – BP 80157 59053 ROUBAIX CEDEX 1<br/><br/>
+                    Email : contact@plantetflower.com<br/><br/>
+                    Pour toute réclamation, vous pouvez écrire à : GROUPE MYFLOWERLIFE.COM – 46 RUE MONSARRAT - 33800 ou
+                    envoyer<br/>
+                    un mail à : contact@plantetflower.com<br/><br/>
+                    <br/>
+                    Vous pouvez également remplir ce formulaire :<br/>
+                </p>
+
+            </div>
+
+            <div class="bloc">
+                <p>
+                    A l'attention du site PLANTETFLOWER.COM<br/>
+                    <br/>
+                    Numéro de téléphone du VENDEUR : 09 81 64 72 28<br/>
+                    <br/>
+                    Adresse de courrier électronique : contact@plantetflower.com<br/>
+                    <br/>
+                    Adresse postale 46 RUE MONSARRAT - 33800 BORDEAUX<br/>
+                    <br/>
+                    Je vous notifie par la présente ma rétractation du contrat portant sur la vente du PRODUIT
+                    ci-dessous :<br/>
+                    <br/>
+                    Référence du PRODUIT : [______________________]<br/>
+                    <br/>
+                    N° de la facture : [___________________]<br/>
+                    <br/>
+                    N° du bon de commande : [________________]<br/>
+                    <br/>
+                    Commandé le [____________] / reçu le [________________]<br/>
+                    <br/>
+                    Moyen de paiement utilisé : [____________________]<br/>
+                    <br/>
+                    Nom du COMMERÇANT: [____________________]<br/>
+                    <br/>
+                    Adresse du COMMERÇANT: : [_______________________]<br/>
+                    <br/>
+                    Signature du CLIENT (sauf cas de transmission par courriel)<br/>
+                    <br/>
+                    Date : [___ / ___ / ___ ]
+                </p>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
