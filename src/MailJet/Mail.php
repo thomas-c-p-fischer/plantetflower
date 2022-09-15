@@ -12,7 +12,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use \Mailjet\Resources;
 use \Mailjet\Client;
 use \Mailjet\Request;
-
 use \Mailjet\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -126,4 +125,3 @@ class Mail extends AbstractController
     }
 }
 
-?>
