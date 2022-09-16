@@ -1,0 +1,53 @@
+.decouvre {
+    grid-area: decouvre;
+    display: flex;
+    text-align: justify;
+    justify-content: center;
+}
+
+.decouvre-img {
+    width: 45%;
+    /*background: no-repeat bottom url(/build/images/decouvre-new.png);*/
+    background-size: contain;
+    height: 400px;
+}
+
+
+.txt-decouvre {
+    width: 50%;
+}
+
+.reserve {
+    grid-area: reserve;
+    display: flex;
+    text-align: justify;
+    justify-content: center;
+}
+
+.reserve-img {
+    width: 45%;
+    /*background: no-repeat bottom url(/build/images/reserve-new.png);*/
+    background-size: contain;
+    height: 400px;
+
+}
+
+
+.receptionne {
+    grid-area: receptionne;
+    display: flex;
+    text-align: justify;
+    justify-content: center;
+
+}
+
+.receptionne-img {
+    width: 45%;
+    /*background: no-repeat bottom url(/build/images/receptionne-new.png);*/
+    background-size: contain;
+    height: 400px;
+}
+
+/*.container-fonctionnement {*/
+/*    background-image: url(/build/images/background-ccm.png);*/
+/*}*/

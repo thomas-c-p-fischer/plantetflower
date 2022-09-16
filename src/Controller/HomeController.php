@@ -2,7 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\Annonce;
+use App\Entity\Image;
+use App\Form\SearchAnnonceType;
+use App\Repository\AnnonceRepository;
+use App\Repository\ImageRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -13,9 +19,63 @@ class HomeController extends AbstractController
 
     //route de la page d'accueil
     #[Route('/', name: '_homepage')]
-    public function homepage(): Response
+    /**
+     * @param Annonce $annonce
+     */
+    public function homepage(
+        AnnonceRepository $annoncesRepository,
+        Request           $request,
+        ImageRepository   $imageRepository,
+
+    ): Response
     {
-        return $this->render('home/homepage.html.twig');
+        $limit = 10;
+        $page = (int)$request->query->get("page", 1);
+
+        $total = $annoncesRepository->getTotalAnnonces();
+        $lastAnnonces = $annoncesRepository->getLastAnnonces();
+        $images = $imageRepository->findAll();
+
+        $annoncesAll = $imageRepository->findAll();
+
+        $form = $this->createForm(SearchAnnonceType::class);
+        // $search = $form->handleRequest($request);
+        $form->handleRequest($request);
+
+        $annonces = [];
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // On recherche les annonces correspondant aux mots clés
+            // $annonce = $annoncesRepository->search(
+            //   $search->get('title')->getData()
+            // )
+            $title = $form->get('title')->getData();
+
+            if ($title != "") {
+                $annonces = $annoncesRepository->findBy(['title' => $title]);
+            } else {
+                // $annonces = $this->managerRegistry->getRepository(Annonce::class)->findAll();
+                $annonces = $annoncesRepository->getPaginatedAnnonces($page, $limit);
+            }
+        }
+
+        // $annonces = $paginator->paginate(
+        //     $annonces, /* query NOT result */
+        //     $request->query->getInt('page', 1),
+        //     6
+        // );
+
+        return $this->render('home/homepage.html.twig', [
+            'controller_name' => 'HomeController',
+            'annonces' => $annonces,
+            'lastAnnonces' => $lastAnnonces,
+            'annoncesAll' => $annoncesAll,
+            'total' => $total,
+            'limit' => $limit,
+            'page' => $page,
+            'form' => $form->createView(),
+            'images' => $images
+        ]);
     }
 
     //route de la page annonces

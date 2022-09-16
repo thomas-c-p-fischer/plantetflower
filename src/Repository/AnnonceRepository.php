@@ -39,6 +39,45 @@ class AnnonceRepository extends ServiceEntityRepository
         }
     }
 
+    /**
+     * Returne toutes les annonces par page
+     * @return void
+     */
+    public function getPaginatedAnnonces($page, $limit)
+    {
+        $query = $this->createQueryBuilder('a');
+
+        $query->orderBy('a.created_at')
+            ->setFirstResult(($page * $limit) - $limit)
+            ->setMaxResults($limit);
+        return $query->getQuery()->getResult();
+    }
+
+    /**
+     * Retourne toutes les dernières annonces
+     * @return void
+     */
+    public function getLastAnnonces()
+    {
+
+        return $this->createQueryBuilder('a')
+            ->orderBy('a.created_at', 'DESC')
+            ->setMaxResults(8)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * Retourne le nombre d'annonces
+     * @return void
+     */
+    public function getTotalAnnonces()
+    {
+        $query = $this->createQueryBuilder('a')
+            ->select('COUNT(a)');
+
+        return $query->getQuery()->getSingleScalarResult();
+    }
 //    /**
 //     * @return Annonce[] Returns an array of Annonce objects
 //     */
