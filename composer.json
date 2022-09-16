@@ -12,6 +12,7 @@
     "doctrine/doctrine-bundle": "^2.7",
     "doctrine/doctrine-migrations-bundle": "^3.2",
     "doctrine/orm": "^2.13",
+    "easycorp/easyadmin-bundle": "^4.3",
     "mailjet/mailjet-apiv3-php": "^1.5",
     "symfony/asset": "6.1.*",
     "symfony/console": "6.1.*",
@@ -26,8 +27,8 @@
     "symfony/twig-bundle": "6.1.*",
     "symfony/validator": "6.1.*",
     "symfony/yaml": "6.1.*",
-    "symfonycasts/verify-email-bundle": "^1.11",
     "symfonycasts/reset-password-bundle": "^1.15",
+    "symfonycasts/verify-email-bundle": "^1.11",
     "twig/extra-bundle": "^2.12|^3.0",
     "twig/twig": "^2.12|^3.0"
   },
