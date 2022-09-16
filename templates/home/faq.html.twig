@@ -1,13 +1,9 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}FAQ - Plant&Flower{% endblock %}
-	{% block javascripts %}
-        {{ encore_entry_script_tags("faq") }}
-        {{ encore_entry_script_tags("app") }}
-    {% endblock %}
 {% block stylesheets %}
-    {{ encore_entry_link_tags("app") }}
-    {{ encore_entry_link_tags("faq") }}
+    <link rel="stylesheet" href="{{ asset("/assets/faq.css") }}">
+
 {% endblock %}
 
 
