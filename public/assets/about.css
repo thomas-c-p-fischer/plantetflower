@@ -1,6 +1,6 @@
 .container {
     display: flex;
-    background-image: url("/public/media/img/background-yellow-green.png");
+    background-image: url("../media/img/background-yellow-green.png");
     background-position: 10%;
     background-repeat: no-repeat;
     background-size: 100%;

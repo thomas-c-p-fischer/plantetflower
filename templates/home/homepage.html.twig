@@ -37,7 +37,7 @@
                 {% set img = '' %}
                 {% for annonce in annonces %}
                     <div class="card">
-                        <a class="img-annonce-flex" href={{ path('annonce', {'id': annonce.id}) }}>
+                        <a class="img-annonce-flex" href={{ path('home_annonces', {'id': annonce.id}) }}>
                             <div class="image-annonce">
                                 {% for image in images %}
                                     {% if image.annonce.id == annonce.id %}
