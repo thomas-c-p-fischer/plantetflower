@@ -3,7 +3,7 @@
 {% block title %}Acceuil - Plant&Flower{% endblock %}
 
 {% block stylesheets %}
-    <link rel="stylesheet" href="{{ asset("/assets/homepage.css") }}">
+
 {% endblock %}
 		{% block javascripts %}
             {{ encore_entry_script_tags("app") }}
@@ -146,7 +146,7 @@
             <div class="container-fonctionnement">
                 <img class="img-fonctionnement" src="{{ asset('media/img/background-ccm.png') }}" alt="banniere"/>
                 <div class="decouvre">
-                    <div class="decouvre-img"></div>
+                    <div class="decouvre-img"><img src="{{ asset('media/img/decouvre.png') }}" alt=""></div>
                     <div class="txt-decouvre">
                         <h2 class="title-etape">DÉCOUVRE LES VÉGÉTAUX</h2>
                         <p>Connecte-toi et trouve les végétaux à vendre entre particuliers dans toute la France. À des
@@ -158,7 +158,7 @@
                 </div>
 
                 <div class="reserve">
-                    <div class="reserve-img"></div>
+                    <div class="reserve-img"><img src="{{ asset('media/img/reserve.png') }}" alt=""></div>
                     <div class="txt-decouvre">
                         <h2 class="title-etape">RÉSERVE TON VÉGÉTAL</h2>
                         <p>En quelques clics, trouve et réserve le végétal de tes rêves ! Paie en toute sécurité via la
@@ -171,7 +171,7 @@
                 </div>
 
                 <div class="receptionne">
-                    <div class="receptionne-img"></div>
+                    <div class="receptionne-img"><img src="{{ asset('media/img/receptionne.png') }}" alt=""></div>
                     <div class="txt-decouvre">
                         <h2 class="title-etape">RÉCEPTIONNE TON VÉGÉTAL</h2>
                         <p>Pars à la rencontre du vendeur ou réceptionne directement chez toi le végétal grâce à notre

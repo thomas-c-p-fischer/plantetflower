@@ -17,6 +17,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class DashboardController extends AbstractDashboardController
 {
+
+
     /**
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
