@@ -13,6 +13,7 @@
     "doctrine/doctrine-migrations-bundle": "^3.2",
     "doctrine/orm": "^2.13",
     "easycorp/easyadmin-bundle": "^4.3",
+    "econea/nusoap": "^0.9.12",
     "gregwar/captcha-bundle": "^2.2",
     "mailjet/mailjet-apiv3-php": "^1.5",
     "symfony/asset": "6.1.*",
@@ -21,6 +22,7 @@
     "symfony/flex": "^2",
     "symfony/form": "6.1.*",
     "symfony/framework-bundle": "6.1.*",
+    "symfony/http-client": "6.1.*",
     "symfony/intl": "6.1.*",
     "symfony/mailer": "6.1.*",
     "symfony/proxy-manager-bridge": "6.1.*",
@@ -32,7 +34,8 @@
     "symfonycasts/reset-password-bundle": "^1.15",
     "symfonycasts/verify-email-bundle": "^1.11",
     "twig/extra-bundle": "^2.12|^3.0",
-    "twig/twig": "^2.12|^3.0"
+    "twig/twig": "^2.12|^3.0",
+    "ext-http": "*"
   },
   "config": {
     "allow-plugins": {
