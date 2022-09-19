@@ -104,13 +104,8 @@
             {{ form_row(registrationForm.plainPassword, {'attr': {'placeholder': 'Mot de passe*'}}) }}
         </div>
 
-        {# <div class="Confirmpassword">
-                    <input type="password" id="pass" name="confirmpassword" minlength="8" placeholder="Confirmation du mot de passe*" required>
-                </div> #}
-{#        {{ form_row(registrationForm.captcha) }}#}
-        {# must be the same name of this put on the FormBuilder #}
-{#        {{ form_errors(registrationForm.captcha) }}#}
-        {# That will display the error of the captcha to user #}
+        {# appel du captcha #}
+        {{ form_row(registrationForm.captcha) }}
 
         <div class="checkLine">
             {{ form_row(registrationForm.agreeTerms, {
