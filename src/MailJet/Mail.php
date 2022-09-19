@@ -7,12 +7,8 @@ This call sends a message based on a template.
 */
 
 // require 'vendor/autoload.php';
-use App\Entity\User;
-use Doctrine\ORM\EntityManagerInterface;
 use \Mailjet\Resources;
 use \Mailjet\Client;
-use \Mailjet\Request;
-use \Mailjet\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class Mail extends AbstractController
