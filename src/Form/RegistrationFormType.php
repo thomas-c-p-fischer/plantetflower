@@ -350,8 +350,8 @@ class RegistrationFormType extends AbstractType
                 ],
             ])
             ->add('plainPassword', PasswordType::class, [
-                // instead of being set onto the object directly,
-                // this is read and encoded in the controller
+                // au lieu d’être placé directement sur l’objet,
+                // ceci est lu et encodé dans le contrôleur
                 'mapped' => false,
                 'attr' => ['autocomplete' => 'new-password'],
                 'label' => false,
@@ -362,13 +362,18 @@ class RegistrationFormType extends AbstractType
                     new Length([
                         'min' => 6,
                         'minMessage' => 'Your password should be at least {{ limit }} characters',
-                        // max length allowed by Symfony for security reasons
+                        // longueur maximale autorisée par Symfony pour des raisons de sécurité
                         'max' => 4096,
                     ]),
                 ],
-            ]);
-//            ->add('captcha', ReCaptchaType::class);
-
+            ])
+            // personnalisation du captcha
+            ->add('captcha', CaptchaType::class, array(
+                'width' => 200,
+                'height' => 50,
+                'length' => 4,
+                'invalid_message' => 'Le code captcha ne correspond pas',
+                ));
     }
 
     public function configureOptions(OptionsResolver $resolver): void
