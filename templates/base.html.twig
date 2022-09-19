@@ -15,9 +15,10 @@
     <link rel="stylesheet" href="{{ asset("/assets/faq.css") }}">
     <link rel="stylesheet" href="{{ asset("/assets/contact.css") }}">
     <link rel="stylesheet" href="{{ asset("/assets/annonce.css") }}">
-    <script src="/public/assets/Javascript/faq.js"></script>
+    <link rel="stylesheet" href="{{ asset("/assets/mentions.css") }}">
 
-    <!--On charge Jquery depuis le CDN de google-->
+
+    <!--On charge Jquery depuis le CDN de Google-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <!-- Charger Leaflet pour l'affichage de la map-->
     <link rel="stylesheet" type="text/css" href="//unpkg.com/leaflet/dist/leaflet.css"/>
@@ -28,7 +29,8 @@
 
     {# Favicon du site #}
     <link rel="shortcut icon" href="{{ asset('media/img/favicon.ico') }}" type="images/x-icon"/>
-
+    {% block js %}
+    {% endblock %}
 
 </head>
 <body>

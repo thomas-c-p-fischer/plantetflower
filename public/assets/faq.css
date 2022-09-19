@@ -1,103 +1,72 @@
 .title-faq {
-    background-image: url('/public/media/img/background-yellow-green.png');
+    display: flex;
+    height: 200px;
+    background-image: url("../media/img/background-yellow-green.png");
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
-    display: flex;
-    height: 200px;
 }
 
 .container-title {
     margin: 0 auto;
     display: flex;
     align-items: center;
+
+
 }
 
-.title {
+.titre {
     font-family: 'Montserrat', sans-serif;
     font-weight: 500;
     font-size: 40px;
     color: #79C990;
 }
 
+.globalDiv {
+    height: 50em;
+}
+
 /* Début dropdown */
-
-.container-dropdown {
-    margin-bottom: 10%;
+.faq {
+    display: flex;
+    justify-content: center;
 }
 
-.dropbtn {
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 500;
-    background-color: #FCF48D;
-    color: black;
-    padding: 16px;
-    width: 100%;
-    font-size: 30px;
-    border: none;
-    cursor: pointer;
-    text-align: left;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
+#dropdown {
+    margin: 2em 0;
+ 
 }
 
-.txt {
-    float: left;
+.question {
+    height: 6vh;
+    width: 50em;
+    background: #fcf48d;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 10px;
+    border-radius: 15px 15px 0 0;
+
+
 }
 
-.chevron-down {
-    width: 50px;
-    float: right;
-}
-
-.chevron-up {
-    width: 50px;
-    float: right;
-}
-
-.btn {
-    margin-left: auto;
-    margin-right: auto;
-    width: 60%;
-}
-
-.dropbtn:hover, .dropbtn:focus {
-    background-color: #FCF48D;
-}
-
-.dropdown {
-    position: relative;
-    display: block;
-    text-align: center;
-    width: 100%;
-    margin-bottom: 30px;
-}
-
-.dropdown-content {
-    font-family: 'Open Sans', sans-serif;
-    font-size: 22px;
-    display: none;
-    background-color: white;
-    min-width: 160px;
-    text-align: left;
-    overflow: auto;
-    border: 1px solid;
+.reponse {
+    height: 100px;
+    width: 49.2em;
+    border: 1px solid #bbd8c3;
     border-top: none;
-    border-color: #4A975F;
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
-    transition: all 0.5s ease;
+    display: flex;
+    align-items: center;
+    text-align: justify;
+    padding: 0 15px;
+    border-radius: 0 0 10px 10px;
+
 }
 
-.dropdown-content p {
-    color: black;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-}
-
-.show {
-    display: block;
+.chevron {
+    width: 40px;
+    transition: transform 0.2s;
+    cursor: pointer;
 }
 
 /* Fin dropdown */
