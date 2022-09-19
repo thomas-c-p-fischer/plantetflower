@@ -154,7 +154,6 @@ footer {
     align-items: center;
     grid-area: list;
     grid-template-columns: 65% 35%;
-    justify-items: end;
     justify-items: center;
     z-index: 25;
 }
@@ -169,9 +168,6 @@ footer {
     height: auto;
 }
 
-.list-item2:hover {
-    border-radius: 2px solid #4c9a62;
-}
 
 .nav a {
     text-decoration: none;
@@ -324,7 +320,7 @@ footer {
     color: #48945D;
     background-color: #FFF56E;
     border-radius: 40px;
-    box-shadow: 0px 2px 2px #000;
+    box-shadow: 0 2px 2px #000;
     grid-row-start: 5;
 }
 
@@ -588,7 +584,6 @@ footer {
 }
 
 .txt-suivi-annonces {
-    font-size: 20;
     color: #000;
     font-family: 'Montserrat', sans-serif;
     font-weight: 500;
@@ -619,7 +614,6 @@ footer {
     margin: 1em auto;
     position: relative;
     overflow: hidden;
-    margin-bottom: 1em;
     max-height: 400px;
     max-width: 1000px;
     grid-area: slider;
@@ -689,7 +683,7 @@ a {
     font-family: 'Montserrat', sans-serif;
     font-size: 1rem;
     float: left;
-    width: max(10ex);
+
     text-overflow: ellipsis;
     white-space: nowrap;
     font-weight: 500;
@@ -751,7 +745,6 @@ a {
     align-items: center;
     justify-content: space-between;
     margin-top: 5px;
-    margin-bottom: 0px;
 }
 
 .not-livraison {
@@ -775,7 +768,6 @@ a {
     background-color: #fff56e;
     color: green;
     margin-left: 8px;
-    margin-top: 0px;
     text-align: center;
 }
 
@@ -838,7 +830,6 @@ a {
 .decouvre, .reserve, .receptionne {
     display: grid;
     grid-template-columns: 40% 60%;
-    align-items: center;
     align-items: start;
 }
 
@@ -853,7 +844,7 @@ a {
 }
 
 .decouvre-img {
-    background: no-repeat bottom url(/public/img/decouvre.png);
+
     background-size: contain;
 }
 
@@ -872,7 +863,6 @@ a {
 }
 
 .reserve-img {
-    background: no-repeat bottom url(/public/img/reserve.png);
     background-size: contain;
 }
 
@@ -899,7 +889,6 @@ a {
 }
 
 .receptionne-img {
-    background: no-repeat bottom url(/public/img/receptionne.png);
     background-size: contain;
 }
 
@@ -1002,7 +991,6 @@ a {
     .total-annonce {
         grid-row-start: 5;
         width: 50%;
-        grid-row-start: 5;
         grid-column-start: 1;
         grid-column-end: 5;
     }
@@ -1098,8 +1086,6 @@ a {
     .search-formulaire {
         background: white;
         height: 100%;
-        border-radius: none;
-        box-shadow: none;
         text-align: center;
         grid-area: searchForm;
         display: grid;
@@ -1134,7 +1120,6 @@ a {
         grid-area: main;
         grid-template-columns: repeat(3, 1fr);
         grid-template-rows: repeat(12, 1fr);
-        grid-template-rows: 100px 100px;
         grid-template-areas: 
                     "imgsearch imgsearch imgsearch"
                     "imgsearch imgsearch imgsearch"
@@ -1167,8 +1152,6 @@ a {
         grid-gap: 10px;
         padding: 15px 15px;
         grid-template-columns: 1fr;
-        height: -webkit-max-content;
-        height: -moz-max-content;
         height: max-content;
         grid-template-areas: 
                     "img-fonctionnement"
@@ -1219,7 +1202,6 @@ a {
     .profil {
         display: block;
         grid-area: profil;
-        background: no-repeat url(/public/img/profil.png);
         text-align: center;
     }
 

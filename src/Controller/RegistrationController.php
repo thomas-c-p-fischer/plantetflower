@@ -27,7 +27,9 @@ class RegistrationController extends AbstractController
     }
 
     #[Route('/register', name: 'registration_register')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
+    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager
+//        , ApiUser $ApiUser, ApiWallet $ApiWallet
+    ): Response
     {
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
@@ -43,6 +45,10 @@ class RegistrationController extends AbstractController
                     $form->get('plainPassword')->getData()
                 )
             );
+
+//            $ApiUser->NewProfil($form);
+//            $user->setIdMangopay($ApiUser->userMangoPay->Id);
+//            $ApiWallet->NewWallet($ApiUser->userMangoPay->Id);
 
             $entityManager->persist($user);
             $entityManager->flush();
