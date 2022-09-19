@@ -24,6 +24,7 @@ ul {
 /* mise en place Grid*/
 
 body {
+    height: 100%;
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: 15% 1fr 20%;
@@ -80,6 +81,7 @@ footer {
     align-items: center;
     z-index: 20;
 }
+
 
 .text {
     text-align: center;
