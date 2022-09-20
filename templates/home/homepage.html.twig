@@ -40,7 +40,7 @@
                         <a class="img-annonce-flex" href={{ path('home_annonces', {'id': annonce.id}) }}>
                             <div class="image-annonce">
                                 {% for image in images %}
-                                    {% if image.annonce.id == annonce.id %}
+                                    {% if image.annonceId.id == annonce.id %}
                                         {% set img = annonce.images[0].name %}
                                     {% endif %}
                                 {% endfor %}
@@ -55,7 +55,7 @@
                                         {{ annonce.priceTotal }}€</p>
                                 </div>
                                 <div class="align-livraison">
-                                    {% if annonce.shipment == true %}
+                                    {% if annonce.shipement == true %}
                                         <p class="livraison">
                                             Livraison possible
                                         </p>
@@ -95,10 +95,10 @@
                     {% for lastannonce in lastAnnonces %}
                         {% if lastannonce.sold == false %}
                             <div class="item" data-ref={{ lastannonce.id }}>
-                                <a href={{ path('annonce', {'id': lastannonce.id}) }}>
+                                <a href={{ path('home_annonces', {'id': lastannonce.id}) }}>
                                     <div class="image-annonce">
                                         {% for image in images %}
-                                            {% if image.annonce.id == lastannonce.id %}
+                                            {% if image.annonceId.id == lastannonce.id %}
                                                 <img src={{ asset('/uploads/annonces/' ~ lastannonce.images[0].name) }} class="img-orchidee"
                                                      alt="Image annonce"/>
                                             {% endif %}
@@ -114,7 +114,7 @@
 									<span class="ville">
 										{{ lastannonce.ville | upper }}
 									</span>
-                                            {% if lastannonce.shipment == true %}
+                                            {% if lastannonce.shipement == true %}
                                                 <p class="livraison">
                                                     Livraison possible
                                                 </p>

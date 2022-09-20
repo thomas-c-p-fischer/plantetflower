@@ -35,36 +35,21 @@ class HomeController extends AbstractController
         $total = $annoncesRepository->getTotalAnnonces();
         $lastAnnonces = $annoncesRepository->getLastAnnonces();
         $images = $imageRepository->findAll();
-
         $annoncesAll = $imageRepository->findAll();
-
         $form = $this->createForm(SearchAnnonceType::class);
-        // $search = $form->handleRequest($request);
         $form->handleRequest($request);
-
         $annonces = [];
 
         if ($form->isSubmitted() && $form->isValid()) {
             // On recherche les annonces correspondant aux mots clés
-            // $annonce = $annoncesRepository->search(
-            //   $search->get('title')->getData()
-            // )
             $title = $form->get('title')->getData();
 
             if ($title != "") {
                 $annonces = $annoncesRepository->findBy(['title' => $title]);
             } else {
-                // $annonces = $this->managerRegistry->getRepository(Annonce::class)->findAll();
                 $annonces = $annoncesRepository->getPaginatedAnnonces($page, $limit);
             }
         }
-
-        // $annonces = $paginator->paginate(
-        //     $annonces, /* query NOT result */
-        //     $request->query->getInt('page', 1),
-        //     6
-        // );
-
         return $this->render('home/homepage.html.twig', [
             'controller_name' => 'HomeController',
             'annonces' => $annonces,

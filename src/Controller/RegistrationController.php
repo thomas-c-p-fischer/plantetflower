@@ -58,7 +58,7 @@ class RegistrationController extends AbstractController
                 (new TemplatedEmail())
                     ->from(new Address('myflowerlifeantigaspi@gmail.com', 'Plant & Flower'))
                     ->to($user->getEmail())
-                    ->subject('Merci de confimer votre adresse email')
+                    ->subject('Merci de confirmer votre adresse email')
                     ->htmlTemplate('registration/confirmation_email.html.twig')
             );
             // faire tout ce dont vous avez besoin ici, comme envoyer un email
