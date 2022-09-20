@@ -5,6 +5,8 @@ namespace App\Service;
 use App\Service\MockStorage;
 use App\Entity\User;
 use App\Service\ApiUser;
+use MangoPay\BankAccount;
+use MangoPay\BankAccountDetailsIBAN;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use MangoPay;
 
@@ -26,9 +28,9 @@ class ApiIban
 
     public function NewIban($iban, $bic, $user)
     {
-        $BankAccount = new \MangoPay\BankAccount();
+        $BankAccount = new BankAccount();
         $BankAccount->Type = 'IBAN';
-        $BankAccount->Details = new \MangoPay\BankAccountDetailsIBAN();
+        $BankAccount->Details = new BankAccountDetailsIBAN();
         $BankAccount->Details->IBAN = $iban;
         $BankAccount->Details->BIC = $bic;
         $BankAccount->OwnerName = $user->getFirstName() . ' ' . $user->getLastName();
