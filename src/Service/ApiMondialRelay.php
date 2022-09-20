@@ -123,7 +123,7 @@ class ApiMondialRelay extends AbstractController
     }
 
 
-    // requete pour interroger si colis livré a mettre en back toutes les 6h
+    // requete pour interroger si colis livré à mettre en back toutes les 6h
 
     public function getStatusTracing(ApiPayOut $ApiPayOut, ApiWallet $ApiWallet, ApiIban $ApiIban): string
     {
@@ -197,6 +197,6 @@ class ApiMondialRelay extends AbstractController
                 return 'Numéro expédition : ' . $expeditionNumber . ' STAT : ' . $result ["WSI2_TracingColisDetailleResult"]["STAT"] . ' Libellé : ' . $result ["WSI2_TracingColisDetailleResult"]["Libelle01"];
             }
         }
-
     }
+
 }
