@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Annonce;
 use App\Entity\Image;
+use App\Form\AnnonceFormType;
 use App\Repository\AnnonceRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use GuzzleHttp\Psr7\Request;
@@ -12,19 +13,18 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/', name: 'annonce')]
+#[Route('/annonce', name: 'annonce')]
 class AnnonceController extends AbstractController
 {
     #[Route('/ajouter/{annonce}', name: '_ajouter')]
     public function createAnnonce(
         Request                $request,
         EntityManagerInterface $entityManager,
-
     ): Response
     {
         $annonce = new Annonce();
 
-        $form = $this->createForm();
+        $form = $this->createForm(AnnonceFormType::class, $annonce);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -34,11 +34,9 @@ class AnnonceController extends AbstractController
             } elseif (count($images) < 1) {
                 $form->addError(new FormError("Vous devez upload au minimum 1 image"));
             }
-
             if ($form->isValid()) {
                 foreach ($images as $image) {
                     $fichier = md5(uniqid()) . '.' . $image->guessExtension();
-
                     //on copie le fichier dans le dossier uploads
                     $image->move(
                         $this->getParameter('annonces_directory'),
@@ -49,7 +47,7 @@ class AnnonceController extends AbstractController
                     $annonce->addImage($img);
                 }
 
-                // récupérer les données du form
+                // récupérer les données du formulaire
                 $description = $form->get('description')->getData();
                 $shipment = $form->get('shipment')->getData();
                 $plantPot = $form->get('plantPot')->getData();
@@ -96,34 +94,32 @@ class AnnonceController extends AbstractController
                 $OriginPrice = $annonce->getPriceOrigin();
                 $fixFees = 0.7;
                 $percentPrice = $OriginPrice * 0.12;
-                $TotalPrice = round($OriginPrice + $fixFees + $percentPrice, 3);
+                $totalPrice = round($OriginPrice + $fixFees + $percentPrice, 3);
 
 
-                $modPrice = fmod($TotalPrice, 1); //Pour obtenir le rest et déterminer l'arrondi correspondant avec les conditions ci dessous
-                $PreFinal = "";
+                $modPrice = fmod($totalPrice, 1); //Pour obtenir le rest et déterminer l'arrondi correspondant avec les conditions ci dessous
+                $preFinal = "";
 
 
                 if ($modPrice > 0 && $modPrice < 0.5) {
-                    $PreFinal = round($TotalPrice, 0) + 0.5;
+                    $preFinal = round($totalPrice, 0) + 0.5;
                 } else if ($modPrice >= 0.5 && $modPrice < 1) {
-                    $PreFinal = round($TotalPrice, 0);
+                    $preFinal = round($totalPrice, 0);
                 }
-                $totalFees = $PreFinal - $TotalPrice + $fixFees + $percentPrice;
-                $commissionSite = $totalFees - (0.018 * $PreFinal + 0.18);
-                $a = array($PreFinal, $TotalPrice, $totalFees, $commissionSite);
-                $annonce->setPriceTotal($PreFinal);
+                $totalFees = $preFinal - $totalPrice + $fixFees + $percentPrice;
+                $commissionSite = $totalFees - (0.018 * $preFinal + 0.18);
+                $a = array($preFinal, $totalPrice, $totalFees, $commissionSite);
+                $annonce->setPriceTotal($preFinal);
 
                 $entityManager->persist($annonce);
                 $entityManager->flush();
                 // do anything else you need here, like send an email
 
-                return $this->redirectToRoute("profil");
+                return $this->redirectToRoute("annonce_ajouter");
             }
         }
 
-        return $this->render('home/createAnnonce.html.twig', [
-            'CreateAnnonceForm' => $form->createView(),
-        ]);
+        return $this->render('annonce/index.html.twig', compact('form', 'annonce'));
     }
 
 
