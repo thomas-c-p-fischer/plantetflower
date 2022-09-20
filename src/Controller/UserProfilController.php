@@ -7,6 +7,9 @@ use App\Form\InformationFormType;
 use App\Form\UserFormType;
 use App\Repository\AnnonceRepository;
 use App\Repository\UserRepository;
+use App\Service\ApiIban;
+use App\Service\ApiKYCDocument;
+use App\Service\ApiUser;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,17 +21,13 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 #[Route('/user', 'user')]
 class UserProfilController extends AbstractController
 {
-
-
     #[Route('/profil', name: '_profil')]
     public function profil(
         Request                $request,
-        ApiUser                $apiUser,
         ApiKYCDocument         $apiKYCDocument,
         AnnonceRepository      $annonceRepository,
         EntityManagerInterface $em,
-        UserRepository         $userRepository,
-        HttpClientInterface    $httpClient
+        ApiIban                $apiIban
     ): Response
     {
         $ResultMango = "";
@@ -40,7 +39,7 @@ class UserProfilController extends AbstractController
         $form->handleRequest($request);
         // acheteur
         if ($user->getStatus() !== "") {
-            $KYCStatus = $ApiKYCDoc->GetKYCDocumentById($IdMangoPay);
+            $KYCStatus = $apiKYCDocument->GetKYCDocumentById($IdMangoPay);
             if ($KYCStatus === false) {
                 $StatusKYC = "TO_ASK";
             } else if ($KYCStatus['Type'] === "IDENTITY_PROOF") {
@@ -75,10 +74,10 @@ class UserProfilController extends AbstractController
         $recto = $form['KYCrecto']->getData();
         $verso = $form['KYCverso']->getData();
         if ($form->isSubmitted() && $form->isValid()) {
-            $ApiIban->NewIban($form['IBAN']->getData(), $form['BIC']->getData(), $user);
+            $apiIban->NewIban($form['IBAN']->getData(), $form['BIC']->getData(), $user);
 
-            $KycDocument = $ApiKYCDoc->NewKYCDocument($user->getIdMangopay(), $recto->getPathname(), $verso->getPathname());
-            $ResultMango = $ApiKYCDoc->SubmitKYCDocument($user->getIdMangopay(), $KycDocument);
+            $KycDocument = $apiKYCDocument->NewKYCDocument($user->getIdMangopay(), $recto->getPathname(), $verso->getPathname());
+            $ResultMango = $apiKYCDocument->SubmitKYCDocument($user->getIdMangopay(), $KycDocument);
             return $this->render('user_profil/userProfil.html.twig', [
                 'user' => $user,
                 'annonce' => $annonce,
