@@ -2,19 +2,11 @@
 
 {# ATTENTION LA PAGE N'A PAS TERMINE D'ETRE CORRIGEE #}
 {# ATTENTION LA PAGE N'A PAS TERMINE D'ETRE CORRIGEE #}
-{# ATTENTION LA PAGE N'A PAS TERMINE D'ETRE CORRIGEE #}
-{# ATTENTION LA PAGE N'A PAS TERMINE D'ETRE CORRIGEE #}
-{# ATTENTION LA PAGE N'A PAS TERMINE D'ETRE CORRIGEE #}
-{# ATTENTION LA PAGE N'A PAS TERMINE D'ETRE CORRIGEE #}
-{# ATTENTION LA PAGE N'A PAS TERMINE D'ETRE CORRIGEE #}
-{# ATTENTION LA PAGE N'A PAS TERMINE D'ETRE CORRIGEE #}
-{# ATTENTION LA PAGE N'A PAS TERMINE D'ETRE CORRIGEE #}
-{# ATTENTION LA PAGE N'A PAS TERMINE D'ETRE CORRIGEE #}
-{# ATTENTION LA PAGE N'A PAS TERMINE D'ETRE CORRIGEE #}
-{# ATTENTION LA PAGE N'A PAS TERMINE D'ETRE CORRIGEE #}
-{# ATTENTION LA PAGE N'A PAS TERMINE D'ETRE CORRIGEE #}
-{# ATTENTION LA PAGE N'A PAS TERMINE D'ETRE CORRIGEE #}
-{# ATTENTION LA PAGE N'A PAS TERMINE D'ETRE CORRIGEE #}
+{# IL MANQUE LE PATH POUR DELETE ET EDIT UNE ANNONCE A RAJOUTER UNE FOIS QUE CELUI-CI EXISTERA #}
+{# IL MANQUE LE PATH POUR DELETE ET EDIT UNE ANNONCE A RAJOUTER UNE FOIS QUE CELUI-CI EXISTERA #}
+{# IL MANQUE LE PATH POUR DELETE ET EDIT UNE ANNONCE A RAJOUTER UNE FOIS QUE CELUI-CI EXISTERA #}
+{# IL MANQUE LE PATH POUR DELETE ET EDIT UNE ANNONCE A RAJOUTER UNE FOIS QUE CELUI-CI EXISTERA #}
+{# IL MANQUE LE PATH POUR DELETE ET EDIT UNE ANNONCE A RAJOUTER UNE FOIS QUE CELUI-CI EXISTERA #}
 
 {% block title %}
     Modification du profil - Plant&Flower
@@ -40,7 +32,7 @@
                     <p class="message-profil">Bienvenue sur votre page de profil</p>
                     <p class="message-text-2">Vous pouvez retrouver toutes les informations
                         concernant vos achats et ventes ainsi que vos informations personnelles ci-dessous.</p>
-                    {% if user.status == "vendeur" or user.status == "acheteur/vendeur" %}
+                    {% if app.user.status == "vendeur" or app.user.status == "acheteur/vendeur" %}
                         {% if KycStatus =="VALIDATED" %}
                             <div class="btn-annonce">
                                 <a href="{{ path('') }}">+ Ajouter une annonce</a>
@@ -49,7 +41,7 @@
                     {% endif %}
                 </div>
             </div>
-            {% if user.statut == "vendeur" or user.status == "acheteur/vendeur" %}
+            {% if app.user.status == "vendeur" or app.user.status == "acheteur/vendeur" %}
                 <div class="box-2">
                     <div class="message">
                         <p class="message-text">Pour accéder à la création d'annonce, il est impératif de renseigner vos
@@ -196,51 +188,48 @@
                         <div class='box-name'>
                             <div class="infos">
                                 <p class="size">Nom :
-                                    <span class="myinfo">{{ user.lastname }}</span></p>
+                                    <span class="myinfo">{{ app.user.lastname }}</span></p>
                             </div>
 
                             <div class="infos">
                                 <p class="size">Prénom :
-                                    <span class="myinfo">{{ user.firstname }}</span></p>
+                                    <span class="myinfo">{{ app.user.firstname }}</span></p>
                             </div>
                             <div class="infos">
-                                {% if (user.status) %}
+                                {% if (app.user.status) %}
                                     <p class="size">Rôle :
-                                        <span class="myinfo">{{ user.status }}</span></p>
+                                        <span class="myinfo">{{ app.user.status }}</span></p>
                                 {% else %}
-                                    <p class="size" style="color:red;">Rôle :
-                                        <span class="myinfo" style="color:red;">
+                                    <p class="size">Rôle :
+                                        <span class="myinfo">
 											<u>Rôle à renseigner !</u></span>
                                     </p>
                                 {% endif %}
                             </div>
                         </div>
-
-
                     </div>
-
-
                     <div id="Adresse">
-                        {% if (user.address) %}
+                        {% if (app.user.address) %}
                             <p class="size">Adresse :</p>
                             <p class="myinfo">
-                                {{ user.streetnumber }}, {{ user.address }} - {{ user.zipcode }} {{ user.city }}
+                                {{ app.user.streetnumber }}, {{ app.user.address }}
+                                - {{ app.user.zipcode }} {{ app.user.city }}
                             </p>
                         {% else %}
-                            <p class="size" style="color:red;">Adresse :</p>
-                            <p class="myinfo" style="color:red;">
+                            <p class="size">Adresse :</p>
+                            <p class="myinfo">
                                 <u>Adresse à renseigner !</u>
                             </p>
                         {% endif %}
                     </div>
                     <div class='box-mail'>
                         <div class="infosTel">
-                            {% if (user.phoneNumber) %}
+                            {% if (app.user.phoneNumber) %}
                                 <p class="size">téléphone :</p>
-                                <p class="myinfo">{{ user.phoneNumber }}</p>
+                                <p class="myinfo">{{ app.user.phoneNumber }}</p>
                             {% else %}
                                 <p class="size">téléphone :</p>
-                                <p class="myinfo" style="color:red;">
+                                <p class="myinfo">
                                     <u>téléphone à renseigner !</u>
                                 </p>
                             {% endif %}
@@ -248,17 +237,17 @@
 
                         <div class="infosMail">
                             <p class="size">Email :</p>
-                            <p class="myinfo">{{ user.email }}</p>
+                            <p class="myinfo">{{ app.user.email }}</p>
                         </div>
                     </div>
                     <div class="btn-infos">
                         {# <button type="submit" class="btn-info" id="btn-modify" data-path={{ path('profil_edit',{'id': user.id}) }}>Modifier</button> #}
                         <a class="btn-info" id="btn-modify"
-                           data-path={{ path('_edit',{'id': user.id}) }} href={{ path('_edit',{'id': user.id}) }}>Modifier</a>
+                           data-path={{ path('user_edit',{'id': app.user.id}) }} href={{ path('user_edit',{'id': app.user.id}) }}>Modifier</a>
                     </div>
                 </div>
             </div>
-            {# --------------------------Mes annonces ------------------------- -#}
+            {# --------------------------Mes annonces ------------------------- #}
             <div class="contenus no-active" data-anim="2">
                 {# Si il n'y a pas d'annonces créés par l'utilisateur #}
                 {% if (app.user.status == 'acheteur/vendeur') or (app.user.status == 'vendeur') %}
@@ -293,7 +282,6 @@
                                     <p class="date-annonce">Date
                                         d'expiration: {{ annonce.dateExpiration | date ('d/m/Y') }}</p>
                                 </div>
-                                </a>
                             </div>
                         {% elseif annonce.sold == 1 %}
                             <div class="box-annonces">
