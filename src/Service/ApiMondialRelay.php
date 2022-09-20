@@ -2,11 +2,9 @@
 
 namespace App\Service;
 
-use http\Client;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Component\Security\Core\Security;
 use nusoap_client;
-use App\Repository\UserRepository;
 use App\Repository\AnnonceRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

@@ -1,0 +1,151 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modification du profil - Plant&Flower{% endblock %}
+
+{% block body %}
+    <div>
+        <h2 class="title-edit">Modifier mes informations</h2>
+        <div class="contain-edit">
+            <div class="box-edit">
+                {{ form_start(form, { 'attr': {'class': 'box-2-edit'} }) }}
+                <div class="image-profil-edit">
+                    {% if (app.user.image) %}
+                        <img class="imageInformation" src="{{ asset('/uploads/profils/' ~ app.user.image) }}"
+                             alt="Photo de profil">
+                    {% else %}
+                        <img class="imageInformation" src="{{ asset('media/img/profil.png') }}"
+                             alt="Photo de profil default">
+                    {% endif %}
+                </div>
+                <div class="input-file-profil">
+                    {{ form_row(form.image, {'label': "+", 'label_attr': {'class': 'btn-upload-profil'} } ) }}
+                </div>
+
+                <div class="input-modification">
+                    <div class="box-column">
+                        <div class="input-column">
+                            {{ form_row(form.lastname, {
+                                'label': "Nom :",
+                                'label_attr': {'class': 'text-edit'},
+                                'attr': {
+                                    class: 'input-modif'
+                                }
+                            }) }}
+                            {# <input  type="text" class="input-modif" text="Wayne"/> #}
+                        </div>
+                        <div class="input-column">
+                            {# <input  type="text" class="input-modif"/> #}
+                            {{ form_row(form.firstname, {
+                                'label': "Prenom :",
+                                'attr': {
+                                    class: 'input-modif'
+                                }
+                            } ) }}
+                        </div>
+                        <div class="input-column">
+                            {# <input  type="text" class="input-modif"/> #}
+                            {{ form_row(form.streetnumber, {
+                                'label': "N°rue :",
+                                'attr': {
+                                    class: 'input-modif'
+                                }
+                            } ) }}
+                        </div>
+                        <div class="input-column">
+                            {# <input  type="text" class="input-modif"/> #}
+                            {{ form_row(form.address, {
+                                'label': "Adresse",
+                                'attr': {
+                                    class: 'input-modif'
+                                }
+                            } ) }}
+                        </div>
+                        <div class="input-column">
+                            {# <input  type="text" class="input-modif"/> #}
+                            {{ form_row(form.address2, {
+                                'label': "Complément Adresse",
+                                'attr': {
+                                    class: 'input-modif'
+                                }
+                            } ) }}
+                        </div>
+                        <div class="input-column">
+                            {# <input  type="text" class="input-modif"/> #}
+                            {{ form_row(form.zipcode, {
+                                'label': "Code postal :",
+                                'attr': {
+                                    class: 'input-modif'
+                                }
+                            } ) }}
+                        </div>
+                        <div class="input-column">
+                            {# <input  type="text" class="input-modif"/> #}
+                            {{ form_row(form.city, {
+                                'label': "Ville",
+                                'attr': {
+                                    class: 'input-modif'
+                                }
+                            } ) }}
+                        </div>
+                        <div class="input-column">
+                            {# <input  type="text" class="input-modif"/> #}
+                            {{ form_row(form.phonenumber, {
+                                'label': "Numéro de téléphone :",
+                                'attr': {
+                                    class: 'input-modif'
+                                }
+                            } ) }}
+                        </div>
+                        <div class="input-column">
+                            {# <input  type="text" class="input-modif"/> #}
+                            {{ form_row(form.sex, {
+                                'label': "Civilité :",
+                                'attr': {
+                                    class: 'input-modif'
+                                }
+                            } ) }}
+                        </div>
+                        <div class="input-column">
+                            {# <input  type="text" class="input-modif"/> #}
+                            {{ form_row(form.status, {
+                                'label': "Status :",
+                                'attr': {
+                                    class: 'input-modif'
+                                }
+                            } ) }}
+                        </div>
+                        <div class="input-column">
+                            {# <input  type="text" class="input-modif"/> #}
+                            {{ form_row(form.email, {
+                                'label': "Email :",
+                                'attr': {
+                                    class: 'input-modif'
+                                }
+                            } ) }}
+                        </div>
+                        <div class="input-column">
+                            {# <input  type="password" class="input-modif"/> #}
+                            {{ form_row(form.plainPassword, {
+                                'label': "Entrer votre nouveau mot de passe :",
+                                'attr': {
+                                    class: 'input-modif'
+                                }
+                            } ) }}
+                        </div>
+                    </div>
+                    <div class="btn-edit">
+                        {# {{ form_row(form.captcha, {
+                                        'attr': {
+                                            class: 'captcha'
+                                        }
+                                    } ) }} #}
+                        <button class="btn-green" type="submit">Valider</button>
+                        <button class="btn-red"><a href={{ path('user_profil') }}>Annuler</a></button>
+                    </div>
+                </div>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}
+
