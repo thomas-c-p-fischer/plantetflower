@@ -6,17 +6,12 @@ use App\Entity\Annonce;
 use App\Form\InformationFormType;
 use App\Form\UserFormType;
 use App\Repository\AnnonceRepository;
-use App\Repository\UserRepository;
-use App\Service\ApiIban;
-use App\Service\ApiKYCDocument;
-use App\Service\ApiUser;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 #[Route('/user', 'user')]
 class UserProfilController extends AbstractController
@@ -24,10 +19,8 @@ class UserProfilController extends AbstractController
     #[Route('/profil', name: '_profil')]
     public function profil(
         Request                $request,
-        ApiKYCDocument         $apiKYCDocument,
         AnnonceRepository      $annonceRepository,
         EntityManagerInterface $em,
-        ApiIban                $apiIban,
 
     ): Response
     {
@@ -39,7 +32,7 @@ class UserProfilController extends AbstractController
         $form = $this->createForm(InformationFormType::class);
         $form->handleRequest($request);
         // acheteur
-        if ($user->getStatus() !== "") {
+        if ($user->getStatus() !== "acheteur") {
             $KYCStatus = $apiKYCDocument->GetKYCDocumentById($IdMangoPay);
             if ($KYCStatus === false) {
                 $StatusKYC = "TO_ASK";
@@ -50,6 +43,7 @@ class UserProfilController extends AbstractController
                     $StatusKYC = "VALIDATED";
                 } else if ($KYCStatus['Status'] === "REFUSED") {
                     if ($KYCStatus['RefusedReasonType'] === "DOCUMENT_UNREADABLE") {
+                        $StatusKYC = "REFUSED_DOCUMENT_UNREADABLE";
                     } else if ($KYCStatus['RefusedReasonType'] === "DOCUMENT_NOT_ACCEPTED") {
                         $StatusKYC = "REFUSED_DOCUMENT_NOT_ACCEPTED";
                     } else if ($KYCStatus['RefusedReasonType'] === "DOCUMENT_HAS_EXPIRED") {

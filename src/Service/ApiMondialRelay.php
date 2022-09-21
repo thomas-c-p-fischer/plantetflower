@@ -198,5 +198,4 @@ class ApiMondialRelay extends AbstractController
             }
         }
     }
-
 }

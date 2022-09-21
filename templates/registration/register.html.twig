@@ -5,9 +5,9 @@
 {% block body %}
     <div class="all">
         <div class="titreRegister">
-{#            {% if editMode %}#}
-{#            <h2>Modifiez vos informations </h2>#}
-{#            {% else %}#}
+            {#            {% if editMode %} #}
+            {#            <h2>Modifiez vos informations </h2> #}
+            {#            {% else %} #}
             <h2 id="connaissance">Faisons-connaissance</h2>
         </div>
         <div class="social">
@@ -17,30 +17,33 @@
             </p>
 
             <div class="imgsocialnetwork">
-{#                <a href="{{ path('connect_google') }}"><img class="google" src="img/google.png" alt="Logo Google"></a>#}
-{#                <a href="{{ path('connect_facebook') }}"><img class="facebook" src="img/facebook.png" alt="Logo Facebook"></a>#}
+                {#                <a href="{{ path('connect_google') }}"><img class="google" src="img/google.png" alt="Logo Google"></a> #}
+                {#                <a href="{{ path('connect_facebook') }}"><img class="facebook" src="img/facebook.png" alt="Logo Facebook"></a> #}
             </div>
         </div>
-{#        {% endif %}#}
+        {#        {% endif %} #}
 
         {{ form_start(registrationForm) }}
-        <div class="NFNregister">
-            <div class="SexeandNumRegister">
-                {{ form_row(registrationForm.sex, {'label': false} ) }}
+        <div class="information">
+            <p>
+                Vous êtes ...
+            </p>
+        </div>
+        <div class="statusNameFirstname">
+            <div class="status">
+                {{ form_row(registrationForm.status) }}
             </div>
-
-            <div class="Name">
+            <div class="name">
                 {{ form_row(registrationForm.lastname, {'label': false,'attr': {'placeholder': 'Nom*'}} ) }}
             </div>
-
-            <div class="Firstname">
+            <div class="firstname">
                 {{ form_row(registrationForm.firstname, {'label': false,'attr': {'placeholder': 'Prénom*'}} ) }}
             </div>
         </div>
-
         <div class="information">
             <p>
-                Votre adresse ne sera pas visible auprès des autres utilisateurs, elle servira uniquement à programmer les livraisons.
+                Votre adresse ne sera pas visible auprès des autres utilisateurs, elle servira uniquement à programmer
+                les livraisons.
             </p>
         </div>
         <div class="globaladress1">
@@ -53,52 +56,18 @@
                 {{ form_row(registrationForm.address2, {'label': false,'attr': {'placeholder': 'Complément Adresse'}} ) }}
             </div>
         </div>
-
-
         <div class="globaladress2">
             <div class="Zipcode">
                 {{ form_row(registrationForm.zipcode, {'label': false,'attr': {'placeholder': 'Code postale*'}} ) }}
                 {# <input type="text" name="zipcode" id="zipcode" placeholder="Code postal*" > #}
             </div>
-
             <div class="City">
                 {{ form_row(registrationForm.city, {'label': false,'attr': {'placeholder': 'Ville*'}} ) }}
                 {# <input type="text" name="city" id="city" placeholder="Ville*" > #}
             </div>
         </div>
-        <div class="informationnum">
-            <p>
-                Le numéro de téléphone permet de vous mettre en contact pour la remise en main propre d’un végétal pour faciliter vos échanges personnels.
-                Il ne sera divulgué qu’en cas de besoin à la mise en relation entre vous et un acheteur pour simplifier les échanges.
-            </p>
-        </div>
-        <div class="information">
-            <p>
-                La nationalité et la date de naissance sont des informations necéssaires <br> qui vous permettront d'effectuer des ventes et des achats via l'intermédiaire de <a id="lienMango" href="https://www.mangopay.com/fr/" alt="information MangoPay" target="_blank">(MangoPay)</a>.
-            </p>
-        </div>
-        <div class="BirthandNumRegister">
-            <div class="birthday">
-                {{ form_row(registrationForm.birthday)  }}
-                <span class="validity"></span>
-            </div>
-            <div class="Tel">
-                {{ form_row(registrationForm.phonenumber, {'label': false,'attr': {'placeholder': 'Votre téléphone*'}} ) }}
-                <span class="validity"></span>
-            </div>
-            <div class="Nation">
-                {{ form_row(registrationForm.nationality, {'label': false} ) }}
-            </div>
-        </div>
-
-        <div class="BirthandNumRegister">
-            <div class="selectRegister">
-                {{ form_row(registrationForm.status ) }}
-            </div>
-
-            <div class="Email">
-                {{ form_row(registrationForm.email, {'attr': {'placeholder': 'Votre Email*'}} ) }}
-            </div>
+        <div class="Email">
+            {{ form_row(registrationForm.email, {'attr': {'placeholder': 'Votre Email*'}} ) }}
         </div>
         <div class="Password">
             {{ form_row(registrationForm.plainPassword, {'attr': {'placeholder': 'Mot de passe*'}}) }}
@@ -113,25 +82,16 @@
                 },
                 'help_html': true,
             }) }}
-
         </div>
 
-        <div style="display: none;">
-            {{ form_row(registrationForm.verified, {
-                'value': false
-            }) }}
-        </div>
-        <div style="display: none;">
-            {{ form_row(registrationForm.idMangoPay) }}
-        </div>
         <button type="submit" class="btn-signup">
-{#            {% if editMode %}#}
-{#                Modifier#}
+            {#            {% if editMode %} #}
+            {#                Modifier #}
 
-{#            {% else %}#}
-                Inscription
+            {#            {% else %} #}
+            Inscription
 
-{#            {% endif %}#}
+            {#            {% endif %} #}
         </button>
     </div>
     {{ form_end(registrationForm) }}
