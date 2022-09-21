@@ -56,7 +56,12 @@
                     <a href={{ path('home_homepage') }}>Accueil</a>
                 </li>
                 <li class="list-item1">
-                    <a href={{ path('home_annonces') }}>Annonces</a>
+                    {% if app.user %}
+                        <a href={{ path('home_annonces') }}>Annonces</a>
+                    {% endif %}
+                    {% if not app.user %}
+                        <a href={{ path('security_login') }}>Annonces</a>
+                    {% endif %}
                 </li>
                 <li class="list-item1">
                     <a href={{ path('home_about') }}>À propos</a>
@@ -71,7 +76,7 @@
             {% if app.user %}
                 <ul class="nav-list" id="navi-list-profil">
                     <li class="list-item2">
-{#                        <a href={{ path('profil') }}>Profil</a>#}
+                        <a href={{ path('user_profil') }}>Profil</a>
                     </li>
                     <li class="list-item2">
                         <a href={{ path('app_logout') }}>Déconnexion</a>
