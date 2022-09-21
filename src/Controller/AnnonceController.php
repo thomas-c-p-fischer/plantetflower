@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/annonce', name: 'annonce')]
 class AnnonceController extends AbstractController
 {
-    #[Route('/ajouter/{annonce}', name: '_ajouter')]
+    #[Route('/ajouter', name: '_ajouter')]
     public function createAnnonce(
         Request                $request,
         EntityManagerInterface $entityManager,
@@ -48,22 +48,20 @@ class AnnonceController extends AbstractController
                 }
 
                 // récupérer les données du formulaire
-                $description = $form->get('description')->getData();
-                $shipment = $form->get('shipment')->getData();
-                $plantPot = $form->get('plantPot')->getData();
-                $preUpperVille = $form->get('ville')->getData();
+                $description = $annonce->getDescription();
+                $shipment = $annonce->isShipement();
+                $plantPot = $annonce->isPlantPot();
+                $preUpperVille = $annonce->getVille();
                 $postUpperVille = strtoupper($preUpperVille);
 
                 if ($description) {
                     $annonce->setDescription($description);
                 }
-
                 if ($plantPot) {
                     $annonce->setPlantPot(true);
                 } else {
                     $annonce->setPlantPot(false);
                 }
-
                 if ($shipment) {
                     $annonce->setShipement(true);
                 } else {
@@ -119,7 +117,7 @@ class AnnonceController extends AbstractController
             }
         }
 
-        return $this->render('annonce/index.html.twig', compact('form', 'annonce'));
+        return $this->render('annonce.html.twig', compact('form', 'annonce'));
     }
 
 

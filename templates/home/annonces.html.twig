@@ -14,7 +14,8 @@
         <div class="inner-popup">
             <p>Êtes-vous sûr de vouloir supprimer l'annonce ?</p>
             <div>
-                <div class="popup-oui"><a class="confirm-btn" href="{{ path('delete_annonce' , {'id': annonce.id}) }}">Oui</a>
+                <div class="popup-oui"><a class="confirm-btn"
+                                          href="{{ path('annonce_supprimer' , {'id': annonce.id}) }}">Oui</a>
                 </div>
                 <div class="popup-non"><a class="cancel-btn" href="">Non</a></div>
             </div>

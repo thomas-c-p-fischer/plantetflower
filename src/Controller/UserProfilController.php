@@ -27,13 +27,14 @@ class UserProfilController extends AbstractController
         ApiKYCDocument         $apiKYCDocument,
         AnnonceRepository      $annonceRepository,
         EntityManagerInterface $em,
-        ApiIban                $apiIban
+        ApiIban                $apiIban,
+
     ): Response
     {
         $ResultMango = "";
         $user = $this->getUser();
-        $annonces = $this->$annonceRepository->findAll();
-        $annonce = $this->$em->getRepository(Annonce::class)->findAll();
+        $annonces = $annonceRepository->findAll();
+        $annonce = $em->getRepository(Annonce::class)->findAll();
         $IdMangoPay = $user->getIdMangopay();
         $form = $this->createForm(InformationFormType::class);
         $form->handleRequest($request);
@@ -82,6 +83,7 @@ class UserProfilController extends AbstractController
                 'user' => $user,
                 'annonce' => $annonce,
                 'infoForm' => $form->createView(),
+                'annonces' => $annonces,
                 'KycStatus' => $KYCStatus['Status'],
                 'errorMessages' => $ResultMango->RefusedReasonMessage,
                 'message' => 'vos informations ont bien été transmises...elles sont en cours de traitement par mangopay.',
