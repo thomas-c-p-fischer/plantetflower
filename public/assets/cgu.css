@@ -53,6 +53,10 @@
 
 }
 
+.container-logo-mondialrelay {
+    height: 10em;
+}
+
 .part {
     height: 6vh;
     width: 50em;

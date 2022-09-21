@@ -2,17 +2,16 @@
 
 namespace App\Service;
 
-use App\Service\MockStorage;
-use App\Entity\User;
+
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use MangoPay;
 
 class ApiKYCDocument
 {
-    private $mangoPayApi;
-    private $client;
+    private MangoPay\MangoPayApi $mangoPayApi;
 
-    public function __construct(HttpClientInterface $httpClient)
+    public function __construct(HttpClientInterface $httpClient,
+    )
     {
         $this->client = $httpClient;
         $this->mangoPayApi = new MangoPay\MangoPayApi();
