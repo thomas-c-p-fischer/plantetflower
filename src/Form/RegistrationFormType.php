@@ -17,7 +17,6 @@ use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Gregwar\CaptchaBundle\Type\CaptchaType;
 
 class RegistrationFormType extends AbstractType
 {
@@ -366,14 +365,8 @@ class RegistrationFormType extends AbstractType
                         'max' => 4096,
                     ]),
                 ],
-            ])
+            ]);
             // personnalisation du captcha
-            ->add('captcha', CaptchaType::class, array(
-                'width' => 200,
-                'height' => 50,
-                'length' => 4,
-                'invalid_message' => 'Le code captcha ne correspond pas',
-                ));
     }
 
     public function configureOptions(OptionsResolver $resolver): void

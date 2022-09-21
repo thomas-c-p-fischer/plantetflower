@@ -199,6 +199,5 @@ class ApiMondialRelay extends AbstractController
                 return 'Numéro expédition : ' . $expeditionNumber . ' STAT : ' . $result ["WSI2_TracingColisDetailleResult"]["STAT"] . ' Libellé : ' . $result ["WSI2_TracingColisDetailleResult"]["Libelle01"];
             }
         }
-        return;
     }
 }
