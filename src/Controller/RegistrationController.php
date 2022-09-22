@@ -4,10 +4,10 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\RegistrationFormType;
+use App\Repository\UserRepository;
 use App\Security\EmailVerifier;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
-use http\Client;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,6 +15,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
+use SymfonyCasts\Bundle\VerifyEmail\Model\VerifyEmailSignatureComponents;
+use SymfonyCasts\Bundle\VerifyEmail\VerifyEmailHelperInterface;
 
 
 class RegistrationController extends AbstractController
@@ -72,22 +75,33 @@ class RegistrationController extends AbstractController
     }
 
     #[Route('/verify/email', name: 'verify_email')]
-    public function verifyUserEmail(Request $request): Response
+    public function verifyUserEmail(
+        Request                    $request,
+        EntityManagerInterface     $em,
+        VerifyEmailHelperInterface $verifyEmailHelper,
+        UserRepository             $userRepository
+    ): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-
-        // valider le lien de confirmation par e-mail, sets User::isVerified=true and persists
+        $user = $userRepository->find('id');
+        if (!$user) {
+            throw $this->createNotFoundException();
+        }
         try {
-            $this->emailVerifier->handleEmailConfirmation($request, $this->getUser());
-        } catch (Exception $exception) {
-            $this->addFlash('verify_email_error', $exception->getReason());
-
+            $verifyEmailHelper->validateEmailConfirmation(
+            //$signedUrl = $vESC->getSignedUrl(),
+                $request->getUri(),
+                $user->getId(),
+                $user->getEmail()
+            );
+        } catch (VerifyEmailExceptionInterface $e) {
+            $this->addFlash('error', $e->getReason());
             return $this->redirectToRoute('registration_register');
         }
-
-        // @TODO Change the redirect on success and handle or remove the flash message in your templates
+        $user->setIsVerified(true);
+        $em->persist($user);
+        $em->flush();
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $this->addFlash('success', 'Ton adresse email a bien été vérifiée.');
-
-        return $this->redirectToRoute('registration_register');
+        return $this->redirectToRoute('security_login');
     }
 }
