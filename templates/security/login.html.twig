@@ -14,53 +14,52 @@
 
 {% block body %}
 
-    <div class="all">
-        <h2>Connectez-vous</h2>
-
-        <form method="post" class="form-example">
-            {% if error %}
-                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-            {% endif %}
-
-            {% if app.user %}
-                <div class="mb-3">
-                    You are logged in as {{ app.user.email }}, <a href="{{ path('app_logout') }}">Logout</a>
+    <div class="container-login">
+        {% if app.user %}
+            <div class="already_connected">
+                You are logged in as {{ app.user.email }}, <a href="{{ path('app_logout') }}">Logout</a>
+            </div>
+        {% else %}
+            <h2>Connectez-vous</h2>
+            <form method="post" class="form-example">
+                {% if error %}
+                    <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                {% endif %}
+                <div class="login-email">
+                    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" placeholder="Adresse e-mail" autocomplete="email"
+                           required autofocus>
                 </div>
-            {% endif %}
-            <div class="Email">
-                <input type="email" value="{{ last_username }}" name="email" id="inputEmail" placeholder="Adresse e-mail" autocomplete="email"
-                       required autofocus>
+
+                <div class="login-password">
+                    <input type="password" id="inputPassword" name="password" minlength="6" placeholder="Mot de passe" autocomplete="current-password"
+                           required>
+                </div>
+
+                {# appel du captcha #}
+
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                <button class="btn-connection" type="submit">
+                    Connexion
+                </button>
+            </form>
+
+
+
+            <p> ou connectez-vous avec votre compte</p>
+
+{#            <div class="img_social_network">#}
+{#                <a href="{{ path('connect_google') }}"><img class="google" src="img/google.png" alt="Logo Google"></a>#}
+{#                <a href="{{ path('connect_facebook') }}"><img class="facebook" src="img/facebook.png" alt="Logo Facebook"></a>#}
+{#            </div>#}
+            <div class="container-redirect_pages">
+                <a href={{ path('registration_register') }}>Pas encore inscrit ?</a>
+{#                <a href={{ path('forgot_password') }}>Mot de passe oublié ?</a>#}
+                {% if last_username %}
+{#                    <a href={{ path('app_send',{mail:last_username}) }}>Recevoir un nouveau mail de confirmation ?</a>#}
+                {% endif %}
             </div>
-
-            <div class="Password">
-                <input type="password" id="inputPassword" name="password" minlength="6" placeholder="Mot de passe" autocomplete="current-password"
-                       required>
-            </div>
-
-            {# appel du captcha #}
-
-            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-
-            <button class="ok" type="submit">
-                Connexion
-            </button>
-        </form>
-
-
-
-        <p> ou connectez-vous avec votre compte</p>
-
-{#        <div class="imgsocialnetwork">#}
-{#            <a href="{{ path('connect_google') }}"><img class="google" src="img/google.png" alt="Logo Google"></a>#}
-{#            <a href="{{ path('connect_facebook') }}"><img class="facebook" src="img/facebook.png" alt="Logo Facebook"></a>#}
-{#        </div>#}
-
-        <a href={{ path('registration_register') }}>Pas encore inscrit ?</a>
-{#        <br><a href={{ path('forgot_password') }}>Mot de passe oublié ?</a>#}
-        {% if last_username %}
-{#            <br><a href={{ path('app_send',{mail:last_username}) }}>Recevoir un nouveau mail de confirmation ?</a>#}
         {% endif %}
-        <br><br>
     </div>
 
 {% endblock %}
