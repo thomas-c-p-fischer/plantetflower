@@ -50,9 +50,11 @@ class RegistrationFormType extends AbstractType
             ->add('email')
             ->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,
+                'label' => false,
+                'help' => "J'accepte les <a href='/cgu'>Conditions Générales d'Utilisation*</a>",
                 'constraints' => [
                     new IsTrue([
-                        'message' => 'Vous devez accepter les conditions d`utilisation.',
+                        'message' => 'Vous devez accepter les conditions Générales d\'Utilisation.',
                     ]),
                 ],
             ])

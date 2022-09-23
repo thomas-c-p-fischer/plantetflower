@@ -1,0 +1,97 @@
+.container-login {
+    margin: 80px auto;
+    border: 1px solid #c4c4c4;
+    border-radius: 30px;
+    text-align: center;
+    font-family: "ABeeZee", sans-serif;
+    width: 90%;
+    max-width: 600px;
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+.container-login h2 {
+    margin: 20px;
+    font-size: 30px;
+    color: #4C9A62;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 500;
+}
+
+.container-login a {
+    color: #4c9a62;
+}
+
+.container-login p {
+    font-size: 12px;
+    margin-bottom: 10px;
+}
+
+.already_connected {
+    margin: 90px 0;
+}
+
+.login-email {
+    margin-bottom: 20px;
+}
+
+.login-email input {
+    width: 295px;
+}
+
+.login-password {
+    margin-bottom: 20px;
+}
+
+.login-password input {
+    width: 295px;
+}
+
+/*#recaptcha_form_captcha {*/
+/*    text-align: -webkit-center;*/
+/*    margin-bottom: 10px;*/
+/*}*/
+
+.btn-connection {
+    border: none;
+    background: #79C990;
+    width: 200px;
+    height: 30px;
+    color: white;
+    margin-bottom: 20px;
+    font-size: 20px;
+    cursor: pointer;
+    border-radius: 20px;
+}
+
+.btn-connection input {
+    background: #79c990;
+    width: 200px;
+    height: 30px;
+    color: white;
+    font-weight: bold;
+    margin-bottom: 50px;
+}
+
+/*.google {*/
+/*    width: 28px;*/
+/*    margin-bottom: -1px;*/
+/*}*/
+
+/*.facebook {*/
+/*    width: 35px;*/
+/*}*/
+
+.img_social_network {
+    margin-bottom: 20px;
+}
+
+.container-redirect_pages {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.container-redirect_pages a {
+    font-size: 15px;
+    margin: 5px 0;
+}

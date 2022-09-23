@@ -1,106 +1,79 @@
-.title-cgu {
+.container-cgu {
     display: flex;
-    height: 200px;
-    background-image: url("../media/img/background-yellow-green.png");
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
+    flex-direction: column;
+    align-items: center;
 }
 
-.content {
+.container-title h1 {
+    display: flex;
+    align-items: center;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    height: 6vh;
+    margin-top: 6vh;
+    color: #79C990;
+}
+
+.container-all_terms_use {
     width: 80%;
 }
 
-.infos {
-    margin: 50px 20px;
+.container-legals_informations {
+
     font-family: "Open Sans", sans-serif;
     font-size: max(1.2vw, 8px);
-    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
 
-.infos h2 {
-    text-align: center;
-}
-
-.container-title {
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-}
-
-.titre {
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 500;
-    font-size: 40px;
-    color: #79C990;
-}
-
-.globalDiv {
-    height: 50em;
+.container-legals_informations h2 {
+    text-align: start;
+    margin-bottom: 20px;
 }
 
 /* Début dropdown */
-.cgu {
+.cgu-dropdown {
     display: flex;
+    flex-direction: column;
     justify-content: center;
-}
-
-#dropdown {
+    align-items: center;
     margin: 2em 0;
-
 }
 
-.container-logo-mondialrelay {
-    height: 10em;
+.container-title-text {
+    margin-bottom: 30px;
+    width: 100%;
 }
 
-.part {
+.dropdown-title {
     height: 6vh;
-    width: 50em;
     background: #fcf48d;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0px 10px;
+    padding: 0 10px;
     border-radius: 15px 15px 0 0;
-
-
 }
 
-.reponse {
-    height: 100px;
-    width: 49.2em;
+.dropdown_text {
     border: 1px solid #bbd8c3;
     border-top: none;
     display: flex;
     align-items: center;
     text-align: justify;
-    padding: 0 15px;
+    padding: 10px 15px 30px;
     border-radius: 0 0 10px 10px;
-
+    background-color: rgba(255, 255, 255, 0.5);
 }
 
-.chevron {
-    width: 40px;
-    transition: transform 0.2s;
-    cursor: pointer;
+.dropdown_text p {
+    font-size: max(1.2vw, 8px);
 }
-
-.
 
 /* Fin dropdown */
 
 @media only screen and (max-width: 1024px) {
-    .dropbtn {
-        font-size: 18px;
-    }
-
-    .dropdown-content {
-        font-size: 14px;
-    }
 
     .chevron-down {
         width: 20px;

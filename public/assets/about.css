@@ -1,12 +1,13 @@
-.container {
+.container-about {
     display: flex;
     background-image: url("../media/img/background-yellow-green.png");
     background-position: 10%;
     background-repeat: no-repeat;
     background-size: 100%;
+    margin-bottom: 60px;
 }
 
-.container-img-carte {
+.container-img_carte {
     float: left;
     width: 50%;
     display: flex;
@@ -21,19 +22,18 @@
 }
 
 .container-txt {
-
     display: flex;
     flex-direction: column;
     width: 95%;
     margin: 0 auto;
 }
 
-h2 {
+.container-about h2 {
     font-family: 'Montserrat', sans-serif;
     font-weight: 500;
     font-size: 25px;
     color: #4C9A62;
-    margin-bottom: 20px;
+    margin: 30px 0 20px 0;
 }
 
 .txt {
@@ -43,15 +43,13 @@ h2 {
     margin-bottom: 20px;
 }
 
-
 @media only screen and (max-width: 53.6875em) {
 
-    .img-carte {
-        width: 100%;
-        margin-top: 20px;
+    .container-about {
+        flex-direction: column;
     }
 
-    .container-img-carte {
+    .container-img_carte {
         text-align: center;
         width: 100%;
         display: flex;
@@ -62,14 +60,12 @@ h2 {
         background-position: center;
     }
 
-    .container {
-        display: inline-block;
-        align-items: center;
-        background-image: none;
-
+    .img-carte {
+        width: 100%;
+        margin-top: 20px;
     }
 
-    h2 {
+    .container-about h2 {
         text-align: center;
         font-size: 18px;
     }

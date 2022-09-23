@@ -5,22 +5,20 @@
     <script defer src={{ asset('assets/Javascript/faq.js') }}></script>
 {% endblock %}
 {% block body %}
-    <div class="globalDiv">
-        <div class="title-faq" id="titre">
-            <div class="container-title">
-                <h1 class="titre">
-                    Foire aux questions
-                </h1>
-            </div>
+    <div class="container-faq">
+        <div class="container-title">
+            <h1>
+                Foire aux questions
+            </h1>
         </div>
-        <div class="faq">
-            <div id="dropdown">
-                <div id="question" class="question">
+        <div class="faq-dropdown">
+            <div class="container-question-answer">
+                <div id="question_1" class="dropdown_question">
                     <p>Qu'est ce que Plant&Flower ?</p>
-                    <img id="chevron" class="chevron" src="{{ asset('media/img/chevron-down.png') }}" alt="">
+                    <img id="faq_chevron_1" class="dropdown_chevron" src="{{ asset('media/img/chevron-down.png') }}" alt="">
                 </div>
-                <div id="reponse" class="reponse">
-                    <p class="txt-dropdown">
+                <div id="answer_1" class="dropdown_answer">
+                    <p>
                         Plant&Flower est une jeune Start-up qui souhaite révolutionner la
                         vente de végétaux entre particuliers. En la rendant sûre par un
                         paiement en ligne sécurisé et en profitant de l’expédition (via
@@ -29,11 +27,13 @@
                         gaspillage chez vous de vos végétaux !
                     </p>
                 </div>
-                <div id="question2" class="question">
+            </div>
+            <div class="container-question-answer">
+                <div id="question_2" class="dropdown_question">
                     <p>Comment utiliser le site ?</p>
-                    <img id="chevron2" class="chevron" src="{{ asset('media/img/chevron-down.png') }}" alt="">
+                    <img id="faq_chevron_2" class="dropdown_chevron" src="{{ asset('media/img/chevron-down.png') }}" alt="">
                 </div>
-                <div id="reponse2" class="reponse">
+                <div id="answer_2" class="dropdown_answer">
                     <p>
                         Connecte-toi sur notre site, cherche le végétal que tu souhaites.
                         Découvre les offres et procède à la réservation puis l’achat
@@ -45,12 +45,15 @@
                         coordonnées du vendeur ainsi que les informations du suivi de colis.
                     </p>
                 </div>
-                <div id="question3" class="question">
+            </div>
+            <div class="container-question-answer">
+                <div id="question_3" class="dropdown_question">
                     <p>Plant&Flower, c’est gratuit ?</p>
-                    <img id="chevron3" class="chevron" src="{{ asset('media/img/chevron-down.png') }}" alt="">
+                    <img id="faq_chevron_3" class="dropdown_chevron" src="{{ asset('media/img/chevron-down.png') }}" alt="">
                 </div>
-                <div id="reponse3" class="reponse">
-                    <p>Le site Plant&Flower est un site totalement gratuit pour les
+                <div id="answer_3" class="dropdown_answer">
+                    <p>
+                        Le site Plant&Flower est un site totalement gratuit pour les
                         particuliers et vendeurs particuliers. Il y a ni abonnement à payer,
                         ni de frais cachés. Des frais de service sont appliqués pour les
                         utilisateurs clients. Cette commission sert à financer la
@@ -58,12 +61,15 @@
                         matériel...)..
                     </p>
                 </div>
-                <div id="question4" class="question">
+            </div>
+            <div class="container-question-answer">
+                <div id="question_4" class="dropdown_question">
                     <p>La qualité des végétaux :</p>
-                    <img id="chevron4" class="chevron" src="{{ asset('media/img/chevron-down.png') }}" alt="">
+                    <img id="faq_chevron_4" class="dropdown_chevron" src="{{ asset('media/img/chevron-down.png') }}" alt="">
                 </div>
-                <div id="reponse4" class="reponse">
-                    <p> Tous les particuliers présents sur notre plate-forme sont des
+                <div id="answer_4" class="dropdown_answer">
+                    <p>
+                        Tous les particuliers présents sur notre plate-forme sont des
                         amoureux des végétaux comme vous ! Les offres promotionnelles ou «
                         anti-gaspillages » seront détaillées sur l’annonce des végétaux,
                         ainsi à l’aide des photos disponibles, vous pourrez avoir un rendu

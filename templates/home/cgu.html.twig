@@ -6,16 +6,14 @@
 {% endblock js %}
 
 {% block body %}
-    <div class="globalDiv">
-        <div class="title-cgu" id="titre">
-            <div class="container-title">
-                <h1 class="titre">
-                    CONDITIONS GÉNÉRALES D'UTILISATION (CGU)
-                </h1>
-            </div>
+    <div class="container-cgu">
+        <div class="container-title">
+            <h1>
+                CONDITIONS GÉNÉRALES D'UTILISATION (CGU)
+            </h1>
         </div>
-        <div class="content">
-            <div class="infos">
+        <div class="container-all_terms_use">
+            <div class="container-legals_informations">
                 <h2>
                     Informations légales
                 </h2>
@@ -57,14 +55,14 @@
                     notre réponse.<br>
                 </p>
             </div>
-            <div class="cgu">
-                <div id="dropdown">
-                    <div class="part" id="part1">
-                        <p class="onglets_title">Préambule</p>
-                        <img id="chevron" class="chevron" alt="" src="{{ asset('media/img/chevron-down.png') }}"/>
+            <div class="cgu-dropdown">
+                <div class="container-title-text">
+                    <div id="title_1" class="dropdown-title">
+                        <p>Préambule</p>
+                        <img id="cgu_chevron_1" class="dropdown_chevron" alt="" src="{{ asset('media/img/chevron-down.png') }}"/>
                     </div>
-                    <div id="reponse" class="reponse">
-                        <p class="txt-dropdown">
+                    <div id="text_1" class="dropdown_text">
+                        <p>
                             Chacun des termes mentionnés ci-dessous aura dans les présentes Conditions Générales
                             d'Utilisation du Service PLANT &
                             FLOWER SAS (ci-après dénommées les " CGU ") la signification suivante :
@@ -261,13 +259,15 @@
                             illégaux.
                         </p>
                     </div>
-                    <div id="part2" class="part">
-                        <p class="onglets_title">Fonctionnement du site</p>
-                        <img id="chevron2" class="chevron" alt="Flèche bas"
+                </div>
+                <div class="container-title-text">
+                    <div id="title_2" class="dropdown-title">
+                        <p>Fonctionnement du site</p>
+                        <img id="cgu_chevron_2" class="dropdown_chevron" alt="Flèche bas"
                              src="{{ asset('media/img/chevron-down.png') }}"/>
                     </div>
-                    <div id="reponse2" class="reponse">
-                        <p class="txt-dropdown">
+                    <div id="text_2" class="dropdown_text">
+                        <p>
                             Le Service PLANT & FLOWER propose aux Utilisateurs et aux Annonceurs varie en
                             fonction
                             de la qualité de "Particulier" de
@@ -328,12 +328,14 @@
                             <br><br>&thinsp;- Crédits achetés et utilisés.
                         </p>
                     </div>
-                    <div id="part3" class="part">
-                        <p class="onglets_title">Achat</p>
-                        <img id="chevron3" class="chevron" alt="Fleche bas"
+                </div>
+                <div class="container-title-text">
+                    <div id="title_3" class="dropdown-title">
+                        <p>Achat</p>
+                        <img id="cgu_chevron_3" class="dropdown_chevron" alt="Fleche bas"
                              src="{{ asset('media/img/chevron-down.png') }}"/>
                     </div>
-                    <div id="reponse3" class="reponse">
+                    <div id="text_3" class="dropdown_text">
                         <p class="txt-dropdown">
                             L'Acheteur peut choisir d'utiliser le Service de Paiement Sécurisé en envoyant une
                             Offre
@@ -945,13 +947,15 @@
                             retour du Bien avant le début de la Transaction.<br><br>
                         </p>
                     </div>
-                    <div id="part4" class="part">
-                        <p class="onglets_title">Propriété intellectuelle</p>
-                        <img id="chevron4" class="chevron" alt="Fleche bas"
+                </div>
+                <div class="container-title-text">
+                    <div id="title_4" class="dropdown-title">
+                        <p>Propriété intellectuelle</p>
+                        <img id="cgu_chevron_4" class="dropdown_chevron" alt="Fleche bas"
                              src="{{ asset('media/img/chevron-down.png') }}"/>
                     </div>
-                    <div id="reponse4" class="reponse">
-                        <p class="txt-dropdown">
+                    <div id="text_4" class="dropdown_text">
+                        <p>
                             Tous les droits de propriété intellectuelle (tels que notamment droits d'auteur,
                             droits
                             voisins, droits des marques, droits des
@@ -1022,13 +1026,15 @@
                             contrefaçon.
                         </p>
                     </div>
-                    <div id="part5" class="part">
-                        <p class="onglets_title">Divers</p>
-                        <img id="chevron5" class="chevron" alt="Fleche bas"
+                </div>
+                <div class="container-title-text">
+                    <div id="title_5" class="dropdown-title">
+                        <p>Divers</p>
+                        <img id="cgu_chevron_5" class="dropdown_chevron" alt="Fleche bas"
                              src="{{ asset('media/img/chevron-down.png') }}"/>
                     </div>
-                    <div id="reponse5" class="reponse">
-                        <p class="txt-dropdown">
+                    <div id="text_5" class="dropdown_text">
+                        <p>
                             PLANT & FLOWER se réserve le droit, à tout moment, de modifier ou interrompre
                             l'accessibilité de tout ou partie du Service
                             PLANT & FLOWER et/ou du Site Internet ou des Applications. Le fait que PLANT &
@@ -1068,13 +1074,15 @@
                             http://www.mediateurfevad.fr.
                         </p>
                     </div>
-                    <div id="part6" class="part">
-                        <p class="onglets_title">MangoPay</p>
-                        <img id="chevron6" class="chevron" alt="Fleche bas"
+                </div>
+                <div class="container-title-text">
+                    <div id="title_6" class="dropdown-title">
+                        <p>MangoPay</p>
+                        <img id="cgu_chevron_6" class="dropdown_chevron" alt="Fleche bas"
                              src="{{ asset('media/img/chevron-down.png') }}"/>
                     </div>
-                    <div id="reponse6" class="reponse">
-                        <p class="txt-mangopay">
+                    <div id="text_6" class="dropdown_text">
+                        <p>
                             Découvrez plus d'informations en consultant ce document sur notre solution de
                             paiement en ligne MangoPay.
                         </p>
@@ -1085,12 +1093,14 @@
                         <iframe src="{{ asset('media/cgu-mangopay/mangopay.pdf') }}"
                                 style="width:100%; height:500px;"></iframe>
                     </div>
-                    <div id="part7" class="part">
-                        <p class="onglets_title">Mondial Relay</p>
-                        <img id="chevron7" class="chevron" alt="Fleche bas"
+                </div>
+                <div class="container-title-text">
+                    <div id="title_7" class="dropdown-title">
+                        <p>Mondial Relay</p>
+                        <img id="cgu_chevron_7" class="dropdown_chevron" alt="Fleche bas"
                              src="{{ asset('media/img/chevron-down.png') }}"/>
                     </div>
-                    <div id="reponse7" class="reponse">
+                    <div id="text_7" class="dropdown_text">
                         <div class="container-logo-mondialrelay">
                             {# <img src="{{ asset('media/img/logo_mondial_relay.svg') }}" #}
                             {# class="logo-mondialrelay" #}
