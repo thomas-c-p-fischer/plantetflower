@@ -33,10 +33,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $password = null;
 
     #[ORM\Column]
-    private ?bool $is_verified = false;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $fullname = null;
+    private ?bool $isVerified = false;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $image = null;
@@ -83,9 +80,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(nullable: true)]
     private ?int $rate = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?bool $verified = null;
-
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $sex = null;
 
@@ -116,9 +110,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $id_mangopay = null;
 
-    /*#[ORM\Column(type: 'boolean')]
-    private $isVerified = false;*/
-
     public function __construct()
     {
         $this->annonces = new ArrayCollection();
@@ -148,7 +139,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUserIdentifier(): string
     {
-        return (string) $this->email;
+        return (string)$this->email;
     }
 
     /**
@@ -194,26 +185,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
-    public function isIsVerified(): ?bool
+    public function getIsVerified(): ?bool
     {
-        return $this->is_verified;
+        return $this->isVerified;
     }
 
-    public function setIsVerified(bool $is_verified): self
+    public function setIsVerified(bool $isVerified): self
     {
-        $this->is_verified = $is_verified;
-
-        return $this;
-    }
-
-    public function getFullname(): ?string
-    {
-        return $this->fullname;
-    }
-
-    public function setFullname(?string $fullname): self
-    {
-        $this->fullname = $fullname;
+        $this->isVerified = $isVerified;
 
         return $this;
     }
@@ -394,18 +373,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setRate(?int $rate): self
     {
         $this->rate = $rate;
-
-        return $this;
-    }
-
-    public function isVerified(): ?bool
-    {
-        return $this->verified;
-    }
-
-    public function setVerified(?bool $verified): self
-    {
-        $this->verified = $verified;
 
         return $this;
     }
