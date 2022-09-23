@@ -5,39 +5,62 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Repository\UserRepository;
+use App\Security\Authenticator;
 use App\Security\EmailVerifier;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
+use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
+use SymfonyCasts\Bundle\VerifyEmail\VerifyEmailHelperInterface;
 
 class RegistrationController extends AbstractController
 {
-    private EmailVerifier $emailVerifier;
 
-    public function __construct(EmailVerifier $emailVerifier)
+    private $userRepository;
+
+    public function __construct(UserRepository $userRepository)
     {
-        $this->emailVerifier = $emailVerifier;
+        $this->userRepository = $userRepository;
     }
 
+    /**
+     * @throws TransportExceptionInterface
+     * @throws Exception
+     */
     #[Route('/register', name: 'registration_register')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
+    public function register(
+        user                        $user = null,
+        Request                     $request,
+        UserPasswordHasherInterface $userPasswordHasher,
+        EntityManagerInterface      $entityManager,
+        MailerInterface             $mailer,
+        VerifyEmailHelperInterface  $verifyEmailHelper,
+    ): Response
     {
-
+        //initialisation de la date du jour.
         $today = new \DateTime();
-        $user = new User();
+        //Creation d'un utilisateur vide pour le set dans le form avec le handle request
+        if (!$user) {
+            $user = new User();
+        }
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // encode the plain password
+            //on ajout ici la date de creation
             $user->setCreatedAt($today);
+            //hashage du mot de passe
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
                     $user,
@@ -45,54 +68,95 @@ class RegistrationController extends AbstractController
                 )
             );
 
+//            $ApiUser = NewProfil($form);
+//            $user->setIdMangopay($ApiUser->userMangoPay->Id);
+//            $ApiWallet = NewWallet($ApiUser->userMangoPay->Id);
+
+            // On utilise la methode generateToken() pour creer un jeton unique dans le mail de confirmation
+            // puis on insère en BDD.
+            $user->setToken($this->generateToken());
             $entityManager->persist($user);
             $entityManager->flush();
 
-            // generate a signed url and email it to the user
-            $this->emailVerifier->sendEmailConfirmation('registration_verify_email', $user,
-                (new TemplatedEmail())
-                    ->from(new Address('plantetflowerantigaspi@plantetflower.com', 'Plant & Flower'))
-                    ->to($user->getEmail())
-                    ->subject('Please Confirm your Email')
-                    ->htmlTemplate('registration/confirmation_email.html.twig')
+            // création d'une signature personnalisée pour un envoi de mail de verification
+            $signatureComponents = $verifyEmailHelper->generateSignature(
+                'verify_mail',
+                $user->getId(),
+                $user->getEmail(),
+                array('token' => $user->getToken(), 'id' => $user->getId(), 'mail' => $user->getEmail())
             );
-            // do anything else you need here, like send an email
 
-            return $this->redirectToRoute('home_homepage');
-        }
+            $url = $signatureComponents->getSignedUrl();
+
+            // creation du mail
+            $email = (new TemplatedEmail())
+                ->from('plantetflower@gmail.com')
+                ->to($user->getEmail())
+                ->subject('Valider votre inscription!')
+                // path of the Twig template to render
+                ->htmlTemplate('registration/confirmation_email.html.twig')
+                // pass variables (name => value) to the template
+                ->context([
+                    'expiration_date' => new \DateTime('+7 days'),
+                    'username' => $user->getFirstName(),
+                    'message' => $signatureComponents->getSignedUrl(),
+                    'url' => $url,
+                ]);
+            //la methode send() de la class MailerInterface permet d'envoyer un mail a l'utilisateur afion de confirmer son compte et acces a la connexion.
+            $mailer->send($email);
+
+            return $this->redirectToRoute('app_logout');
+
+        };
 
         return $this->render('registration/register.html.twig', [
             'registrationForm' => $form->createView(),
+            'editMode' => $user->getId() !== null,
+
+
         ]);
     }
 
-    #[Route('/verify/email', name: 'registration_verify_email')]
-    public function verifyUserEmail(Request $request, TranslatorInterface $translator, UserRepository $userRepository): Response
+
+    #[Route("/verify/{id}", name: "verify_mail")]
+    // verification de la signature mail
+    public function verifyUserEmail(
+        Request                    $request,
+        EntityManagerInterface     $entityManager,
+        VerifyEmailHelperInterface $verifyEmailHelper,
+        UserRepository             $userRepository): Response
     {
         $id = $request->get('id');
-
-        if (null === $id) {
-            return $this->redirectToRoute('registration_register');
-        }
-
         $user = $userRepository->find($id);
 
-        if (null === $user) {
-            return $this->redirectToRoute('registration_register');
+        if (!$user) {
+            throw $this->createNotFoundException();
         }
-
-        // validate email confirmation link, sets User::isVerified=true and persists
         try {
-            $this->emailVerifier->handleEmailConfirmation($request, $user);
-        } catch (VerifyEmailExceptionInterface $exception) {
-            $this->addFlash('verify_email_error', $translator->trans($exception->getReason(), [], 'VerifyEmailBundle'));
-
+            $verifyEmailHelper->validateEmailConfirmation(
+                $request->getUri(),
+                $user->getId(),
+                $user->getEmail()
+            );
+        } catch (VerifyEmailExceptionInterface $e) {
+            $this->addFlash('error', $e->getReason());
             return $this->redirectToRoute('registration_register');
         }
 
-        // @TODO Change the redirect on success and handle or remove the flash message in your templates
-        $this->addFlash('success', 'Your email address has been verified.');
+        //On passe l'attribue à VRAI et on insère en BDD l'utilisateur est reconnu et peut se connecter et naviguer.
+        $user->setIsVerified(true);
+        $entityManager->persist($user);
+        $entityManager->flush();
+        return $this->redirectToRoute('security_login');
 
-        return $this->redirectToRoute('home_homepage');
+    }
+
+    /**
+     * @throws Exception
+     */
+    //Creation du Jeton encoder en Base64 en enlevant les caractères indésirables et en les remplaçant par des -_ et =.
+    private function generateToken(): string
+    {
+        return rtrim(strtr(base64_encode(random_bytes(32)), '+/', '-_'), '=');
     }
 }
