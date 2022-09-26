@@ -7,6 +7,7 @@ use App\Entity\User;
 use App\Form\InformationFormType;
 use App\Form\UserFormType;
 use App\Repository\AnnonceRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,17 +23,23 @@ class UserProfilController extends AbstractController
 
     #[Route('/profil', name: '_profil')]
     public function profil(
-        MangoPay\MangoPayApi $mangoPayApi,
-        User                 $user,
+        \MangoPay\ApiKycDocuments $mangoPayApi,
+        UserRepository            $user,
+        Request                   $request
+
     ): Response
 
     {
+        $user->find('id');
         if ($user->getStatus() !== "acheteur") {
+            $infoForm = $this->createForm(InformationFormType::class);
+            $infoForm->handleRequest($request);
             $KycDocument = new MangoPay\KycDocument();
             $KycDocument->Type = "IDENTITY_PROOF";
             $result = $mangoPayApi->Users->CreateKycDocument($_SESSION["MangoPay"]["UserNatural"], $KycDocument);
             $KycDocumentId = $result->Id;
         }
+        return $this->renderform('user_profil/userProfil.html.twig', compact('infoForm'));
     }
 
     #[Route('/edit', name: '_edit')]
