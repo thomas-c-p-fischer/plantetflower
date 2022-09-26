@@ -35,7 +35,8 @@
                            required>
                 </div>
 
-                {# appel du captcha #}
+                {#captcha#}
+                <div class="g-recaptcha" id="recaptcha_form_captcha" data-sitekey="6LfPU0chAAAAALw4OPgU-ERo6Sk0WoxSu_qBFtyP"></div>
 
                 <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 

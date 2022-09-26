@@ -77,7 +77,13 @@
             </div>
         </div>
 
-        {# appel du captcha #}
+        {#captcha#}
+
+        {# doit être le même nom que celui indiqué sur le formulaire #}
+        {{ form_row(registrationForm.recaptcha) }}
+
+        {# Cela affichera l’erreur du captcha à l’utilisateur #}
+        {{ form_errors(registrationForm.recaptcha) }}
 
         <div class="agree_terms">
             {{ form_row(registrationForm.agreeTerms, {
