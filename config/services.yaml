@@ -6,7 +6,7 @@
 parameters:
   CLIENT_ID: '%env(CLIENT_ID)%'
   API_KEY: '%env(API_KEY)%'
-  APP_TOKEN: '%env(APP_TOKEN)%'
+ 
 
 services:
   # default configuration for services in *this* file

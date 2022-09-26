@@ -22,9 +22,9 @@ class RegistrationFormType extends AbstractType
             ->add('status', ChoiceType::class, [
                 'label' => false,
                 'choices' => [
-                    'Acheteur/Vendeur' => 'acheteur/vendeur',
-                    'Vendeur' => 'vendeur',
-                    'Acheteur' => 'acheteur'
+                    'acheteur/vendeur' => 'Buyner',
+                    'vendeur' => 'Owner',
+                    'acheteur' => 'Buyer'
                 ]
             ])
             ->add('lastname', TextType::class, array(

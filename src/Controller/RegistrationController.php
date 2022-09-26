@@ -5,33 +5,38 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Repository\UserRepository;
-use App\Security\Authenticator;
-use App\Security\EmailVerifier;
+
+
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
+
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Mime\Address;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
-use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
+
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 use SymfonyCasts\Bundle\VerifyEmail\VerifyEmailHelperInterface;
+use MangoPay;
 
 class RegistrationController extends AbstractController
 {
 
     private $userRepository;
+    private $mangoPayApi;
 
     public function __construct(UserRepository $userRepository)
     {
         $this->userRepository = $userRepository;
+        $this->mangoPayApi = new MangoPay\MangoPayApi();
+        $this->mangoPayApi->Config->ClientId = $_ENV['CLIENT_ID'];
+        $this->mangoPayApi->Config->ClientPassword = $_ENV['API_KEY'];
+        $this->mangoPayApi->Config->TemporaryFolder = '/config/temp/';
+        $this->mangoPayApi->Config->BaseUrl = 'https://api.sandbox.mangopay.com';
     }
 
     /**
@@ -49,7 +54,8 @@ class RegistrationController extends AbstractController
     ): Response
     {
         //initialisation de la date du jour.
-        $today = new \DateTime();
+        $today = new \DateTimeImmutable();
+        $apiUser = new MangoPay\UserNatural();
         //Creation d'un utilisateur vide pour le set dans le form avec le handle request
         if (!$user) {
             $user = new User();
@@ -67,14 +73,16 @@ class RegistrationController extends AbstractController
                     $form->get('plainPassword')->getData()
                 )
             );
-
-//            $ApiUser = NewProfil($form);
-//            $user->setIdMangopay($ApiUser->userMangoPay->Id);
-//            $ApiWallet = NewWallet($ApiUser->userMangoPay->Id);
-
             // On utilise la methode generateToken() pour creer un jeton unique dans le mail de confirmation
             // puis on insère en BDD.
             $user->setToken($this->generateToken());
+            $apiUser->FirstName = $user->getLastName();
+            $apiUser->LastName = $user->getFirstName();
+            $apiUser->Address = $user->getCity();
+            $apiUser->Email = $user->getEmail();
+            $apiUser->Tag = "Coucou";
+            $apiUser->CreationDate = $user->getCreatedAt();
+            $apiUser->UserCategory = $user->getStatus();
             $entityManager->persist($user);
             $entityManager->flush();
 
@@ -118,13 +126,17 @@ class RegistrationController extends AbstractController
     }
 
 
+    /**
+     * @throws MangoPay\Libraries\Exception
+     */
     #[Route("/verify/{id}", name: "verify_mail")]
     // verification de la signature mail
     public function verifyUserEmail(
         Request                    $request,
         EntityManagerInterface     $entityManager,
         VerifyEmailHelperInterface $verifyEmailHelper,
-        UserRepository             $userRepository): Response
+        UserRepository             $userRepository,
+    ): Response
     {
         $id = $request->get('id');
         $user = $userRepository->find($id);
@@ -159,4 +171,6 @@ class RegistrationController extends AbstractController
     {
         return rtrim(strtr(base64_encode(random_bytes(32)), '+/', '-_'), '=');
     }
+
+
 }
