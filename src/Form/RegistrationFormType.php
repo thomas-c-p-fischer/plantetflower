@@ -23,7 +23,7 @@ class RegistrationFormType extends AbstractType
             ->add('status', ChoiceType::class, [
                 'label' => false,
                 'choices' => [
-                    'acheteur/vendeur' => 'Buyner',
+                    'acheteur/vendeur' => 'Buyer',
                     'vendeur' => 'Owner',
                     'acheteur' => 'Buyer'
                 ]
