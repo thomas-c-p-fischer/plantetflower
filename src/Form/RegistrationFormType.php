@@ -13,6 +13,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use VictorPrdh\RecaptchaBundle\Form\ReCaptchaType;
 
 class RegistrationFormType extends AbstractType
 {
@@ -50,9 +51,11 @@ class RegistrationFormType extends AbstractType
             ->add('email')
             ->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,
+                'label' => false,
+                'help' => "J'accepte les <a href='/cgu'>Conditions Générales d'Utilisation*</a>",
                 'constraints' => [
                     new IsTrue([
-                        'message' => 'Vous devez accepter les conditions d`utilisation.',
+                        'message' => 'Vous devez accepter les conditions Générales d\'Utilisation.',
                     ]),
                 ],
             ])
@@ -72,7 +75,8 @@ class RegistrationFormType extends AbstractType
                         'max' => 4096,
                     ]),
                 ],
-            ]);
+            ])
+        ->add('recaptcha', ReCaptchaType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

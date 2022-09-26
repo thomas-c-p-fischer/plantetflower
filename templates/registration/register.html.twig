@@ -3,36 +3,25 @@
 {% block title %}Inscription - Plant&Flower{% endblock %}
 
 {% block body %}
-    <div class="register-body">
-        <div class="Register-title">
-            {#            {% if editMode %} #}
-            {#            <h2>Modifiez vos informations </h2> #}
-            {#            {% else %} #}
-            <h2 id="connaissance">Faisons-connaissance</h2>
-        </div>
-        <div class="connexion">
-            <p class="already-member">Vous avez déjà un compte?
+    <div class="container-register">
+        {#            {% if editMode %} #}
+        {#            <h2>Modifiez vos informations </h2> #}
+        {#            {% else %} #}
+        <h2 id="title_get_to_know">Faisons-connaissance</h2>
+        <div class="container-social_networks-img_social_network">
+            <p class="social_networks">Vous avez déjà un compte?
                 <a href={{ path('security_login') }}>Connectez-vous</a>
                 ou utilisez
             </p>
 
-            <div class="imgSocialnetwork">
+            <div class="img_social_network">
                 {#                <a href="{{ path('connect_google') }}"><img class="google" src="img/google.png" alt="Logo Google"></a> #}
                 {#                <a href="{{ path('connect_facebook') }}"><img class="facebook" src="img/facebook.png" alt="Logo Facebook"></a> #}
             </div>
         </div>
         {#        {% endif %} #}
-
         {{ form_start(registrationForm) }}
-        <div class="information-text">
-            <p>
-                Vous êtes ...
-            </p>
-        </div>
-        <div class="statusNameFirstname">
-            <div class="status">
-                {{ form_row(registrationForm.status) }}
-            </div>
+        <div class="container-name-firstname">
             <div class="name">
                 {{ form_row(registrationForm.lastname, {'label': false,'attr': {'placeholder': 'Nom*'}} ) }}
             </div>
@@ -46,18 +35,21 @@
                 les livraisons.
             </p>
         </div>
-        <div class="globaladress1">
+        <div class="container-address_block_1">
             <div class="street">
                 {{ form_row(registrationForm.streetnumber, {'label': false,'attr': {'placeholder': 'N° rue*'}} ) }}
+            </div>
+            <div class="address">
                 {{ form_row(registrationForm.address, {'label': false,'attr': {'placeholder': 'Adresse*'}} ) }}
             </div>
-
-            <div class="Address">
+        </div>
+        <div class="container-address-complement">
+            <div class="address-complement">
                 {{ form_row(registrationForm.address2, {'label': false,'attr': {'placeholder': 'Complément Adresse'}} ) }}
             </div>
         </div>
-        <div class="globaladress2">
-            <div class="zipCode">
+        <div class="container-address_block_2">
+            <div class="zipcode">
                 {{ form_row(registrationForm.zipcode, {'label': false,'attr': {'placeholder': 'Code postale*'}} ) }}
                 {# <input type="text" name="zipcode" id="zipcode" placeholder="Code postal*" > #}
             </div>
@@ -66,25 +58,40 @@
                 {# <input type="text" name="city" id="city" placeholder="Ville*" > #}
             </div>
         </div>
-        <div class="email">
-            {{ form_row(registrationForm.email, {'attr': {'placeholder': 'Votre Email*'}} ) }}
+        <div class="information" id="labelStatus">
+            <p>
+                Vous êtes ...
+            </p>
         </div>
-        <div class="password">
+        <div class="container-status-email">
+            <div class="status">
+                {{ form_row(registrationForm.status) }}
+            </div>
+            <div class="email">
+                {{ form_row(registrationForm.email, {'attr': {'placeholder': 'Votre Email*'}} ) }}
+            </div>
+        </div>
+        <div class="container-password">
+            <div class="password">
             {{ form_row(registrationForm.plainPassword, {'attr': {'placeholder': 'Mot de passe*'}}) }}
+            </div>
         </div>
 
-        {# appel du captcha #}
+        {#captcha#}
 
-        <div class="agree-check">
+        {# doit être le même nom que celui indiqué sur le formulaire #}
+        {{ form_row(registrationForm.recaptcha) }}
+
+        {# Cela affichera l’erreur du captcha à l’utilisateur #}
+        {{ form_errors(registrationForm.recaptcha) }}
+
+        <div class="agree_terms">
             {{ form_row(registrationForm.agreeTerms, {
-                'attr': {
-                    'label': false,
-                },
-                'help_html': true,
+                'attr': {'label': false,},'help_html': true,
             }) }}
         </div>
 
-        <button type="submit" class="btn-signup">
+        <button type="submit" class="btn_registration">
             {#            {% if editMode %} #}
             {#                Modifier #}
 
