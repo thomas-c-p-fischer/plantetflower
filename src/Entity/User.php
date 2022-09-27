@@ -110,6 +110,12 @@ class User extends \MangoPay\UserLegal implements UserInterface, PasswordAuthent
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $id_mangopay = null;
 
+    #[ORM\Column]
+    private ?bool $agreeTerms = false;
+
+    #[ORM\Column(length: 255)]
+    private ?string $countryOfResidence = null;
+
     public function __construct()
     {
         $this->annonces = new ArrayCollection();
@@ -511,6 +517,30 @@ class User extends \MangoPay\UserLegal implements UserInterface, PasswordAuthent
     public function setIdMangopay(?string $id_mangopay): self
     {
         $this->id_mangopay = $id_mangopay;
+
+        return $this;
+    }
+
+    public function getAgreeTerms(): ?bool
+    {
+        return $this->agreeTerms;
+    }
+
+    public function setAgreeTerms(bool $agreeTerms): self
+    {
+        $this->agreeTerms = $agreeTerms;
+
+        return $this;
+    }
+
+    public function getCountryOfResidence(): ?string
+    {
+        return $this->countryOfResidence;
+    }
+
+    public function setCountryOfResidence(string $countryOfResidence): self
+    {
+        $this->countryOfResidence = $countryOfResidence;
 
         return $this;
     }
