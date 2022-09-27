@@ -5,11 +5,9 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Repository\UserRepository;
-
-
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
-
+use MangoPay\MangoPayApi;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,7 +16,6 @@ use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
-
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 use SymfonyCasts\Bundle\VerifyEmail\VerifyEmailHelperInterface;
 use MangoPay;
@@ -32,11 +29,7 @@ class RegistrationController extends AbstractController
     public function __construct(UserRepository $userRepository)
     {
         $this->userRepository = $userRepository;
-        $this->mangoPayApi = new MangoPay\MangoPayApi();
-        $this->mangoPayApi->Config->ClientId = $_ENV['CLIENT_ID'];
-        $this->mangoPayApi->Config->ClientPassword = $_ENV['API_KEY'];
-        $this->mangoPayApi->Config->TemporaryFolder = '/config/temp/';
-        $this->mangoPayApi->Config->BaseUrl = 'https://api.sandbox.mangopay.com';
+
     }
 
     /**
@@ -45,7 +38,7 @@ class RegistrationController extends AbstractController
      */
     #[Route('/register', name: 'registration_register')]
     public function register(
-        user                        $user = null,
+        User                        $user = null,
         Request                     $request,
         UserPasswordHasherInterface $userPasswordHasher,
         EntityManagerInterface      $entityManager,
@@ -53,9 +46,15 @@ class RegistrationController extends AbstractController
         VerifyEmailHelperInterface  $verifyEmailHelper,
     ): Response
     {
+        $mangoPayApi = new MangoPayApi();
+        $mangoPayApi->Config->ClientId = $_ENV['CLIENT_ID'];
+        $mangoPayApi->Config->ClientPassword = $_ENV['API_KEY'];
+        $mangoPayApi->Config->TemporaryFolder = '..S/public/temp/';
+        $mangoPayApi->Config->BaseUrl = 'https://api.sandbox.mangopay.com';
         //initialisation de la date du jour.
         $today = new \DateTimeImmutable();
         $apiUser = new MangoPay\UserNatural();
+
         //Creation d'un utilisateur vide pour le set dans le form avec le handle request
         if (!$user) {
             $user = new User();
@@ -64,6 +63,8 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $user->setAgreeTerms(true);
+            $user->setCountryOfResidence("france");
             //on ajout ici la date de creation
             $user->setCreatedAt($today);
             //hashage du mot de passe
@@ -83,9 +84,12 @@ class RegistrationController extends AbstractController
             $apiUser->Tag = "Coucou";
             $apiUser->CreationDate = $user->getCreatedAt();
             $apiUser->UserCategory = $user->getStatus();
+            $apiUser->TermsAndConditionsAccepted = $user->getAgreeTerms();
+            $apiUser = $mangoPayApi->Users->GetAll();
+            dd($apiUser);
+
             $entityManager->persist($user);
             $entityManager->flush();
-
             // création d'une signature personnalisée pour un envoi de mail de verification
             $signatureComponents = $verifyEmailHelper->generateSignature(
                 'verify_mail',
@@ -110,7 +114,7 @@ class RegistrationController extends AbstractController
                     'message' => $signatureComponents->getSignedUrl(),
                     'url' => $url,
                 ]);
-            //la methode send() de la class MailerInterface permet d'envoyer un mail a l'utilisateur afion de confirmer son compte et acces a la connexion.
+            //la methode send() de la class MailerInterface permet d'envoyer un mail a l'utilisateur afin de confirmer son compte et access a la connexion.
             $mailer->send($email);
 
             return $this->redirectToRoute('app_logout');
