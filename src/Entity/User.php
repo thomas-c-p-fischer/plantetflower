@@ -62,9 +62,6 @@ class User extends \MangoPay\UserLegal implements UserInterface, PasswordAuthent
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $phone_number = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $status = null;
-
     #[ORM\Column(type: Types::ARRAY, nullable: true)]
     private array $my_purchases = [];
 
@@ -81,7 +78,7 @@ class User extends \MangoPay\UserLegal implements UserInterface, PasswordAuthent
     private ?int $rate = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $sex = null;
+    private ?string $gender = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $street_number = null;
@@ -116,9 +113,13 @@ class User extends \MangoPay\UserLegal implements UserInterface, PasswordAuthent
     #[ORM\Column(length: 255)]
     private ?string $countryOfResidence = null;
 
+    #[ORM\ManyToMany(targetEntity: UserCategory::class, mappedBy: 'user')]
+    private Collection $userCategories;
+
     public function __construct()
     {
         $this->annonces = new ArrayCollection();
+        $this->userCategories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -311,18 +312,6 @@ class User extends \MangoPay\UserLegal implements UserInterface, PasswordAuthent
         return $this;
     }
 
-    public function getStatus(): ?string
-    {
-        return $this->status;
-    }
-
-    public function setStatus(?string $status): self
-    {
-        $this->status = $status;
-
-        return $this;
-    }
-
     public function getMyPurchases(): array
     {
         return $this->my_purchases;
@@ -383,14 +372,14 @@ class User extends \MangoPay\UserLegal implements UserInterface, PasswordAuthent
         return $this;
     }
 
-    public function getSex(): ?string
+    public function getGender(): ?string
     {
-        return $this->sex;
+        return $this->gender;
     }
 
-    public function setSex(?string $sex): self
+    public function setGender(?string $gender): self
     {
-        $this->sex = $sex;
+        $this->gender = $gender;
 
         return $this;
     }
@@ -541,6 +530,33 @@ class User extends \MangoPay\UserLegal implements UserInterface, PasswordAuthent
     public function setCountryOfResidence(string $countryOfResidence): self
     {
         $this->countryOfResidence = $countryOfResidence;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, UserCategory>
+     */
+    public function getUserCategories(): Collection
+    {
+        return $this->userCategories;
+    }
+
+    public function addUserCategory(UserCategory $userCategory): self
+    {
+        if (!$this->userCategories->contains($userCategory)) {
+            $this->userCategories->add($userCategory);
+            $userCategory->addUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserCategory(UserCategory $userCategory): self
+    {
+        if ($this->userCategories->removeElement($userCategory)) {
+            $userCategory->removeUser($this);
+        }
 
         return $this;
     }

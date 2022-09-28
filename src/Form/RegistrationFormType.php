@@ -35,17 +35,6 @@ class RegistrationFormType extends AbstractType
             ->add('firstname', TextType::class, array(
                 'constraints' => array(
                     new NotBlank())))
-            ->add('streetnumber', TextType::class, array(
-                'constraints' => array(
-                    new NotBlank())))
-            ->add('address', TextType::class, array(
-                'constraints' => array(
-                    new NotBlank())))
-            ->add('address2', TextType::class, array(
-                'required' => false))
-            ->add('zipcode', TextType::class, array(
-                'constraints' => array(
-                    new NotBlank())))
             ->add('countryOfResidence', ChoiceType::class, [
                 'label' => false,
                 'choices' => [
@@ -65,9 +54,6 @@ class RegistrationFormType extends AbstractType
                     'Italienne' => 'ITA'
                 ]
             ])
-            ->add('city', TextType::class, array(
-                'constraints' => array(
-                    new NotBlank())))
             ->add('email')
             ->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,
