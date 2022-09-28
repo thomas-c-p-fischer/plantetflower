@@ -2,44 +2,48 @@
 
 namespace App\Controller;
 
-use App\Entity\Annonce;
 use App\Entity\User;
 use App\Form\InformationFormType;
 use App\Form\UserFormType;
-use App\Repository\AnnonceRepository;
-use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use MangoPay\ApiUsers;
+use MangoPay\MangoPayApi;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use MangoPay;
+
 
 #[Route('/user', 'user')]
 class UserProfilController extends AbstractController
 {
-    private MangoPay\ApiUsers $apiUsers;
 
     #[Route('/profil', name: '_profil')]
     public function profil(
-        \MangoPay\ApiKycDocuments $mangoPayApi,
-        UserRepository            $user,
-        Request                   $request
+        User    $user,
+        Request $request
 
     ): Response
-
     {
-        $user->find('id');
-        if ($user->getStatus() !== "acheteur") {
-            $infoForm = $this->createForm(InformationFormType::class);
-            $infoForm->handleRequest($request);
-            $KycDocument = new MangoPay\KycDocument();
-            $KycDocument->Type = "IDENTITY_PROOF";
-            $result = $mangoPayApi->Users->CreateKycDocument($_SESSION["MangoPay"]["UserNatural"], $KycDocument);
-            $KycDocumentId = $result->Id;
+        $mangoPayApi = new MangoPayApi();
+        $mangoPayApi->Config->ClientId = $_ENV['CLIENT_ID'];
+        $mangoPayApi->Config->ClientPassword = $_ENV['API_KEY'];
+        $mangoPayApi->Config->TemporaryFolder = 'D:\Thomas\Dév\PhpstormProjects\plantetflower/public/temp/';
+        $mangoPayApi->Config->BaseUrl = 'https://api.sandbox.mangopay.com/v2.01/'
+            . $_ENV['CLIENT_ID'] . '/users/' . $user->getIdMangopay() . 'bankaccounts/iban/';
+
+        $form = $this->createForm(InformationFormType::class);
+        $form->handleRequest($request);
+        $bankAccount = $request->get('IBAN');
+        $apiUser = new ApiUsers($mangoPayApi);
+
+        if ($form->isSubmitted() && $form->isValid())
+        {
+            $apiUser->CreateBankAccount($user->getIdMangopay(), $bankAccount);
         }
-        return $this->renderform('user_profil/userProfil.html.twig', compact('infoForm'));
+
+        return $this->renderform('user_profil/userProfil.html.twig');
     }
 
     #[Route('/edit', name: '_edit')]

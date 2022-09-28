@@ -5,9 +5,12 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Repository\UserRepository;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
+use MangoPay\ApiUsers;
 use MangoPay\MangoPayApi;
+use MangoPay\UserNatural;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,7 +27,6 @@ class RegistrationController extends AbstractController
 {
 
     private $userRepository;
-    private $mangoPayApi;
 
     public function __construct(UserRepository $userRepository)
     {
@@ -46,86 +48,92 @@ class RegistrationController extends AbstractController
         VerifyEmailHelperInterface  $verifyEmailHelper,
     ): Response
     {
-        $mangoPayApi = new MangoPayApi();
-        $mangoPayApi->Config->ClientId = $_ENV['CLIENT_ID'];
-        $mangoPayApi->Config->ClientPassword = $_ENV['API_KEY'];
-        $mangoPayApi->Config->TemporaryFolder = '..S/public/temp/';
-        $mangoPayApi->Config->BaseUrl = 'https://api.sandbox.mangopay.com';
-        //initialisation de la date du jour.
-        $today = new \DateTimeImmutable();
-        $apiUser = new MangoPay\UserNatural();
+        try {
+            $mangoPayApi = new MangoPayApi();
+            $mangoPayApi->Config->ClientId = $_ENV['CLIENT_ID'];
+            $mangoPayApi->Config->ClientPassword = $_ENV['API_KEY'];
+            $mangoPayApi->Config->TemporaryFolder = 'D:\Thomas\Dév\PhpstormProjects\plantetflower\public';
+            $mangoPayApi->Config->BaseUrl = 'https://api.sandbox.mangopay.com/';
+            //initialisation de la date du jour.
+            $today = new DateTimeImmutable();
+            $userNatural = new UserNatural();
 
-        //Creation d'un utilisateur vide pour le set dans le form avec le handle request
-        if (!$user) {
-            $user = new User();
+            //Creation d'un utilisateur vide pour le set dans le form avec le handle request
+            if (!$user) {
+                $user = new User();
+            }
+            $form = $this->createForm(RegistrationFormType::class, $user);
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                $user->setAgreeTerms(true);
+                $user->setCountryOfResidence("france");
+                //on ajout ici la date de creation
+                $user->setCreatedAt($today);
+                //hashage du mot de passe
+                $user->setPassword(
+                    $userPasswordHasher->hashPassword(
+                        $user,
+                        $form->get('plainPassword')->getData()
+                    )
+                );
+                // On utilise la methode generateToken() pour creer un jeton unique dans le mail de confirmation
+                // puis on insère en BDD.
+                $user->setToken($this->generateToken());
+                $userNatural->Email = $user->getEmail();
+                $userNatural->FirstName = $user->getLastName();
+                $userNatural->LastName = $user->getFirstName();
+                $userNatural->Birthday = $user->getBirthday();
+                $userNatural->Nationality = $user->getNationality();
+                $userNatural->CountryOfResidence = $user->getCountryOfResidence();
+                $userNatural->TermsAndConditionsAccepted = $user->getAgreeTerms();
+                $naturalUserResult = $mangoPayApi->Users->Create($userNatural);
+
+                MangoPay\Libraries\Logs::Debug('CREATED NATURAL USER', $naturalUserResult);
+
+                $entityManager->persist($user);
+                $entityManager->flush();
+                // création d'une signature personnalisée pour un envoi de mail de verification
+                $signatureComponents = $verifyEmailHelper->generateSignature(
+                    'verify_mail',
+                    $user->getId(),
+                    $user->getEmail(),
+                    array('token' => $user->getToken(), 'id' => $user->getId(), 'mail' => $user->getEmail())
+                );
+
+                $url = $signatureComponents->getSignedUrl();
+
+                // creation du mail
+                $email = (new TemplatedEmail())
+                    ->from('plantetflower@gmail.com')
+                    ->to($user->getEmail())
+                    ->subject('Valider votre inscription!')
+                    // path of the Twig template to render
+                    ->htmlTemplate('registration/confirmation_email.html.twig')
+                    // pass variables (name => value) to the template
+                    ->context([
+                        'expiration_date' => new \DateTime('+7 days'),
+                        'username' => $user->getFirstName(),
+                        'message' => $signatureComponents->getSignedUrl(),
+                        'url' => $url,
+                    ]);
+                //la methode send() de la class MailerInterface permet d'envoyer un mail a l'utilisateur afin de confirmer son compte et access a la connexion.
+                $mailer->send($email);
+                return $this->redirectToRoute('app_logout');
+            }
+        }catch (MangoPay\Libraries\ResponseException $e) {
+
+            MangoPay\Libraries\Logs::Debug('MangoPay\ResponseException Code', $e->GetCode());
+            MangoPay\Libraries\Logs::Debug('Message', $e->GetMessage());
+            MangoPay\Libraries\Logs::Debug('Details', $e->GetErrorDetails());
+
+        } catch (MangoPay\Libraries\Exception $e) {
+
+            MangoPay\Libraries\Logs::Debug('MangoPay\Exception Message', $e->GetMessage());
         }
-        $form = $this->createForm(RegistrationFormType::class, $user);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $user->setAgreeTerms(true);
-            $user->setCountryOfResidence("france");
-            //on ajout ici la date de creation
-            $user->setCreatedAt($today);
-            //hashage du mot de passe
-            $user->setPassword(
-                $userPasswordHasher->hashPassword(
-                    $user,
-                    $form->get('plainPassword')->getData()
-                )
-            );
-            // On utilise la methode generateToken() pour creer un jeton unique dans le mail de confirmation
-            // puis on insère en BDD.
-            $user->setToken($this->generateToken());
-            $apiUser->FirstName = $user->getLastName();
-            $apiUser->LastName = $user->getFirstName();
-            $apiUser->Address = $user->getCity();
-            $apiUser->Email = $user->getEmail();
-            $apiUser->Tag = "Coucou";
-            $apiUser->CreationDate = $user->getCreatedAt();
-            $apiUser->UserCategory = $user->getStatus();
-            $apiUser->TermsAndConditionsAccepted = $user->getAgreeTerms();
-            $apiUser = $mangoPayApi->Users->GetAll();
-            dd($apiUser);
-
-            $entityManager->persist($user);
-            $entityManager->flush();
-            // création d'une signature personnalisée pour un envoi de mail de verification
-            $signatureComponents = $verifyEmailHelper->generateSignature(
-                'verify_mail',
-                $user->getId(),
-                $user->getEmail(),
-                array('token' => $user->getToken(), 'id' => $user->getId(), 'mail' => $user->getEmail())
-            );
-
-            $url = $signatureComponents->getSignedUrl();
-
-            // creation du mail
-            $email = (new TemplatedEmail())
-                ->from('plantetflower@gmail.com')
-                ->to($user->getEmail())
-                ->subject('Valider votre inscription!')
-                // path of the Twig template to render
-                ->htmlTemplate('registration/confirmation_email.html.twig')
-                // pass variables (name => value) to the template
-                ->context([
-                    'expiration_date' => new \DateTime('+7 days'),
-                    'username' => $user->getFirstName(),
-                    'message' => $signatureComponents->getSignedUrl(),
-                    'url' => $url,
-                ]);
-            //la methode send() de la class MailerInterface permet d'envoyer un mail a l'utilisateur afin de confirmer son compte et access a la connexion.
-            $mailer->send($email);
-
-            return $this->redirectToRoute('app_logout');
-
-        };
-
         return $this->render('registration/register.html.twig', [
             'registrationForm' => $form->createView(),
             'editMode' => $user->getId() !== null,
-
-
         ]);
     }
 

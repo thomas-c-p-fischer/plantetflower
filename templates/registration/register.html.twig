@@ -35,33 +35,21 @@
                 les livraisons.
             </p>
         </div>
-        <div class="container-address_block_1">
-            <div class="street">
-                {{ form_row(registrationForm.streetnumber, {'label': false,'attr': {'placeholder': 'N° rue*'}} ) }}
-            </div>
-            <div class="address">
-                {{ form_row(registrationForm.address, {'label': false,'attr': {'placeholder': 'Adresse*'}} ) }}
-            </div>
-        </div>
-        <div class="container-address-complement">
-            <div class="address-complement">
-                {{ form_row(registrationForm.address2, {'label': false,'attr': {'placeholder': 'Complément Adresse'}} ) }}
-            </div>
-        </div>
-        <div class="container-address_block_2">
-            <div class="zipcode">
-                {{ form_row(registrationForm.zipcode, {'label': false,'attr': {'placeholder': 'Code postale*'}} ) }}
-                {# <input type="text" name="zipcode" id="zipcode" placeholder="Code postal*" > #}
-            </div>
-            <div class="city">
-                {{ form_row(registrationForm.city, {'label': false,'attr': {'placeholder': 'Ville*'}} ) }}
-                {# <input type="text" name="city" id="city" placeholder="Ville*" > #}
-            </div>
-        </div>
         <div class="information" id="labelStatus">
             <p>
                 Vous êtes ...
             </p>
+        </div>
+        <div class="container-status-email">
+            <div class="birthday">
+                {{ form_row(registrationForm.birthday) }}
+            </div>
+            <div class="email">
+                {{ form_row(registrationForm.countryOfResidence, {'attr': {'placeholder': 'Votre Pays de résidence*'}} ) }}
+            </div>
+            <div class="email">
+                {{ form_row(registrationForm.nationality, {'attr': {'placeholder': 'Votre nationnalité*'}} ) }}
+            </div>
         </div>
         <div class="container-status-email">
             <div class="status">
