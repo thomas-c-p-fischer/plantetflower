@@ -22,7 +22,7 @@ class InformationFormType extends AbstractType
                 ]
             ])
             ->add('BIC', TextType::class, [
-                'required' => true,
+                'required' => false,
                 'label' => false,
                 'label_attr' => [
                     'class' => 'bic-text'

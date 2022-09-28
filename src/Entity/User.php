@@ -47,10 +47,10 @@ class User extends \MangoPay\UserLegal implements UserInterface, PasswordAuthent
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $facebook_id = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 255)]
     private ?string $first_name = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 255)]
     private ?string $last_name = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -62,7 +62,7 @@ class User extends \MangoPay\UserLegal implements UserInterface, PasswordAuthent
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $phone_number = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 255)]
     private ?string $status = null;
 
     #[ORM\Column(type: Types::ARRAY, nullable: true)]
@@ -92,13 +92,13 @@ class User extends \MangoPay\UserLegal implements UserInterface, PasswordAuthent
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $city = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $birthday = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $token = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 255)]
     private ?string $nationality = null;
 
     #[ORM\Column(length: 255, nullable: true)]

@@ -13,8 +13,8 @@
 {% endblock %}
 
 {% block body %}
-    <div class="containerProfil">
-        <div class="containerInfoProfil">
+    <div class="container_profil">
+        <div class="container_background_img">
             <img src="{{ asset('media/img/fonddesign.png') }}" alt="background">
         </div>
         <div class="confirm-popup">
@@ -27,14 +27,14 @@
             </div>
         </div>
         <div class="flex-profil">
-            <div class="box-1">
-                <div class="box-name">
-                    <p class="message-profil">Bienvenue sur votre page de profil</p>
-                    <p class="message-text-2">Vous pouvez retrouver toutes les informations
+            <div class="box1">
+                <div class="box2">
+                    <p class="message_profil">Bienvenue sur votre page de profil</p>
+                    <p class="message_text">Vous pouvez retrouver toutes les informations
                         concernant vos achats et ventes ainsi que vos informations personnelles ci-dessous.</p>
                     {% if app.user.status == "vendeur" or app.user.status == "acheteur/vendeur" %}
                         {% if KycStatus =="VALIDATED" %}
-                            <div class="btn-annonce">
+                            <div class="btn_ajout_annonce">
                                 <a href="{{ path('') }}">+ Ajouter une annonce</a>
                             </div>
                         {% endif %}
@@ -42,18 +42,18 @@
                 </div>
             </div>
             {% if app.user.status == "vendeur" or app.user.status == "acheteur/vendeur" %}
-                <div class="box-2">
+                <div class="box3">
                     <div class="message">
-                        <p class="message-text">Pour accéder à la création d'annonce, il est impératif de renseigner vos
+                        <p class="message_text">Pour accéder à la création d'annonce, il est impératif de renseigner vos
                             coordonnées bancaires. L'argent généré par la vente sera directement transmis sur le compte
-                            renseigné. Ces informations resteront bien évidement confidentielles sur le site <a
+                            renseigné. Ces informations resteront bien évidement confidentielles sur le site. <a
                                     class="lien-mango" href="https://www.mangopay.com/fr/">MangoPay</a></p>
-                        {{ form_start(infoForm) }}
-                        <div class="box-flex">
+                        {{ form_start(informationForm) }}
+                        <div class="container_iban_bic">
                             <div>
-                                {{ form_label(infoForm.IBAN) }}
-                                <div class="input-iban">
-                                    {{ form_widget(infoForm.IBAN, {
+                                {{ form_label(informationForm.IBAN) }}
+                                <div class="input_iban">
+                                    {{ form_widget(informationForm.IBAN, {
                                         'attr': {
                                             'class': 'iban',
                                             'placeholder' : 'IBAN',
@@ -62,9 +62,9 @@
                                 </div>
                             </div>
                             <div>
-                                {{ form_label(infoForm.BIC) }}
-                                <div class="input-bic">
-                                    {{ form_widget(infoForm.BIC, {
+                                {{ form_label(informationForm.BIC) }}
+                                <div class="input_bic">
+                                    {{ form_widget(informationForm.BIC, {
                                         'attr': {
                                             'class': 'bic',
                                             'placeholder' : 'BIC',
@@ -73,23 +73,23 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="input-file">
-                            <p class="identity-text">Merci de joindre un justificatif d'identité comme votre carte
+                        <div class="input_file">
+                            <p class="identity_text">Merci de joindre un justificatif d'identité comme votre carte
                                 d'identité, passeport ou permis de conduire<a
                                         href='https://docs.mangopay.com/guide/guidelines-for-identity-documents'
-                                        target='_BLANK'>(voir mangopay)</a>.</p>
-                            <p class="identity-text">La pièce d'identité doit être celle du propriétaire du compte
+                                        target='_BLANK'>(voir MangoPay)</a>.</p>
+                            <p class="identity_text">La pièce d'identité doit être celle du propriétaire du compte
                                 bancaire.</p>
-                            <div class="btn-flex">
+                            <div class="container_KYC">
                                 <div class="img-upload identityUpload">
-                                    {{ form_row(infoForm.KYCrecto, {
+                                    {{ form_row(informationForm.KYCrecto, {
                                         "label_attr": {
                                             'class': "btn-upload"
                                         },
                                         'id': "get-file"
                                     }) }}
 
-                                    {{ form_row(infoForm.KYCverso, {
+                                    {{ form_row(informationForm.KYCverso, {
                                         "label_attr": {
                                             'class': "btn-upload"
                                         },
@@ -102,7 +102,7 @@
                                 {% elseif  KycStatus == "VALIDATION_ASKED" %}
                                     <p class="identity-text">Veuillez patienter pour la validation de votre profil.</p>
                                 {% elseif KycStatus == "VALIDATED" %}
-                                    <p class="identity-text" style='color:red;'>Votre profil a été créé sur mangopay,
+                                    <p class="identity-text">Votre profil a été créé sur MangoPay,
                                         vous pouvez maintenant créer des annonces en toutes sécurités sur notre
                                         site.</p>
                                 {% elseif KycStatus == "REFUSED_DOCUMENT_NOT_ACCEPTED" %}
@@ -115,7 +115,7 @@
                                     <p class="identity-text">Votre profil n'est pas validé. Le document reçu est
                                         incomplet.</p>
                                 {% elseif KycStatus == "REFUSED_DOCUMENT_MISSING" %}
-                                    <p class="identity-text">Votre profil n'est pas validé. Vous devez envoyer un
+                                    <p class="identity-text">Votre profil n'est pas validé. Il vous manque un
                                         document.</p>
                                 {% elseif KycStatus == "REFUSED_DOCUMENT_DOES_NOT_MATCH_USER_DATA" %}
                                     <p class="identity-text">Votre profil n'est pas validé. Le document ne corresponde
@@ -133,9 +133,9 @@
                                     <p class="identity-text">Votre profil n'est pas validé. Le document reçu est
                                         illisible.</p>
                                 {% endif %}
-                                <div class='mango'>{{ errorMessages }}</div>
-                                <div class='mango'>{{ message }}</div>
-                                {{ form_row(infoForm.send, {
+                                <div class="mango">{{ errorMessages }}</div>
+                                <div class="mango">{{ message }}</div>
+                                {{ form_row(informationForm.send, {
                                     'attr': {
                                         'class': "btnIdentity validate"
                                     },
@@ -145,251 +145,240 @@
                                 }) }}
                             </div>
                         </div>
-                        {{ form_end(infoForm) }}
+                        {{ form_end(informationForm) }}
                     </div>
                 </div>
             {% endif %}
         </div>
     </div>
-    <div class="box-3">
-        <div class="box-4">
-            <div class="box-5">
-                {# --------------------------Onglets ------------------------- -#}
-                <p class="onglets active" id="my_informations" data-anim="1">Mes informations</p>
-                {% if (app.user.status == 'acheteur/vendeur') or (app.user.status == 'vendeur') %}
-                    <p class="onglets" data-anim="2">Mes annonces</p>
+    <div class="container_onglets_profil">
+        <div class="box_onglets">
+            {# --------------------------Onglets ------------------------- -#}
+            <p class="onglets" id="informations" data-anim="1">Mes informations</p>
+            {% if (app.user.status == 'acheteur/vendeur') or (app.user.status == 'vendeur') %}
+                <p class="onglets" data-anim="2">Mes annonces</p>
+            {% endif %}
+            <p class="onglets" data-anim="3">
+                {% if app.user.status == 'acheteur/vendeur' %}
+                    Mes achats et ventes
+                {% elseif app.user.status == 'acheteur' %}
+                    Mes achats
+                {% else %}
+                    Mes ventes
                 {% endif %}
-                <p class="onglets" data-anim="3">
-                    {% if app.user.status == 'acheteur/vendeur' %}
-                        Mes achats et ventes
-                    {% elseif app.user.status == 'acheteur' %}
-                        Mes achats
-                    {% else %}
-                        Mes ventes
-                    {% endif %}
-                </p>
-            </div>
+            </p>
+        </div>
 
-            {# --------------------------Contenus ------------------------- -#}
+        {# --------------------------Contenus ------------------------- -#}
 
-            {# --------------------------Informations ------------------------- -#}
-            <div class="contenus active-contenu" data-anim="1">
-                <div class="infoPerso">
-                    <div class="box-info">
-                        <div class='image-profil'>
-                            {% if (app.user.image) %}
-                                <img class="imageInformation" src="{{ asset('/uploads/profils/' ~ app.user.image) }}"
-                                     alt="Photo de profil">
-                            {% else %}
-                                <img class="imageInformation" src="{{ asset('media/img/profil.png') }}"
-                                     alt="Photo de profil default">
-                            {% endif %}
-                        </div>
-                        <div class='box-name'>
-                            <div class="infos">
-                                <p class="size">Nom :
-                                    <span class="myinfo">{{ app.user.lastname }}</span></p>
-                            </div>
-
-                            <div class="infos">
-                                <p class="size">Prénom :
-                                    <span class="myinfo">{{ app.user.firstname }}</span></p>
-                            </div>
-                            <div class="infos">
-                                {% if (app.user.status) %}
-                                    <p class="size">Rôle :
-                                        <span class="myinfo">{{ app.user.status }}</span></p>
-                                {% else %}
-                                    <p class="size">Rôle :
-                                        <span class="myinfo">
-											<u>Rôle à renseigner !</u></span>
-                                    </p>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                    <div id="Adresse">
-                        {% if (app.user.address) %}
-                            <p class="size">Adresse :</p>
-                            <p class="myinfo">
-                                {{ app.user.streetnumber }}, {{ app.user.address }}
-                                - {{ app.user.zipcode }} {{ app.user.city }}
-                            </p>
+        {# --------------------------Informations ------------------------- -#}
+        <div class="profil_informations" data-anim="1">
+            <div class="info_perso">
+                <div class="box_info">
+                    <div class="image_profil">
+                        {% if (app.user.image) %}
+                            <img class="image_information" src="{{ asset('/uploads/profils/' ~ app.user.image) }}"
+                                 alt="Photo de profil">
                         {% else %}
-                            <p class="size">Adresse :</p>
-                            <p class="myinfo">
-                                <u>Adresse à renseigner !</u>
+                            <img class="image_information" src="{{ asset('media/img/profil.png') }}"
+                                 alt="Photo de profil default">
+                        {% endif %}
+                    </div>
+                    <div class='box_name'>
+                        <div class="infos">
+                            <p class="nom">Nom :
+                                <span class="my_info">{{ app.user.lastname }}</span></p>
+                        </div>
+
+                        <div class="infos">
+                            <p class="prenom">Prénom :
+                                <span class="my_info">{{ app.user.firstname }}</span></p>
+                        </div>
+                        <div class="infos">
+                            <p class="role">Rôle :
+                                <span class="my_info">{{ app.user.status }}</span></p>
+                        </div>
+                    </div>
+                </div>
+                <div id="box_adresse">
+                    {% if (app.user.address) %}
+                        <p class="adresse">Adresse :</p>
+                        <p class="my_info">
+                            {{ app.user.streetnumber }}, {{ app.user.address }}
+                            - {{ app.user.zipcode }} {{ app.user.city }}
+                        </p>
+                    {% else %}
+                        <p class="adresse">Adresse :</p>
+                        <p class="my_info">
+                            <u>Adresse à renseigner !</u>
+                        </p>
+                    {% endif %}
+                </div>
+                <div class='box_mail'>
+                    <div class="infos_tel">
+                        {% if (app.user.phoneNumber) %}
+                            <p class="telephone">téléphone :</p>
+                            <p class="my_info">{{ app.user.phoneNumber }}</p>
+                        {% else %}
+                            <p class="telephone">Téléphone :</p>
+                            <p class="my_info">
+                                <u>Téléphone à renseigner !</u>
                             </p>
                         {% endif %}
                     </div>
-                    <div class='box-mail'>
-                        <div class="infosTel">
-                            {% if (app.user.phoneNumber) %}
-                                <p class="size">téléphone :</p>
-                                <p class="myinfo">{{ app.user.phoneNumber }}</p>
-                            {% else %}
-                                <p class="size">téléphone :</p>
-                                <p class="myinfo">
-                                    <u>téléphone à renseigner !</u>
-                                </p>
-                            {% endif %}
-                        </div>
-
-                        <div class="infosMail">
-                            <p class="size">Email :</p>
-                            <p class="myinfo">{{ app.user.email }}</p>
-                        </div>
-                    </div>
-                    <div class="btn-infos">
-                        {# <button type="submit" class="btn-info" id="btn-modify" data-path={{ path('profil_edit',{'id': user.id}) }}>Modifier</button> #}
-                        <a class="btn-info" id="btn-modify"
-                           data-path={{ path('user_edit',{'id': app.user.id}) }} href={{ path('user_edit',{'id': app.user.id}) }}>Modifier</a>
+                    <div class="infos_mail">
+                        <p class="email">Email :</p>
+                        <p class="my_info">{{ app.user.email }}</p>
                     </div>
                 </div>
-            </div>
-            {# --------------------------Mes annonces ------------------------- #}
-            <div class="contenus no-active" data-anim="2">
-                {# Si il n'y a pas d'annonces créés par l'utilisateur #}
-                {% if (app.user.status == 'acheteur/vendeur') or (app.user.status == 'vendeur') %}
-                {% if (app.user.annonces | length == 0) %}
-                <p>Vous n'avez pas encore d'annonces. Pour en créer une, appuyez sur le bouton "créer une annonce" situé
-                    à droite de votre photo de profil</p>
-                {# Si il y a des annonces créés par l'utilisateur #}
-                {% elseif app.user.annonces %}
-                <div class="grid">
-                    {% for annonce in app.user.annonces %}
-                        {% if annonce.sold == 0 %}
-                            <div class="box-annonces">
-                                <h5 class='statutVente'>En cours</h5>
-                                <div href={{ path('home_annonces', { 'id': annonce.id }) }}>
-                                    <div class="flex">
-                                        <p class="name-plant">{{ annonce.title }}</p>
-                                        <div>
-                                            <a href={{ path('edit_annonce', {'id': annonce.id}) }}><i
-                                                        class="fa-solid fa-pen pen"></i></a>
-                                            <a href={{ path('delete_annonce', {'id': annonce.id }) }}><i
-                                                        class="fa-solid fa-trash icon"></i></a>
-                                        </div>
-                                    </div>
-                                    <p class="price-annonce">{{ annonce.priceTotal }} €</p>
-                                    <div class="flex-annonce">
-                                        {% if annonce.shipment %}
-                                            <p class="livraison">Livraison possible</p>
-                                        {% else %}
-                                            <p class="livraison">Livraison impossible</p>
-                                        {% endif %}
-                                    </div>
-                                    <p class="date-annonce">Date
-                                        d'expiration: {{ annonce.dateExpiration | date ('d/m/Y') }}</p>
-                                </div>
-                            </div>
-                        {% elseif annonce.sold == 1 %}
-                            <div class="box-annonces">
-                                <h5 class='statutVente vendu'>Vendu</h5>
-                                <div href={{ path('home_annonces', { 'id': annonce.id }) }}>
-                                    <div class="flex">
-                                        <p class="name-plant">{{ annonce.title }}</p>
-                                        <div>
-                                            <a href={{ path('edit_annonce', {'id': annonce.id}) }}><i
-                                                        class="fa-solid fa-pen pen"></i></a>
-                                            <a href={{ path('delete_annonce', {'id': annonce.id }) }}><i
-                                                        class="fa-solid fa-trash icon"></i></a>
-                                        </div>
-                                    </div>
-                                    <p class="price-annonce">{{ annonce.priceTotal }} €</p>
-                                    <div class="flex-annonce">
-                                        {% if annonce.shipment %}
-                                            <p class="livraison">Livraison possible</p>
-                                        {% else %}
-                                            <p class="livraison">Livraison impossible</p>
-                                        {% endif %}
-                                    </div>
-                                    <p class="date-annonce">Date
-                                        d'expiration: {{ annonce.dateExpiration | date ('d/m/Y') }}</p>
-                                </div>
-                            </div>
-                        {% endif %}
-                    {% endfor %}
-                    {% endif %}
-                    {% endif %}
+                <div class="modifier_profil">
+                    <a class="btn_modifier" id="btn_modifier_profil"
+                       data-path={{ path('user_edit',{'id': app.user.id}) }} href={{ path('user_edit',{'id': app.user.id}) }}>Modifier</a>
                 </div>
             </div>
-
-            {# --------------------------Mes achats------------------------- -#}
-            <div class="contenus purchases no-active" data-anim="3">
-                {% if (app.user.status == 'acheteur/vendeur') or (app.user.status == 'acheteur') %}
-                    <h2 class="purchases-title">Mes achats</h2>
-                    <hr>
-                    {% if app.user.myPurchases | length == 0 %}
-                        <p>Vous n'avez effectué aucun achat</p>
-                    {% elseif app.user.myPurchases %}
-                        <div class="grid">
-                            {% for purchase in user.myPurchases %}
-                                <div class="box-description">
-                                    <div class="box-sales">
-                                        <h4 class="description-price">Titre : {{ purchase.title }}</h4>
-                                    </div>
-                                    <div class="box-sales">
-                                        <p class="description-price">Prix : {{ purchase.price }}€</p>
-                                    </div>
-                                    <div class="box-sales">
-                                        <p class="description-price">Date de paiement : {{ purchase.paymentDate }}</p>
-                                    </div>
-                                    <div class="box-sales">
-                                        <p class="description-price">Vendeur : {{ purchase.seller }}</p>
-                                    </div>
-                                    <div class="box-sales">
-                                        {% if purchase.etiquette %}
-                                            <p class="description-price">Suivi expédition : <a
-                                                        href="{{ purchase.tracing }}" target='_BLANK'
-                                                        class="lienEtiquette">Cliquez
-                                                    ici <br> {{ purchase.expNumber }}</a></p>
-                                        {% else %}
-                                            <p class="description-price">Remis en main propre</p>
-                                        {% endif %}
+        </div>
+        {# --------------------------Mes annonces ------------------------- #}
+        <div class="profil_mes_annonces" data-anim="2">
+            {# Si il n'y a pas d'annonces créés par l'utilisateur #}
+            {% if (app.user.status == 'acheteur/vendeur') or (app.user.status == 'vendeur') %}
+            {% if (app.user.annonces | length == 0) %}
+            <p>Vous n'avez pas encore d'annonces. Pour en créer une, appuyez sur le bouton "créer une annonce" situé
+                à droite de votre photo de profil</p>
+            {# Si il y a des annonces créés par l'utilisateur #}
+            {% elseif app.user.annonces %}
+            <div class="grid">
+                {% for annonce in app.user.annonces %}
+                    {% if annonce.sold == 0 %}
+                        <div class="box_annonces">
+                            <h5 class='statut_vente'>En cours</h5>
+                            <div href={{ path('home_annonces', { 'id': annonce.id }) }}>
+                                <div class="">
+                                    <p class="titre_annonce">{{ annonce.title }}</p>
+                                    <div>
+                                        <a href={{ path('edit_annonce', {'id': annonce.id}) }}><i
+                                                    class="fa-solid fa-pen pen"></i></a>
+                                        <a href={{ path('delete_annonce', {'id': annonce.id }) }}><i
+                                                    class="fa-solid fa-trash icon"></i></a>
                                     </div>
                                 </div>
-                            {% endfor %}
+                                <p class="prix_annonce">{{ annonce.priceTotal }} €</p>
+                                <div class="mode_livraison_annonce">
+                                    {% if annonce.shipment %}
+                                        <p class="livraison">Livraison possible</p>
+                                    {% else %}
+                                        <p class="livraison">Livraison impossible</p>
+                                    {% endif %}
+                                </div>
+                                <p class="date_annonce">Date
+                                    d'expiration: {{ annonce.dateExpiration | date ('d/m/Y') }}</p>
+                            </div>
+                        </div>
+                    {% elseif annonce.sold == 1 %}
+                        <div class="box_annonces">
+                            <h5 class='statut_vente'>Vendu</h5>
+                            <div href={{ path('home_annonces', { 'id': annonce.id }) }}>
+                                <div class="flex">
+                                    <p class="titre_annonce">{{ annonce.title }}</p>
+                                    <div>
+                                        <a href={{ path('edit_annonce', {'id': annonce.id}) }}><i
+                                                    class="fa-solid fa-pen pen"></i></a>
+                                        <a href={{ path('delete_annonce', {'id': annonce.id }) }}><i
+                                                    class="fa-solid fa-trash icon"></i></a>
+                                    </div>
+                                </div>
+                                <p class="prix_annonce">{{ annonce.priceTotal }} €</p>
+                                <div class="">
+                                    {% if annonce.shipment %}
+                                        <p class="livraison">Livraison possible</p>
+                                    {% else %}
+                                        <p class="livraison">Livraison impossible</p>
+                                    {% endif %}
+                                </div>
+                                <p class="date_annonce">Date
+                                    d'expiration: {{ annonce.dateExpiration | date ('d/m/Y') }}</p>
+                            </div>
                         </div>
                     {% endif %}
+                {% endfor %}
                 {% endif %}
-                {% if (app.user.status == 'acheteur/vendeur') or (app.user.status == 'vendeur') %}
-                    <h2 class="purchases-title">Mes ventes</h2>
-                    <hr>
-                    {% if app.user.mySales | length == 0 %}
-                        <p>Vous avez pas encore effectué des ventes</p>
-                    {% elseif app.user.mySales %}
-                        <div class="grid">
-                            {% for sale in app.user.mySales %}
-                                <div class="box-description">
-                                    <div class="box-sales">
-                                        <h4 class="description-price">Titre : {{ sale.title }}</h4>
-                                    </div>
-                                    <div class="box-sales">
-                                        <p class="description-price">Prix : {{ sale.price }}€</p>
-                                    </div>
-                                    <div class="box-sales">
-                                        <p class="description-price">Date de ventes : {{ sale.paymentDate }}</p>
-                                    </div>
-                                    <div class="box-sales">
-                                        <p class="description-price">Acheteur : {{ sale.buyer }}</p>
-                                    </div>
-                                    <div class="box-sales">
-                                        {% if sale.etiquette %}
-                                            <p class="description-price">Lien etiquette : <a href="{{ sale.etiquette }}"
-                                                                                             target='_BLANK'
-                                                                                             class="lienEtiquette"
-                                                >Cliquez ici <br> {{ sale.expNumber }}</a></p>
-                                        {% else %}
-                                            <p class="description-price">Remis en main propre</p>
-                                        {% endif %}
-                                    </div>
-                                </div>
-                            {% endfor %}
-                        </div>
-                    {% endif %}
                 {% endif %}
             </div>
+        </div>
+
+        {# --------------------------Mes achats------------------------- -#}
+        <div class="container_mes_achats" data-anim="3">
+            {% if (app.user.status == 'acheteur/vendeur') or (app.user.status == 'acheteur') %}
+                <h2 class="titre_achat">Mes achats</h2>
+                <hr>
+                {% if app.user.myPurchases | length == 0 %}
+                    <p>Vous n'avez effectué aucun achat</p>
+                {% elseif app.user.myPurchases %}
+                    <div class="grid">
+                        {% for purchase in user.myPurchases %}
+                            <div class="description_mes_ventes">
+                                <div class="ventes">
+                                    <h4 class="ventes_sections">Titre : {{ purchase.title }}</h4>
+                                </div>
+                                <div class="ventes">
+                                    <p class="ventes_sections">Prix : {{ purchase.price }}€</p>
+                                </div>
+                                <div class="ventes">
+                                    <p class="ventes_sections">Date de paiement : {{ purchase.paymentDate }}</p>
+                                </div>
+                                <div class="ventes">
+                                    <p class="ventes_sections">Vendeur : {{ purchase.seller }}</p>
+                                </div>
+                                <div class="ventes">
+                                    {% if purchase.etiquette %}
+                                        <p class="ventes_sections">Suivi expédition : <a
+                                                    href="{{ purchase.tracing }}" target='_BLANK'
+                                                    class="lien_etiquette">Cliquez
+                                                ici <br> {{ purchase.expNumber }}</a></p>
+                                    {% else %}
+                                        <p class="ventes_sections">Remis en main propre</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endif %}
+            {% if (app.user.status == 'acheteur/vendeur') or (app.user.status == 'vendeur') %}
+                <h2 class="titre_mes_ventes">Mes ventes</h2>
+                <hr>
+                {% if app.user.mySales | length == 0 %}
+                    <p>Vous avez pas encore effectué des ventes</p>
+                {% elseif app.user.mySales %}
+                    <div class="grid">
+                        {% for sale in app.user.mySales %}
+                            <div class="description_mes_ventes">
+                                <div class="ventes">
+                                    <h4 class="ventes_sections">Titre : {{ sale.title }}</h4>
+                                </div>
+                                <div class="ventes">
+                                    <p class="ventes_sections">Prix : {{ sale.price }}€</p>
+                                </div>
+                                <div class="ventes">
+                                    <p class="ventes_sections">Date de ventes : {{ sale.paymentDate }}</p>
+                                </div>
+                                <div class="ventes">
+                                    <p class="ventes_sections">Acheteur : {{ sale.buyer }}</p>
+                                </div>
+                                <div class="ventes">
+                                    {% if sale.etiquette %}
+                                        <p class="ventes_sections">Lien étiquette : <a href="{{ sale.etiquette }}"
+                                                                                         target='_BLANK'
+                                                                                         class="lien_etiquette"
+                                            >Cliquez ici <br> {{ sale.expNumber }}</a></p>
+                                    {% else %}
+                                        <p class="ventes_sections">Remis en main propre</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endif %}
         </div>
     </div>
 {% endblock %}
