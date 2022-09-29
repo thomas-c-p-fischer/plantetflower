@@ -65,9 +65,19 @@ class HomeController extends AbstractController
 
     //route de la page annonces
     #[Route('/annonces', name: '_annonces')]
-    public function annonces(): Response
+    public function annonces(
+        AnnonceRepository $annoncesRepository,
+    ): Response
     {
-        return $this->render('home/annonces.html.twig');
+        // récupération de toutes les annonces
+        $annonces = $annoncesRepository->findAll();
+        // total de toutes les annonces
+        $totalAnnonces = count($annonces);
+
+        return $this->render('home/annonces.html.twig', [
+            'annonces' => $annonces,
+            'total' => $totalAnnonces,
+        ]);
     }
 
     //route de la page À propos

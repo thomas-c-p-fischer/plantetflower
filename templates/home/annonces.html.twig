@@ -10,177 +10,82 @@
 {% endblock %}
 
 {% block body %}
-    <div class="confirm-popup">
-        <div class="inner-popup">
-            <p>Êtes-vous sûr de vouloir supprimer l'annonce ?</p>
-            <div>
-                <div class="popup-oui"><a class="confirm-btn"
-                                          href="{{ path('annonce_supprimer' , {'id': annonce.id}) }}">Oui</a>
+    <main>
+        <div class="containerGlobaleProducts">
+            {# Bannière #}
+            <div class="container_imgsearchProducts">
+                <img class="img-banniere" src="{{ asset('media/img/banniere-search.png') }}" alt="banniere"/>
+                <div class="txt_banniereProducts">
+                    Donnez à vos végétaux une seconde
+                    vie, et achetez-en de nouveaux
                 </div>
-                <div class="popup-non"><a class="cancel-btn" href="">Non</a></div>
+{#                filtre à installer#}
+{#                {{ form_start(form, {'attr': {'class': 'filtre searchProducts'}} ) }}#}
+                <div class="bouton-searchProducts">
+{#                    {{ form_row(form.q) }}#}
+
+{#                    {{ form_row(form.categories) }}#}
+                    <div class='searchPrix'>
+{#                        {{ form_row(form.min) }}#}
+{#                        {{ form_row(form.max) }}#}
+                    </div>
+{#                    <div id="slidePrix" data-min="{{ min }}" data-max="{{ max }}"></div>#}
+{#                    {{ form_row(form.shipment) }}#}
+                    <button class="btn-searchProducts" type="submit">Filtrer</button>
+                </div>
+{#                {{ form_end(form) }}#}
+
+                <div class="total-annonce">
+{#                    changer le premier total par le nombre total d'annonces affichées selon le filtre ou la pagination sélectionner#}
+                    {{ total }} annonces sur {{ total }}
+                </div>
+                <div class="navigation">
+{#                    pagination à installer avec kplabs#}
+{#                    {{ knp_pagination_render(annonces) }}#}
+                </div>
             </div>
-        </div>
-    </div>
-    <div class="containerAnnonce">
-        <button class="return">
-            <a href={{ path('home_homepage') }}>Retour</a>
-        </button>
-        <div class="annonceBody row">
-            <div class="imgDes">
-                <button class="return2">
-                    <a href={{ path('home_homepage') }}>Retour</a>
-                </button>
-                <div class="bigImage">
-                    <img class="image" id="grand-image" src="{{ asset('/uploads/annonces/' ~ annonce.images[0].name) }}"
-                         alt="Grand image"/>
-                </div>
 
-                <div class="columnImages col">
-                    <div class="columnImage">
-                        {% if annonce.images|length == 1 %}
-                            <img class="image mini-image"
-                                 src="{{ asset('/uploads/annonces/' ~ annonce.images[0].name) }}"
-                                 alt="Image miniature"/>
-                        {% endif %}
-                        {% if annonce.images|length > 1 %}
-                            <img class="image mini-image"
-                                 src="{{ asset('/uploads/annonces/' ~ annonce.images[1].name) }}"
-                                 alt="Image miniature"/>
-                        {% endif %}
-                        {% if annonce.images|length > 2 %}
-                            <img class="image mini-image"
-                                 src="{{ asset('/uploads/annonces/' ~ annonce.images[2].name) }}"
-                                 alt="Image miniature"/>
-                        {% endif %}
-                    </div>
-                </div>
-                <div class="bg-gray-global">
-                    <div class="bg-gray-inactive">
-                        <div class="headInfo row">
-                            <div class="green">
-                                <p>{{ category }}</p>
+            {# Fin bannière #}
+            <div class="contenuProducts">
+
+                {% set img = '' %}
+                {% for annonce in annonces %}
+                    <div class="card">
+                        <a class="img-annonce-flex" href={{ path('annonce_afficher', {'annonceId': annonce.id}) }}>
+                            <div class="image-annonce">
+{#                                {% for image in images %}#}
+{#                                    {% if image.annonce.id == annonce.id %}#}
+{#                                        {% set img = annonce.images[0].name %}#}
+{#                                    {% endif %}#}
+{#                                {% endfor %}#}
+                                <img src={{ asset('/uploads/annonces/' ~ img) }} class="img-orchidee" alt="Image annonce"/>
                             </div>
-                            <div class="star"><img src="{{ asset('media/img/star.png') }}" alt="Étoile"></div>
-                        </div>
-                        <h1 class="plant">{{ annonce.title }}</h1>
-                        <div class="headInfo row">
-                            <div>
-                                <h2>{{ annonce.ville }}</h2>
-                            </div>
-                            <div class="green">
-							<span>
-								{% if annonce.shipment %}
-                                    Livraison possible
-                                {% else %}
-                                    Livraison non disponible
-                                {% endif %}
-							</span>
-                            </div>
-                        </div>
-
-                        <h1 class='priceTotal'>{{ annonce.priceTotal }}
-                            €</h1>
-                        <div class="headInfo row">
-                            <p>Date d'expiration : {{ annonce.dateExpiration | date('d/m/Y') }}</p>
-                            {% if annonce.sold %}
-                                <button class="acheter" disabled>Déjà vendu</button>
-                            {% elseif (app.user) and (app.user.id == annonce.user.id) %}
-                                <button class="delete-btn">Retirer l'annonce</button>
-                            {% else %}
-                                <a href={{ path('payment' , {'id': annonce.id} ) }}>
-
-                                    <button class="acheter">Acheter</button>
-                                </a>
-                            {% endif %}
-                        </div>
-                    </div>
-
-                </div>
-                <div class="description">
-                    <div class="absolute">
-                        <div class="background">
-                            <img src="{{ asset('media/img/background-yellow-green.png') }}" alt="Background">
-                        </div>
-                    </div>
-                    <div class='titre-description'>
-                        <h2>Description</h2>
-                        <p>
-                            {{ annonce.description }}
-                            <br><br>
-                            Pot disponible :
-                            {% if annonce.plantPot %}
-                                oui
-                            {% else %}
-                                non
-                            {% endif %}
-                        </p>
-                    </div>
-                    <div id="gray" class="bg-gray-inactive row">
-                        <div class="profileImage">
-                            {% if (userAnnonce.image) %}
-                                <img class="image" src="{{ asset('/uploads/profils/' ~ userAnnonce.image) }}"
-                                     alt="Photo de profil">
-
-                            {% else %}
-                                <img class="image" src="{{ asset('media/img/profil.png') }}"
-                                     alt="Photo de profil default">
-                            {% endif %}
-                        </div>
-                        <div class="profilinfo">
-                            <h2>{{ prenomauteur }}
-                                {{ nomauteur }}</h2>
-                            <p>Rate</p>
-                            <div id="toggle-list" class="headInfo row">
-                                <h3>
-                                    {% if annoncesNotSold|length < 2 %}
-                                        {{ annoncesNotSold|length }} Annonce
+                            <div class="card-content">
+                                <div class="align-etoile">
+                                    <span class="nom-plante">{{ annonce.title }}</span>
+                                    <p class="etoile">☆</p>
+                                    <p class="prix">
+                                        {{ annonce.priceTotal }}€</p>
+                                </div>
+                                <div class="align-livraison">
+                                    {% if annonce.shipement == true %}
+                                        <p class="livraison">
+                                            Livraison possible
+                                        </p>
                                     {% else %}
-                                        {{ annoncesNotSold|length }} Annonces
-                                    {% endif %}</h3>
-                                <button class="dropdown-button">
-                                    <img src="{{ asset('media/img/down-arrow.png') }}" alt="Étoile"/>
-                                </button>
-                            </div>
-                            <div id="list-annonce" class="col list-annonce inactive">
-                                {% for annonce in userAnnonce.annonces %}
-                                    {% if annonce.sold == false %}
-                                        <a href={{ path('home_annonces', {'id': annonce.id}) }}>
-                                            <div class="bg-gray col">
-                                                <div class="row">
-                                                    <h4>{{ annonce.title }}</h4>
-                                                    <img src="{{ asset('media/img/star.png') }}" alt="Étoile">
-                                                </div>
-                                                <div class="row">
-                                                    <h5>{{ annonce.ville }}</h5>
-                                                    <p>
-                                                        {% if annonce.shipment %}
-                                                            Livraison possible
-                                                        {% else %}
-                                                            Livraison non disponible
-                                                        {% endif %}
-                                                    </p>
-                                                </div>
-                                                <div class="row">
-                                                    <p>Date d'expiration
-                                                        {{ annonce.dateExpiration  | date('d/m/Y') }}</p>
-                                                    <h2>{{ annonce.priceTotal }}€</h2>
-                                                </div>
-                                            </div>
-                                        </a>
+                                        <p class="not-livraison">
+                                            Remise en main propre
+                                        </p>
                                     {% endif %}
-                                {% endfor %}
+                                </div>
+                                <p class="date-expiration">
+                                    Date d'expiration :  {{annonce.dateExpiration | date ('d/m/Y')}}
+                                </p>
                             </div>
-                        </div>
+                        </a>
                     </div>
-                </div>
-                <div class="textInfo">
-                    <p>Les informations du vendeur seront
-                        données seulement après l’achat du produit.</p>
-                </div>
+                {% endfor %}
             </div>
         </div>
-    </div>
+    </main>
 {% endblock %}
-
-
-

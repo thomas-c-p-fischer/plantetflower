@@ -26,7 +26,7 @@ class Annonce
     private ?bool $shipement = null;
 
     #[ORM\Column]
-    private ?bool $delivery_status = null;
+    private ?bool $statut_livraison = null;
 
     #[ORM\Column]
     private ?float $price_origin = null;
@@ -41,7 +41,7 @@ class Annonce
     private ?bool $plant_pot = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $expiration_date = null;
+    private ?\DateTimeInterface $date_expiration = null;
 
     #[ORM\Column]
     private ?bool $sold = null;
@@ -56,10 +56,10 @@ class Annonce
     private ?string $token = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $buyer = null;
+    private ?string $acheteur = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $city = null;
+    private ?string $ville = null;
 
     #[ORM\Column(length: 255)]
     private ?string $exp_adress = null;
