@@ -113,13 +113,15 @@ class User extends \MangoPay\UserLegal implements UserInterface, PasswordAuthent
     #[ORM\Column(length: 255)]
     private ?string $countryOfResidence = null;
 
-    #[ORM\ManyToMany(targetEntity: UserCategory::class, mappedBy: 'user')]
-    private Collection $userCategories;
+    #[ORM\Column]
+    private ?bool $Owner = false;
+
+    #[ORM\Column]
+    private ?bool $Payer = false;
 
     public function __construct()
     {
         $this->annonces = new ArrayCollection();
-        $this->userCategories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -534,30 +536,29 @@ class User extends \MangoPay\UserLegal implements UserInterface, PasswordAuthent
         return $this;
     }
 
-    /**
-     * @return Collection<int, UserCategory>
-     */
-    public function getUserCategories(): Collection
+    public function isOwner(): ?bool
     {
-        return $this->userCategories;
+        return $this->Owner;
     }
 
-    public function addUserCategory(UserCategory $userCategory): self
+    public function setOwner(bool $Owner): self
     {
-        if (!$this->userCategories->contains($userCategory)) {
-            $this->userCategories->add($userCategory);
-            $userCategory->addUser($this);
-        }
+        $this->Owner = $Owner;
 
         return $this;
     }
 
-    public function removeUserCategory(UserCategory $userCategory): self
+    public function isPayer(): ?bool
     {
-        if ($this->userCategories->removeElement($userCategory)) {
-            $userCategory->removeUser($this);
-        }
+        return $this->Payer;
+    }
+
+    public function setPayer(bool $Payer): self
+    {
+        $this->Payer = $Payer;
 
         return $this;
     }
+
+
 }
