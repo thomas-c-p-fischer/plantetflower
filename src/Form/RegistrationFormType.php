@@ -9,6 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RadioType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -22,14 +23,10 @@ class RegistrationFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-//            ->add('userCategories', ChoiceType::class, [
-//                'label' => false,
-//                'choices' => [
-//                    'acheteur/vendeur' => 'Buyer',
-//                    'vendeur' => 'Owner',
-//                    'acheteur' => 'Buyer'
-//                ]
-//            ])
+            ->add('Owner', CheckboxType::class, [
+                'label' => 'Si vous souhaitez également vendre vos végétaux cochez la case ci-dessous :',
+                'required' => false
+            ])
             ->add('lastname', TextType::class, array(
                 'constraints' => array(
                     new NotBlank())))
