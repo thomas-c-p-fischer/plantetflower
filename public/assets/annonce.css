@@ -149,6 +149,11 @@
 .green p {
   padding: 7px 17px;
 }
+
+.star {
+  width: 20px
+}
+
  h2 {
   margin: 0;
  }
@@ -215,6 +220,10 @@
 .dropdown-button {
   border: none;
   background: none;
+}
+
+.dropdown-button img {
+  width: 20px
 }
 
 .inactive {

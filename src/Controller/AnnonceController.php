@@ -16,6 +16,27 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/annonce', name: 'annonce')]
 class AnnonceController extends AbstractController
 {
+
+    //route de la page annonce
+    #[Route('/annonce/{annonceId}', name: '_afficher', requirements: ['annonceId' =>'\d+'])]
+    public function showAnnonce(AnnonceRepository $annoncesRepository, $annonceId): Response
+    {
+        // récupération de l'annonce par son Id
+        $annonce = $annoncesRepository->find($annonceId);
+        // récupération de l'id de l'auteur de l'annonce
+        $idAuthorAnnonce = $annonce->getUser()->getId();
+        // récupération des annonces de l'auteur concernant l'annonce actuel
+        $annoncesAuthor = $annoncesRepository->findBy(array('user' => $idAuthorAnnonce));
+        // total des annonces de l'auteur concernant l'annonce actuel
+        $totalAnnoncesAuthor = count($annoncesAuthor);
+
+        return $this->render('annonce/annonce.html.twig',[
+            'annonce' => $annonce,
+            'annoncesAuthor' => $annoncesAuthor,
+            'totalAnnoncesAuthor' => $totalAnnoncesAuthor
+        ]);
+    }
+
     #[Route('/ajouter', name: '_ajouter')]
     public function createAnnonce(
         Request                $request,
