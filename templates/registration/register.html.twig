@@ -35,12 +35,6 @@
                 les livraisons.
             </p>
         </div>
-        <div class="information" id="labelStatus">
-            <p>
-                Vous êtes {{ form_row(registrationForm.userCategories) }}
-            </p>
-
-        </div>
         <div class="container-status-email">
             <div class="birthday">
                 {{ form_row(registrationForm.birthday) }}
@@ -52,9 +46,9 @@
                 {{ form_row(registrationForm.nationality, {'attr': {'placeholder': 'Votre nationnalité*'}} ) }}
             </div>
         </div>
-        <div class="container-status-email">
-            <div class="status">
-
+        <div class="container-UserCategory-email">
+            <div class="UserCategory">
+                <div>{{ form_row(registrationForm.Owner) }}</div>
             </div>
             <div class="email">
                 {{ form_row(registrationForm.email, {'attr': {'placeholder': 'Votre Email*'}} ) }}

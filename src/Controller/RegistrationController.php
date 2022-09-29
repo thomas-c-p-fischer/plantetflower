@@ -57,9 +57,14 @@ class RegistrationController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $user->setAgreeTerms(true);
-            $user->setCountryOfResidence("france");
             //on ajout ici la date de creation
             $user->setCreatedAt($today);
+            //condition pour que si l'utilisateur choisi Owner alors il ne sera pas juste acheteur
+            if ($user->isOwner()){
+                $user->setPayer(false);
+            } else{
+                $user->setPayer(true);
+            }
             //hashage du mot de passe
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
