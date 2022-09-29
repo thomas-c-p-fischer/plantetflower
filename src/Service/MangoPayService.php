@@ -4,11 +4,12 @@ namespace App\Service;
 
 use App\Entity\User;
 use MangoPay;
+use MangoPay\Wallet;
+
 
 class MangoPayService
 {
     private MangoPay\MangoPayApi $mangoPayApi;
-
 
     public function __construct()
     {
@@ -20,7 +21,7 @@ class MangoPayService
 
     }
 
-
+//Methode permettant de creer un utlisateur sur MangoPay
     public function createNaturalUser($firstName, $lastName, $email)
     {
         $newUser = new \MangoPay\UserNatural();
@@ -28,10 +29,28 @@ class MangoPayService
         $newUser->FirstName = $firstName;
         $newUser->LastName = $lastName;
         $newUser->Birthday = 121271;
-        $newUser->Nationality = "GB";
+        $newUser->Nationality = 'FR';
         $newUser->CountryOfResidence = "FR";
         $result = $this->mangoPayApi->Users->Create($newUser);
         return $result->Id;
     }
 
+
+    public function recupIdMangoPay()
+    {
+        $idNaturalUser = new MangoPay\UserNatural();
+
+        return $idNaturalUser->Id;
+    }
+
+//Methode permettant de creer un wallet a un natural user
+    public function createWalletForNaturalUser($naturalUserId)
+    {
+        $Wallet = new Wallet();
+        $Wallet->Owners = array($naturalUserId);
+        $Wallet->Description = "Adrien Wallet";
+        $Wallet->Currency = "EUR";
+        $result = $this->mangoPayApi->Wallets->Create($Wallet);
+        return $result->Id;
+    }
 }

@@ -57,7 +57,6 @@ class RegistrationController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $user->setAgreeTerms(true);
-            $user->setCountryOfResidence("france");
             //on ajout ici la date de creation
             $user->setCreatedAt($today);
             //hashage du mot de passe
@@ -67,7 +66,8 @@ class RegistrationController extends AbstractController
                     $form->get('plainPassword')->getData()
                 )
             );
-            $service->createNaturalUser($user->getFirstName(), $user->getLastName(), $user->getEmail());
+            //Intégration du compte sur mangoPay et creation du wallet
+            $service->createWalletForNaturalUser($service->createNaturalUser($user->getFirstName(), $user->getLastName(), $user->getEmail()));
             // On utilise la methode generateToken() pour creer un jeton unique dans le mail de confirmation
             // puis on insère en BDD.
             $user->setToken($this->generateToken());
@@ -120,6 +120,7 @@ class RegistrationController extends AbstractController
         EntityManagerInterface     $entityManager,
         VerifyEmailHelperInterface $verifyEmailHelper,
         UserRepository             $userRepository,
+
     ): Response
     {
         $id = $request->get('id');
@@ -146,6 +147,8 @@ class RegistrationController extends AbstractController
         return $this->redirectToRoute('security_login');
 
     }
+
+
 
     /**
      * @throws Exception
