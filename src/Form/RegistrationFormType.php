@@ -22,14 +22,14 @@ class RegistrationFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('userCategories', ChoiceType::class, [
-                'label' => false,
-                'choices' => [
-                    'acheteur/vendeur' => 'Buyer',
-                    'vendeur' => 'Owner',
-                    'acheteur' => 'Buyer'
-                ]
-            ])
+//            ->add('userCategories', ChoiceType::class, [
+//                'label' => false,
+//                'choices' => [
+//                    'acheteur/vendeur' => 'Buyer',
+//                    'vendeur' => 'Owner',
+//                    'acheteur' => 'Buyer'
+//                ]
+//            ])
             ->add('lastname', TextType::class, array(
                 'constraints' => array(
                     new NotBlank())))
