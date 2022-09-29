@@ -52,7 +52,7 @@ class RegistrationController extends AbstractController
             $mangoPayApi = new MangoPayApi();
             $mangoPayApi->Config->ClientId = $_ENV['CLIENT_ID'];
             $mangoPayApi->Config->ClientPassword = $_ENV['API_KEY'];
-            $mangoPayApi->Config->TemporaryFolder = 'D:\Thomas\Dév\PhpstormProjects\plantetflower\public';
+            $mangoPayApi->Config->TemporaryFolder = 'C:\Users\mauri\PhpstormProjects\plantetflower\public';
             $mangoPayApi->Config->BaseUrl = 'https://api.sandbox.mangopay.com/';
             //initialisation de la date du jour.
             $today = new DateTimeImmutable();
@@ -87,6 +87,8 @@ class RegistrationController extends AbstractController
                 $userNatural->Nationality = $user->getNationality();
                 $userNatural->CountryOfResidence = $user->getCountryOfResidence();
                 $userNatural->TermsAndConditionsAccepted = $user->getAgreeTerms();
+                $userNatural->UserCategory = $user->getUserCategories();
+
                 $naturalUserResult = $mangoPayApi->Users->Create($userNatural);
 
                 MangoPay\Libraries\Logs::Debug('CREATED NATURAL USER', $naturalUserResult);
@@ -121,7 +123,7 @@ class RegistrationController extends AbstractController
                 $mailer->send($email);
                 return $this->redirectToRoute('app_logout');
             }
-        }catch (MangoPay\Libraries\ResponseException $e) {
+        } catch (MangoPay\Libraries\ResponseException $e) {
 
             MangoPay\Libraries\Logs::Debug('MangoPay\ResponseException Code', $e->GetCode());
             MangoPay\Libraries\Logs::Debug('Message', $e->GetMessage());
