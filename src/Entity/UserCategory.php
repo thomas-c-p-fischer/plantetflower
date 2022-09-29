@@ -16,10 +16,10 @@ class UserCategory
     private ?int $id = null;
 
     #[ORM\Column]
-    private ?bool $Payer = null;
+    private ?bool $Payer = false;
 
     #[ORM\Column]
-    private ?bool $Owner = null;
+    private ?bool $Owner = false;
 
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'userCategories')]
     private Collection $user;
