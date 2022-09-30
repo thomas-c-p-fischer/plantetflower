@@ -8,9 +8,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
+#[Route('/', name: 'security')]//utilisation des préfixes
 class SecurityController extends AbstractController
 {
-    #[Route(path: '/login', name: 'security_login')]
+    #[Route(path: '/login', name: '_login')]
     public function login(
         AuthenticationUtils $authenticationUtils,
     ): Response
@@ -27,7 +28,7 @@ class SecurityController extends AbstractController
         return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
     }
 
-    #[Route(path: '/logout', name: 'app_logout')]
+    #[Route(path: '/logout', name: '_logout')]
     public function logout(): void
     {
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
