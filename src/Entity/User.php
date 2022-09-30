@@ -99,7 +99,7 @@ class User extends \MangoPay\UserLegal implements UserInterface, PasswordAuthent
     private ?string $nationality = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $token_password = null;
+    private ?string $idWallet = null;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Annonce::class, orphanRemoval: true)]
     private Collection $annonces;
@@ -458,14 +458,14 @@ class User extends \MangoPay\UserLegal implements UserInterface, PasswordAuthent
         return $this;
     }
 
-    public function getTokenPassword(): ?string
+    public function getidWallet(): ?string
     {
-        return $this->token_password;
+        return $this->idWallet;
     }
 
-    public function setTokenPassword(?string $token_password): self
+    public function setidWallet(?string $token_password): self
     {
-        $this->token_password = $token_password;
+        $this->idWallet = $token_password;
 
         return $this;
     }

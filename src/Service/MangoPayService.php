@@ -4,7 +4,9 @@ namespace App\Service;
 
 use App\Entity\User;
 use MangoPay;
+use MangoPay\Libraries\Exception;
 use MangoPay\Wallet;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 
 class MangoPayService
@@ -17,40 +19,43 @@ class MangoPayService
         $this->mangoPayApi->Config->ClientId = $_ENV['CLIENT_ID'];
         $this->mangoPayApi->Config->ClientPassword = $_ENV['API_KEY'];
         $this->mangoPayApi->Config->BaseUrl = 'https://api.sandbox.mangopay.com';
-        $this->mangoPayApi->Config->TemporaryFolder = 'D:\Thomas\Dév\PhpstormProjects\plantetflower\public';
-
+        $this->mangoPayApi->Config->TemporaryFolder = $_ENV['TMP_PATH'];
     }
 
 //Methode permettant de creer un utlisateur sur MangoPay
-    public function createNaturalUser($firstName, $lastName, $email)
+    public function createNaturalUser(User $user)
     {
+        $mangoPayApi = $this->mangoPayApi;
         $newUser = new \MangoPay\UserNatural();
-        $newUser->Email = $email;
-        $newUser->FirstName = $firstName;
-        $newUser->LastName = $lastName;
-        $newUser->Birthday = 121271;
-        $newUser->Nationality = 'FR';
-        $newUser->CountryOfResidence = "FR";
-        $result = $this->mangoPayApi->Users->Create($newUser);
+        $newUser->Email = $user->getEmail();
+        $newUser->FirstName = $user->getFirstName();
+        $newUser->LastName = $user->getLastName();
+        $newUser->Birthday = $user->getBirthday()->getTimestamp();
+        $newUser->Nationality = $user->getNationality();
+        $newUser->CountryOfResidence = $user->getCountryOfResidence();
+        if ($user->isOwner()) {
+            $newUser->UserCategory = "Owner";
+        } else {
+            $newUser->UserCategory = "Payer";
+        }
+        $result = $mangoPayApi->Users->Create($newUser);
+        $idMangoPay = $result->Id;
+        $user->setIdMangopay($idMangoPay);
         return $result->Id;
     }
 
 
-    public function recupIdMangoPay()
-    {
-        $idNaturalUser = new MangoPay\UserNatural();
-
-        return $idNaturalUser->Id;
-    }
-
 //Methode permettant de creer un wallet a un natural user
-    public function createWalletForNaturalUser($naturalUserId)
+    public function createWalletForNaturalUser($naturalUserId, User $user)
     {
+
         $Wallet = new Wallet();
         $Wallet->Owners = array($naturalUserId);
-        $Wallet->Description = "Adrien Wallet";
+        $Wallet->Description = $user->getFirstName() . ' ' . $user->getLastName() . ' wallet' . '.';
         $Wallet->Currency = "EUR";
         $result = $this->mangoPayApi->Wallets->Create($Wallet);
+        $idWallet = $result->Id;
+        $user->setidWallet($idWallet);
         return $result->Id;
     }
 }

@@ -24,6 +24,7 @@ use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 use SymfonyCasts\Bundle\VerifyEmail\VerifyEmailHelperInterface;
 use MangoPay;
 
+
 class RegistrationController extends AbstractController
 {
 
@@ -40,12 +41,13 @@ class RegistrationController extends AbstractController
         EntityManagerInterface      $entityManager,
         MailerInterface             $mailer,
         VerifyEmailHelperInterface  $verifyEmailHelper,
-        MangoPayService             $service
+        MangoPayService             $service,
+
     ): Response
     {
         //initialisation de la date du jour.
         $today = new DateTimeImmutable();
-        $userNatural = new UserNatural();
+
 
         //Creation d'un utilisateur vide pour le set dans le form avec le handle request
         if (!$user) {
@@ -60,9 +62,9 @@ class RegistrationController extends AbstractController
             //on ajout ici la date de creation
             $user->setCreatedAt($today);
             //condition pour que si l'utilisateur choisi Owner alors il ne sera pas juste acheteur
-            if ($user->isOwner()){
+            if ($user->isOwner()) {
                 $user->setPayer(false);
-            } else{
+            } else {
                 $user->setPayer(true);
             }
             //hashage du mot de passe
@@ -70,10 +72,11 @@ class RegistrationController extends AbstractController
                 $userPasswordHasher->hashPassword(
                     $user,
                     $form->get('plainPassword')->getData()
-                )
-            );
+                ));
             //Intégration du compte sur mangoPay et creation du wallet
-            $service->createWalletForNaturalUser($service->createNaturalUser($user->getFirstName(), $user->getLastName(), $user->getEmail()));
+            $service->createWalletForNaturalUser($service->createNaturalUser($user), $user);
+
+
             // On utilise la methode generateToken() pour creer un jeton unique dans le mail de confirmation
             // puis on insère en BDD.
             $user->setToken($this->generateToken());
