@@ -19,29 +19,29 @@
                     Donnez à vos végétaux une seconde
                     vie, et achetez-en de nouveaux
                 </div>
-{#                filtre à installer#}
-{#                {{ form_start(form, {'attr': {'class': 'filtre searchProducts'}} ) }}#}
+                {#                filtre à installer #}
+                {#                {{ form_start(form, {'attr': {'class': 'filtre searchProducts'}} ) }} #}
                 <div class="bouton-searchProducts">
-{#                    {{ form_row(form.q) }}#}
+                    {#                    {{ form_row(form.q) }} #}
 
-{#                    {{ form_row(form.categories) }}#}
+                    {#                    {{ form_row(form.categories) }} #}
                     <div class='searchPrix'>
-{#                        {{ form_row(form.min) }}#}
-{#                        {{ form_row(form.max) }}#}
+                        {#                        {{ form_row(form.min) }} #}
+                        {#                        {{ form_row(form.max) }} #}
                     </div>
-{#                    <div id="slidePrix" data-min="{{ min }}" data-max="{{ max }}"></div>#}
-{#                    {{ form_row(form.shipment) }}#}
+                    {#                    <div id="slidePrix" data-min="{{ min }}" data-max="{{ max }}"></div> #}
+                    {#                    {{ form_row(form.shipment) }} #}
                     <button class="btn-searchProducts" type="submit">Filtrer</button>
                 </div>
-{#                {{ form_end(form) }}#}
+                {#                {{ form_end(form) }} #}
 
                 <div class="total-annonce">
-{#                    changer le premier total par le nombre total d'annonces affichées selon le filtre ou la pagination sélectionner#}
+                    {#                    changer le premier total par le nombre total d'annonces affichées selon le filtre ou la pagination sélectionner #}
                     {{ total }} annonces sur {{ total }}
                 </div>
                 <div class="navigation">
-{#                    pagination à installer avec kplabs#}
-{#                    {{ knp_pagination_render(annonces) }}#}
+                    {#                    pagination à installer avec kplabs #}
+                    {#                    {{ knp_pagination_render(annonces) }} #}
                 </div>
             </div>
 
@@ -53,12 +53,13 @@
                     <div class="card">
                         <a class="img-annonce-flex" href={{ path('annonce_afficher', {'annonceId': annonce.id}) }}>
                             <div class="image-annonce">
-{#                                {% for image in images %}#}
-{#                                    {% if image.annonce.id == annonce.id %}#}
-{#                                        {% set img = annonce.images[0].name %}#}
-{#                                    {% endif %}#}
-{#                                {% endfor %}#}
-                                <img src={{ asset('/uploads/annonces/' ~ img) }} class="img-orchidee" alt="Image annonce"/>
+                                {#                                {% for image in images %} #}
+                                {#                                    {% if image.annonce.id == annonce.id %} #}
+                                {#                                        {% set img = annonce.images[0].name %} #}
+                                {#                                    {% endif %} #}
+                                {#                                {% endfor %} #}
+                                <img src={{ asset('/uploads/annonces/' ~ img) }} class="img-orchidee"
+                                     alt="Image annonce"/>
                             </div>
                             <div class="card-content">
                                 <div class="align-etoile">
@@ -79,7 +80,7 @@
                                     {% endif %}
                                 </div>
                                 <p class="date-expiration">
-                                    Date d'expiration :  {{annonce.dateExpiration | date ('d/m/Y')}}
+                                    Date d'expiration : {{ annonce.dateExpiration | date ('d/m/Y') }}
                                 </p>
                             </div>
                         </a>

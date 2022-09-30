@@ -4,10 +4,10 @@ namespace App\Controller;
 
 use App\Entity\Annonce;
 use App\Entity\Image;
-use App\Form\AnnonceFormType;
+use App\Form\CreateAnnonceType;
 use App\Repository\AnnonceRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use GuzzleHttp\Psr7\Request;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,7 +18,7 @@ class AnnonceController extends AbstractController
 {
 
     //route de la page annonce
-    #[Route('/annonce/{annonceId}', name: '_afficher', requirements: ['annonceId' =>'\d+'])]
+    #[Route('/annonce/{annonceId}', name: '_afficher', requirements: ['annonceId' => '\d+'])]
     public function showAnnonce(AnnonceRepository $annoncesRepository, $annonceId): Response
     {
         // récupération de l'annonce par son Id
@@ -30,14 +30,14 @@ class AnnonceController extends AbstractController
         // total des annonces de l'auteur concernant l'annonce actuel
         $totalAnnoncesAuthor = count($annoncesAuthor);
 
-        return $this->render('annonce/annonce.html.twig',[
+        return $this->render('annonce/annonce.html.twig', [
             'annonce' => $annonce,
             'annoncesAuthor' => $annoncesAuthor,
             'totalAnnoncesAuthor' => $totalAnnoncesAuthor
         ]);
     }
 
-    #[Route('/ajouter', name: '_ajouter')]
+    #[Route('/createAnnonce', name: '_ajouter')]
     public function createAnnonce(
         Request                $request,
         EntityManagerInterface $entityManager,
@@ -45,9 +45,11 @@ class AnnonceController extends AbstractController
     {
         $annonce = new Annonce();
 
-        $form = $this->createForm(AnnonceFormType::class, $annonce);
+        // création du formulaire de la création d'une annonce
+        $form = $this->createForm(CreateAnnonceType::class, $annonce);
         $form->handleRequest($request);
 
+        // si le formulaire est envoyé et valide à la fois
         if ($form->isSubmitted() && $form->isValid()) {
             $images = $form->get('images')->getData();
             if (count($images) > 3) {
@@ -56,21 +58,23 @@ class AnnonceController extends AbstractController
                 $form->addError(new FormError("Vous devez upload au minimum 1 image"));
             }
             if ($form->isValid()) {
-                foreach ($images as $image) {
-                    $fichier = md5(uniqid()) . '.' . $image->guessExtension();
-                    //on copie le fichier dans le dossier uploads
-                    $image->move(
-                        $this->getParameter('annonces_directory'),
-                        $fichier
-                    );
-                    $img = new Image();
-                    $img->setName($fichier);
-                    $annonce->addImage($img);
-                }
+
+                // ajout des images de l'utilisateur
+//                foreach ($images as $image) {
+//                    $fichier = md5(uniqid()) . '.' . $image->guessExtension();
+//                    //on copie le fichier dans le dossier uploads
+//                    $image->move(
+//                        $this->getParameter('annonces_directory'),
+//                        $fichier
+//                    );
+//                    $img = new Image();
+//                    $img->setName($fichier);
+//                    $annonce->addImage($img);
+//                }
 
                 // récupérer les données du formulaire
                 $description = $annonce->getDescription();
-                $shipment = $annonce->isShipement();
+                $shipement = $annonce->isShipement();
                 $plantPot = $annonce->isPlantPot();
                 $preUpperVille = $annonce->getVille();
                 $postUpperVille = strtoupper($preUpperVille);
@@ -83,7 +87,7 @@ class AnnonceController extends AbstractController
                 } else {
                     $annonce->setPlantPot(false);
                 }
-                if ($shipment) {
+                if ($shipement) {
                     $annonce->setShipement(true);
                 } else {
                     $annonce->setShipement(false);
@@ -102,7 +106,7 @@ class AnnonceController extends AbstractController
                 };
                 $annonce->setUser($this->getUser());
                 $annonce->setCreatedAt(new \DateTime());
-                $annonce->setExpAdress($form->get('expAddress')->getData());
+                $annonce->setExpAdress($form->get('expAdress')->getData());
                 $annonce->setExpZipCode($form->get('expZipCode')->getData());
                 $annonce->setStatutLivraison(false);
                 $expRelID = $form->get('expRelId')->getData();
@@ -116,7 +120,8 @@ class AnnonceController extends AbstractController
                 $totalPrice = round($OriginPrice + $fixFees + $percentPrice, 3);
 
 
-                $modPrice = fmod($totalPrice, 1); //Pour obtenir le rest et déterminer l'arrondi correspondant avec les conditions ci dessous
+                $modPrice = fmod($totalPrice, 1);
+                //Pour obtenir le reste et déterminer l'arrondi correspondant avec les conditions ci-dessous
                 $preFinal = "";
 
 
@@ -132,13 +137,18 @@ class AnnonceController extends AbstractController
 
                 $entityManager->persist($annonce);
                 $entityManager->flush();
-                // do anything else you need here, like send an email
 
-                return $this->redirectToRoute("annonce_ajouter");
+                // redirection sur l'affichage de cette annonce
+                return $this->redirectToRoute("annonce_afficher",
+                    ['annonceId' => $annonce->getId()]
+                );
             }
         }
 
-        return $this->render('annonce.html.twig', compact('form', 'annonce'));
+        // redirection vers la page de création d'annonce
+        return $this->render('annonce/createAnnonce.html.twig', [
+            'CreateAnnonceForm' => $form->createView(),
+        ]);
     }
 
 
