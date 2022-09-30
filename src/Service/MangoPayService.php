@@ -12,8 +12,6 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 class MangoPayService
 {
     private MangoPay\MangoPayApi $mangoPayApi;
-    private $buyerMangoId;
-    private $sellerMangoId;
 
     public function __construct()
     {
@@ -22,10 +20,6 @@ class MangoPayService
         $this->mangoPayApi->Config->ClientPassword = $_ENV['API_KEY'];
         $this->mangoPayApi->Config->BaseUrl = 'https://api.sandbox.mangopay.com';
         $this->mangoPayApi->Config->TemporaryFolder = $_ENV['TMP_PATH'];
-
-//        $this->buyerMangoId = $this->session->get('buyer_mango_id');
-//        $this->sellerMangoId = $this->session->get('seller_mango_id');
-
     }
 
 //Methode permettant de creer un utlisateur sur MangoPay
