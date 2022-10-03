@@ -10,8 +10,6 @@ use AppVentus\MangopayBundle\Entity\UserInterface;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
-
-use MangoPay\UserNatural;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -73,8 +71,10 @@ class RegistrationController extends AbstractController
                     $user,
                     $form->get('plainPassword')->getData()
                 ));
-            //Intégration du compte sur mangoPay et creation du wallet
-            $service->createWalletForNaturalUser($service->createNaturalUser($user), $user);
+            //
+            $creationUserMangopay = $service->createNaturalUser($user);
+            //creation du wallet sur mangopay
+            $service->createWalletForNaturalUser($creationUserMangopay, $user);
 
 
             // On utilise la methode generateToken() pour creer un jeton unique dans le mail de confirmation
@@ -109,7 +109,7 @@ class RegistrationController extends AbstractController
                 ]);
             //la methode send() de la class MailerInterface permet d'envoyer un mail a l'utilisateur afin de confirmer son compte et access a la connexion.
             $mailer->send($email);
-            return $this->redirectToRoute('app_logout');
+            return $this->redirectToRoute('security_logout');
         }
 
         return $this->render('registration/register.html.twig', [
