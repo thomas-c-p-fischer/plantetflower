@@ -17,16 +17,16 @@ use Symfony\Component\Routing\Annotation\Route;
 class AnnonceController extends AbstractController
 {
 
-    //route de la page annonce
+    //  fonction pour afficher une annonce
     #[Route('/annonce/{annonceId}', name: '_afficher', requirements: ['annonceId' => '\d+'])]
-    public function showAnnonce(AnnonceRepository $annoncesRepository, $annonceId): Response
+    public function showAnnonce(AnnonceRepository $annonceRepository, $annonceId): Response
     {
         // récupération de l'annonce par son Id
-        $annonce = $annoncesRepository->find($annonceId);
+        $annonce = $annonceRepository->find($annonceId);
         // récupération de l'id de l'auteur de l'annonce
         $idAuthorAnnonce = $annonce->getUser()->getId();
         // récupération des annonces de l'auteur concernant l'annonce actuel
-        $annoncesAuthor = $annoncesRepository->findBy(array('user' => $idAuthorAnnonce));
+        $annoncesAuthor = $annonceRepository->findBy(array('user' => $idAuthorAnnonce));
         // total des annonces de l'auteur concernant l'annonce actuel
         $totalAnnoncesAuthor = count($annoncesAuthor);
 
@@ -37,6 +37,7 @@ class AnnonceController extends AbstractController
         ]);
     }
 
+    // fonction pour ajouter une annonce
     #[Route('/createAnnonce', name: '_ajouter')]
     public function createAnnonce(
         Request                $request,
@@ -153,16 +154,34 @@ class AnnonceController extends AbstractController
 
 
     //Fonction pour supprimer une annonce manuellement.
-    #[Route('/supprimer/{annonce}', name: '_supprimer')]
-    public function supprimer(
+    #[Route('/supprimer/{annonceId}', name: '_supprimer', requirements: ['annonceId' => '\d+'])]
+    public function deleteAnnonce(
+        AnnonceRepository      $annonceRepository,
         EntityManagerInterface $entityManager,
-        Annonce                $annonce,
+                               $annonceId,
     ): Response
     {
-        $entityManager->remove($annonce);
-        $entityManager->flush();
-        $this->addFlash('succes', "L'annonce a bien été supprimé");
-        return $this->redirectToRoute('annonce');
+
+        // récupération de l'annonce par son Id
+        $annonce = $annonceRepository->find($annonceId);
+
+        // si l'utilisateur est bien celui qui a créée l'annonce
+        if ($this->getUser() === $annonce->getUser()) {
+
+            // suppression de l'annonce
+            $entityManager->remove($annonce);
+            $entityManager->flush();
+            $this->addFlash('succes', "L'annonce a bien été supprimé");
+
+        } else {
+
+            $this->addFlash('error', 'Vous ne pouvez pas supprimer les annonces des autres utilisateurs');
+
+        }
+
+        // redirection vers le profil de l'utilisateur
+        return $this->redirectToRoute("user_profil",
+        );
     }
 
     // Fonction supprime automatiquement les annonces lorsque celle-ci est expirée.
