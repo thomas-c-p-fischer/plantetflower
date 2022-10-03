@@ -53,7 +53,7 @@ class User extends \MangoPay\UserLegal implements UserInterface, PasswordAuthent
     #[ORM\Column(length: 255)]
     private ?string $last_name = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 255)]
     private ?string $address = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -80,13 +80,13 @@ class User extends \MangoPay\UserLegal implements UserInterface, PasswordAuthent
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $gender = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 255)]
     private ?string $street_number = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 255)]
     private ?string $zip_code = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 255)]
     private ?string $city = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]

@@ -71,9 +71,9 @@ class RegistrationController extends AbstractController
                     $user,
                     $form->get('plainPassword')->getData()
                 ));
-            //
+            //création du natural user sur mangoPay, que l'on met dans une variable
             $creationUserMangopay = $service->createNaturalUser($user);
-            //creation du wallet sur mangopay
+            //création du wallet sur mangopay
             $service->createWalletForNaturalUser($creationUserMangopay, $user);
 
 

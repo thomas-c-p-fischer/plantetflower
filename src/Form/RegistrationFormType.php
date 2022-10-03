@@ -3,13 +3,11 @@
 namespace App\Form;
 
 use App\Entity\User;
-use App\Entity\UserCategory;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\RadioType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -31,6 +29,21 @@ class RegistrationFormType extends AbstractType
                 'constraints' => array(
                     new NotBlank())))
             ->add('firstname', TextType::class, array(
+                'constraints' => array(
+                    new NotBlank())))
+            ->add('streetNumber', TextType::class, array(
+                'constraints' => array(
+                    new NotBlank())))
+            ->add('address', TextType::class, array(
+                'constraints' => array(
+                    new NotBlank())))
+            ->add('address2', TextType::class, array(
+                'constraints' => array(
+                    new NotBlank())))
+            ->add('zipCode', TextType::class, array(
+                'constraints' => array(
+                    new NotBlank())))
+            ->add('city', TextType::class, array(
                 'constraints' => array(
                     new NotBlank())))
             ->add('countryOfResidence', ChoiceType::class, [
@@ -86,7 +99,7 @@ class RegistrationFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => User::class, UserCategory::class
+            'data_class' => User::class
         ]);
     }
 }

@@ -35,14 +35,26 @@
                 les livraisons.
             </p>
         </div>
-        <div class="container-status-email">
+        <div class="container-birthday-address-email">
             <div class="birthday">
                 {{ form_row(registrationForm.birthday) }}
             </div>
-            <div class="email">
-                {{ form_row(registrationForm.countryOfResidence, {'attr': {'placeholder': 'Votre Pays de résidence*'}} ) }}
+            <div class="street_number">
+                {{ form_row(registrationForm.streetNumber, {'label': false,'attr': {'placeholder': 'N° rue*'}} ) }}
             </div>
-            <div class="email">
+            <div class="address">
+                {{ form_row(registrationForm.address, {'label': false,'attr': {'placeholder': 'Adresse*'}} ) }}
+            </div>
+            <div class="address2">
+                {{ form_row(registrationForm.address2, {'label': false,'attr': {'placeholder': 'Complément Adresse'}} ) }}
+            </div>
+            <div class="zipcode">
+                {{ form_row(registrationForm.zipCode, {'label': false,'attr': {'placeholder': 'Code postale*'}} ) }}
+            </div>
+            <div class="country">
+                {{ form_row(registrationForm.countryOfResidence, {'label': false,'attr': {'placeholder': 'Votre pays de résidence*'}} ) }}
+            </div>
+            <div class="nationality">
                 {{ form_row(registrationForm.nationality, {'attr': {'placeholder': 'Votre nationnalité*'}} ) }}
             </div>
         </div>
