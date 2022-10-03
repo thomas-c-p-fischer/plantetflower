@@ -4,14 +4,15 @@ namespace App\Service;
 
 use App\Entity\User;
 use MangoPay;
-use MangoPay\Libraries\Exception;
+use MangoPay\BankAccountDetailsIBAN;
 use MangoPay\Wallet;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Mime\Address;
 
 
 class MangoPayService
 {
     private MangoPay\MangoPayApi $mangoPayApi;
+    private MangoPay\ApiUsers $apiUsers;
 
     public function __construct()
     {
@@ -22,7 +23,7 @@ class MangoPayService
         $this->mangoPayApi->Config->TemporaryFolder = $_ENV['TMP_PATH'];
     }
 
-//Methode permettant de creer un utlisateur sur MangoPay
+//Méthode permettant de créer un utilisateur sur MangoPay
     public function createNaturalUser(User $user)
     {
         $mangoPayApi = $this->mangoPayApi;
@@ -31,6 +32,13 @@ class MangoPayService
         $newUser->FirstName = $user->getFirstName();
         $newUser->LastName = $user->getLastName();
         $newUser->Birthday = $user->getBirthday()->getTimestamp();
+        $newUser->Nationality = $user->getNationality();
+        $newUser->Address = new MangoPay\Address();
+        $newUser->Address->AddressLine1 = $user->getAddress();
+        $newUser->Address->AddressLine2 = $user->getAddress2();
+        $newUser->Address->PostalCode = $user->getZipCode();
+        $newUser->Address->City = $user->getCity();
+        $newUser->Address->Country = $user->getCountryOfResidence();
         $newUser->Nationality = $user->getNationality();
         $newUser->CountryOfResidence = $user->getCountryOfResidence();
         if ($user->isOwner()) {
@@ -44,8 +52,7 @@ class MangoPayService
         return $result->Id;
     }
 
-
-//Methode permettant de creer un wallet a un natural user
+//Méthode permettant de créer un wallet à un natural user
     public function createWalletForNaturalUser($naturalUserId, User $user)
     {
 
@@ -56,6 +63,15 @@ class MangoPayService
         $result = $this->mangoPayApi->Wallets->Create($Wallet);
         $idWallet = $result->Id;
         $user->setidWallet($idWallet);
+        return $result->Id;
+    }
+
+    public function createBankAccount($idUserMangoPay, $iban)
+    {
+        $bankAccount = new MangoPay\BankAccount();
+        $bankAccount->Details = new BankAccountDetailsIBAN();
+        $bankAccount->Details->IBAN = $iban;
+        $result = $this->mangoPayApi->Users->CreateBankAccount($idUserMangoPay, $bankAccount);
         return $result->Id;
     }
 }

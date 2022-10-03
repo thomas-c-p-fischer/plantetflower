@@ -81,9 +81,6 @@ class User extends \MangoPay\UserLegal implements UserInterface, PasswordAuthent
     private ?string $gender = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $street_number = null;
-
-    #[ORM\Column(length: 255)]
     private ?string $zip_code = null;
 
     #[ORM\Column(length: 255)]
@@ -382,18 +379,6 @@ class User extends \MangoPay\UserLegal implements UserInterface, PasswordAuthent
     public function setGender(?string $gender): self
     {
         $this->gender = $gender;
-
-        return $this;
-    }
-
-    public function getStreetNumber(): ?string
-    {
-        return $this->street_number;
-    }
-
-    public function setStreetNumber(?string $street_number): self
-    {
-        $this->street_number = $street_number;
 
         return $this;
     }

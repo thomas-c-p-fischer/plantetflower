@@ -27,21 +27,21 @@
             </div>
         </div>
         <div class="flex-profil">
-            <div class="box1">
-                <div class="box2">
-                    <p class="message_profil">Bienvenue sur votre page de profil</p>
-                    <p class="message_text">Vous pouvez retrouver toutes les informations
-                        concernant vos achats et ventes ainsi que vos informations personnelles ci-dessous.</p>
-                    {% if app.user.status == "vendeur" or app.user.status == "acheteur/vendeur" %}
-                        {% if KycStatus =="VALIDATED" %}
-                            <div class="btn_ajout_annonce">
-                                <a href="{{ path('') }}">+ Ajouter une annonce</a>
-                            </div>
-                        {% endif %}
-                    {% endif %}
-                </div>
-            </div>
-            {% if app.user.status == "vendeur" or app.user.status == "acheteur/vendeur" %}
+{#            <div class="box1">#}
+{#                <div class="box2">#}
+{#                    <p class="message_profil">Bienvenue sur votre page de profil</p>#}
+{#                    <p class="message_text">Vous pouvez retrouver toutes les informations#}
+{#                        concernant vos achats et ventes ainsi que vos informations personnelles ci-dessous.</p>#}
+{#                    {% if app.user.owner %}#}
+{#                        {% if KycStatus == "VALIDATED" %}#}
+{#                            <div class="btn_ajout_annonce">#}
+{#                                <a href="{{ path('annonce_ajouter') }}">+ Ajouter une annonce</a>#}
+{#                            </div>#}
+{#                        {% endif %}#}
+{#                    {% endif %}#}
+{#                </div>#}
+{#            </div>#}
+            {% if app.user.owner == "vendeur" %}
                 <div class="box3">
                     <div class="message">
                         <p class="message_text">Pour accéder à la création d'annonce, il est impératif de renseigner vos
@@ -61,90 +61,90 @@
                                     }) }}
                                 </div>
                             </div>
-                            <div>
-                                {{ form_label(informationForm.BIC) }}
-                                <div class="input_bic">
-                                    {{ form_widget(informationForm.BIC, {
-                                        'attr': {
-                                            'class': 'bic',
-                                            'placeholder' : 'BIC',
-                                        },
-                                    }) }}
-                                </div>
-                            </div>
+{#                            <div>#}
+{#                                {{ form_label(informationForm.BIC) }}#}
+{#                                <div class="input_bic">#}
+{#                                    {{ form_widget(informationForm.BIC, {#}
+{#                                        'attr': {#}
+{#                                            'class': 'bic',#}
+{#                                            'placeholder' : 'BIC',#}
+{#                                        },#}
+{#                                    }) }}#}
+{#                                </div>#}
+{#                            </div>#}
                         </div>
-                        <div class="input_file">
-                            <p class="identity_text">Merci de joindre un justificatif d'identité comme votre carte
-                                d'identité, passeport ou permis de conduire<a
-                                        href='https://docs.mangopay.com/guide/guidelines-for-identity-documents'
-                                        target='_BLANK'>(voir MangoPay)</a>.</p>
-                            <p class="identity_text">La pièce d'identité doit être celle du propriétaire du compte
-                                bancaire.</p>
-                            <div class="container_KYC">
-                                <div class="img-upload identityUpload">
-                                    {{ form_row(informationForm.KYCrecto, {
-                                        "label_attr": {
-                                            'class': "btn-upload"
-                                        },
-                                        'id': "get-file"
-                                    }) }}
+{#                        <div class="input_file">#}
+{#                            <p class="identity_text">Merci de joindre un justificatif d'identité comme votre carte#}
+{#                                d'identité, passeport ou permis de conduire<a#}
+{#                                        href='https://docs.mangopay.com/guide/guidelines-for-identity-documents'#}
+{#                                        target='_BLANK'>(voir MangoPay)</a>.</p>#}
+{#                            <p class="identity_text">La pièce d'identité doit être celle du propriétaire du compte#}
+{#                                bancaire.</p>#}
+{#                            <div class="container_KYC">#}
+{#                                <div class="img-upload identityUpload">#}
+{#                                    {{ form_row(informationForm.KYCrecto, {#}
+{#                                        "label_attr": {#}
+{#                                            'class': "btn-upload"#}
+{#                                        },#}
+{#                                        'id': "get-file"#}
+{#                                    }) }}#}
 
-                                    {{ form_row(informationForm.KYCverso, {
-                                        "label_attr": {
-                                            'class': "btn-upload"
-                                        },
-                                        'id': "get-file1"
-                                    }) }}
+{#                                    {{ form_row(informationForm.KYCverso, {#}
+{#                                        "label_attr": {#}
+{#                                            'class': "btn-upload"#}
+{#                                        },#}
+{#                                        'id': "get-file1"#}
+{#                                    }) }}#}
 
-                                </div>
-                                {% if KycStatus == "TO_ASK" %}
-                                    <p class="identity-text">Vous n'avez pas encore validé votre profil.</p>
-                                {% elseif  KycStatus == "VALIDATION_ASKED" %}
-                                    <p class="identity-text">Veuillez patienter pour la validation de votre profil.</p>
-                                {% elseif KycStatus == "VALIDATED" %}
-                                    <p class="identity-text">Votre profil a été créé sur MangoPay,
-                                        vous pouvez maintenant créer des annonces en toutes sécurités sur notre
-                                        site.</p>
-                                {% elseif KycStatus == "REFUSED_DOCUMENT_NOT_ACCEPTED" %}
-                                    <p class="identity-text">Votre profil n'est pas validé. Le document reçu n'a pas été
-                                        accepté.</p>
-                                {% elseif KycStatus == "REFUSED_DOCUMENT_HAS_EXPIRED" %}
-                                    <p class="identity-text">Votre profil n'est pas validé. Le document reçu est
-                                        expiré.</p>
-                                {% elseif KycStatus == "REFUSED_DOCUMENT_INCOMPLETE" %}
-                                    <p class="identity-text">Votre profil n'est pas validé. Le document reçu est
-                                        incomplet.</p>
-                                {% elseif KycStatus == "REFUSED_DOCUMENT_MISSING" %}
-                                    <p class="identity-text">Votre profil n'est pas validé. Il vous manque un
-                                        document.</p>
-                                {% elseif KycStatus == "REFUSED_DOCUMENT_DOES_NOT_MATCH_USER_DATA" %}
-                                    <p class="identity-text">Votre profil n'est pas validé. Le document ne corresponde
-                                        pas aux données de votre profil.</p>
-                                {% elseif KycStatus == "REFUSED_SPECIFIC_CASE" %}
-                                    <p class="identity-text">Votre profil n'est pas validé. Le document reçu a été
-                                        refusé pour une cause spécifique.</p>
-                                {% elseif KycStatus == "REFUSED_DOCUMENT_FALSIFIED" %}
-                                    <p class="identity-text">Votre profil n'est pas validé. Le document reçu est
-                                        falsifié.</p>
-                                {% elseif KycStatus == "REFUSED_UNDERAGE_PERSON" %}
-                                    <p class="identity-text">Votre profil n'est pas validé. Le document reçu est d'une
-                                        personne mineure.</p>
-                                {% elseif KycStatus == "REFUSED_DOCUMENT_UNREADABLE" %}
-                                    <p class="identity-text">Votre profil n'est pas validé. Le document reçu est
-                                        illisible.</p>
-                                {% endif %}
-                                <div class="mango">{{ errorMessages }}</div>
-                                <div class="mango">{{ message }}</div>
-                                {{ form_row(informationForm.send, {
-                                    'attr': {
-                                        'class': "btnIdentity validate"
-                                    },
-                                    "attr_label": {
-                                        'class': "btn"
-                                    }
-                                }) }}
-                            </div>
-                        </div>
+{#                                </div>#}
+{#                                {% if KycStatus == "TO_ASK" %}#}
+{#                                    <p class="identity-text">Vous n'avez pas encore validé votre profil.</p>#}
+{#                                {% elseif  KycStatus == "VALIDATION_ASKED" %}#}
+{#                                    <p class="identity-text">Veuillez patienter pour la validation de votre profil.</p>#}
+{#                                {% elseif KycStatus == "VALIDATED" %}#}
+{#                                    <p class="identity-text">Votre profil a été créé sur MangoPay,#}
+{#                                        vous pouvez maintenant créer des annonces en toutes sécurités sur notre#}
+{#                                        site.</p>#}
+{#                                {% elseif KycStatus == "REFUSED_DOCUMENT_NOT_ACCEPTED" %}#}
+{#                                    <p class="identity-text">Votre profil n'est pas validé. Le document reçu n'a pas été#}
+{#                                        accepté.</p>#}
+{#                                {% elseif KycStatus == "REFUSED_DOCUMENT_HAS_EXPIRED" %}#}
+{#                                    <p class="identity-text">Votre profil n'est pas validé. Le document reçu est#}
+{#                                        expiré.</p>#}
+{#                                {% elseif KycStatus == "REFUSED_DOCUMENT_INCOMPLETE" %}#}
+{#                                    <p class="identity-text">Votre profil n'est pas validé. Le document reçu est#}
+{#                                        incomplet.</p>#}
+{#                                {% elseif KycStatus == "REFUSED_DOCUMENT_MISSING" %}#}
+{#                                    <p class="identity-text">Votre profil n'est pas validé. Il vous manque un#}
+{#                                        document.</p>#}
+{#                                {% elseif KycStatus == "REFUSED_DOCUMENT_DOES_NOT_MATCH_USER_DATA" %}#}
+{#                                    <p class="identity-text">Votre profil n'est pas validé. Le document ne corresponde#}
+{#                                        pas aux données de votre profil.</p>#}
+{#                                {% elseif KycStatus == "REFUSED_SPECIFIC_CASE" %}#}
+{#                                    <p class="identity-text">Votre profil n'est pas validé. Le document reçu a été#}
+{#                                        refusé pour une cause spécifique.</p>#}
+{#                                {% elseif KycStatus == "REFUSED_DOCUMENT_FALSIFIED" %}#}
+{#                                    <p class="identity-text">Votre profil n'est pas validé. Le document reçu est#}
+{#                                        falsifié.</p>#}
+{#                                {% elseif KycStatus == "REFUSED_UNDERAGE_PERSON" %}#}
+{#                                    <p class="identity-text">Votre profil n'est pas validé. Le document reçu est d'une#}
+{#                                        personne mineure.</p>#}
+{#                                {% elseif KycStatus == "REFUSED_DOCUMENT_UNREADABLE" %}#}
+{#                                    <p class="identity-text">Votre profil n'est pas validé. Le document reçu est#}
+{#                                        illisible.</p>#}
+{#                                {% endif %}#}
+{#                                <div class="mango">{{ errorMessages }}</div>#}
+{#                                <div class="mango">{{ message }}</div>#}
+{#                                {{ form_row(informationForm.send, {#}
+{#                                    'attr': {#}
+{#                                        'class': "btnIdentity validate"#}
+{#                                    },#}
+{#                                    "attr_label": {#}
+{#                                        'class': "btn"#}
+{#                                    }#}
+{#                                }) }}#}
+{#                            </div>#}
+{#                        </div>#}
                         {{ form_end(informationForm) }}
                     </div>
                 </div>
@@ -155,13 +155,13 @@
         <div class="box_onglets">
             {# --------------------------Onglets ------------------------- -#}
             <p class="onglets" id="informations" data-anim="1">Mes informations</p>
-            {% if (app.user.status == 'acheteur/vendeur') or (app.user.status == 'vendeur') %}
+            {% if (app.user.owner) %}
                 <p class="onglets" data-anim="2">Mes annonces</p>
             {% endif %}
             <p class="onglets" data-anim="3">
-                {% if app.user.status == 'acheteur/vendeur' %}
+                {% if app.user.owner %}
                     Mes achats et ventes
-                {% elseif app.user.status == 'acheteur' %}
+                {% elseif app.user.payer %}
                     Mes achats
                 {% else %}
                     Mes ventes
@@ -196,7 +196,12 @@
                         </div>
                         <div class="infos">
                             <p class="role">Rôle :
-                                <span class="my_info">{{ app.user.status }}</span></p>
+                                {% if app.user.owner %}
+                                <span class="my_info">{{ app.user.owner }}</span></p>
+                                {% endif %}
+                            {% if app.user.payer %}
+                                <span class="my_info">{{ app.user.payer }}</span></p>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -231,16 +236,16 @@
                         <p class="my_info">{{ app.user.email }}</p>
                     </div>
                 </div>
-                <div class="modifier_profil">
-                    <a class="btn_modifier" id="btn_modifier_profil"
-                       data-path={{ path('user_edit',{'id': app.user.id}) }} href={{ path('user_edit',{'id': app.user.id}) }}>Modifier</a>
-                </div>
+{#                <div class="modifier_profil">#}
+{#                    <a class="btn_modifier" id="btn_modifier_profil"#}
+{#                       data-path={{ path('user_edit',{'id': app.user.id}) }} href={{ path('user_edit',{'id': app.user.id}) }}>Modifier</a>#}
+{#                </div>#}
             </div>
         </div>
         {# --------------------------Mes annonces ------------------------- #}
         <div class="profil_mes_annonces" data-anim="2">
             {# Si il n'y a pas d'annonces créés par l'utilisateur #}
-            {% if (app.user.status == 'acheteur/vendeur') or (app.user.status == 'vendeur') %}
+            {% if (app.user.owner) %}
             {% if (app.user.annonces | length == 0) %}
             <p>Vous n'avez pas encore d'annonces. Pour en créer une, appuyez sur le bouton "créer une annonce" situé
                 à droite de votre photo de profil</p>
@@ -307,7 +312,7 @@
 
         {# --------------------------Mes achats------------------------- -#}
         <div class="container_mes_achats" data-anim="3">
-            {% if (app.user.status == 'acheteur/vendeur') or (app.user.status == 'acheteur') %}
+            {% if (app.user.owner) %}
                 <h2 class="titre_achat">Mes achats</h2>
                 <hr>
                 {% if app.user.myPurchases | length == 0 %}
@@ -343,7 +348,7 @@
                     </div>
                 {% endif %}
             {% endif %}
-            {% if (app.user.status == 'acheteur/vendeur') or (app.user.status == 'vendeur') %}
+            {% if (app.user.owner) %}
                 <h2 class="titre_mes_ventes">Mes ventes</h2>
                 <hr>
                 {% if app.user.mySales | length == 0 %}
@@ -367,8 +372,8 @@
                                 <div class="ventes">
                                     {% if sale.etiquette %}
                                         <p class="ventes_sections">Lien étiquette : <a href="{{ sale.etiquette }}"
-                                                                                         target='_BLANK'
-                                                                                         class="lien_etiquette"
+                                                                                       target='_BLANK'
+                                                                                       class="lien_etiquette"
                                             >Cliquez ici <br> {{ sale.expNumber }}</a></p>
                                     {% else %}
                                         <p class="ventes_sections">Remis en main propre</p>

@@ -21,27 +21,27 @@ class InformationFormType extends AbstractType
                     'class' => 'iban-text'
                 ]
             ])
-            ->add('BIC', TextType::class, [
-                'required' => false,
-                'label' => false,
-                'label_attr' => [
-                    'class' => 'bic-text'
-                ]
-            ])
-            ->add('KYCrecto', FileType::class, [
-                'required' => true,
-                'label' => "+ Recto",
-                'label_attr' => [
-                    'class' => 'btn-upload'
-                ]
-            ])
-            ->add('KYCverso', FileType::class, [
-                'required' => true,
-                'label' => "+ Verso",
-                'label_attr' => [
-                    'class' => 'btn-upload'
-                ]
-            ])
+//            ->add('BIC', TextType::class, [
+//                'required' => false,
+//                'label' => false,
+//                'label_attr' => [
+//                    'class' => 'bic-text'
+//                ]
+//            ])
+//            ->add('KYCrecto', FileType::class, [
+//                'required' => true,
+//                'label' => "+ Recto",
+//                'label_attr' => [
+//                    'class' => 'btn-upload'
+//                ]
+//            ])
+//            ->add('KYCverso', FileType::class, [
+//                'required' => true,
+//                'label' => "+ Verso",
+//                'label_attr' => [
+//                    'class' => 'btn-upload'
+//                ]
+//            ])
             ->add('send', SubmitType::class, [
                 'label' => 'Valider vos informations'
             ]);
