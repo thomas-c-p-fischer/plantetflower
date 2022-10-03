@@ -2,18 +2,11 @@
 
 {% block title %}Annonce - Plant et Flower{% endblock %}
 
+{% block js %}
+    <script defer src={{ asset('assets/Javascript/annonce.js') }}></script>
+{% endblock js %}
+
 {% block body %}
-    <div class="confirm-popup">
-        <div class="inner-popup">
-            <p>Êtes-vous sûr de vouloir supprimer l'annonce ?</p>
-            <div>
-                <div class="popup-oui">
-                    <a class="confirm-btn" href="{{ path('annonce_supprimer' , {'annonce': annonce.id}) }}">Oui</a>
-                </div>
-                <div class="popup-non"><a class="cancel-btn" href="">Non</a></div>
-            </div>
-        </div>
-    </div>
     <div class="containerAnnonce">
         <button class="return">
             <a href={{ path('home_homepage') }}>Retour</a>
@@ -76,12 +69,20 @@
                             {% if annonce.sold %}
                                 <button class="acheter" disabled>Déjà vendu</button>
                             {% elseif (app.user) and (app.user.id == annonce.user.id) %}
-                                <button class="delete-btn">Retirer l'annonce</button>
+                                <button id="delete_btn" style="cursor:pointer">Retirer l'annonce</button>
                             {% else %}
-                                <a href={{ path('payment' , {'id': annonce.id} ) }}>
-                                    <button class="acheter">Acheter</button>
-                                </a>
+                                {#                                <a href={{ path('payment' , {'id': annonce.id} ) }}> #}
+                                <button class="acheter">Acheter</button>
+                                {#                                </a> #}
                             {% endif %}
+                        </div>
+                        <div id="confirm_delete">
+                            <p>Êtes-vous sûr de vouloir supprimer l'annonce ?</p>
+                            <div class="container-confirm_answer">
+                                <a id="answer-delete_yes"
+                                   href="{{ path('annonce_supprimer' , {'annonceId': annonce.id}) }}">Oui</a>
+                                <a id="answer-delete_no" href="">Non</a>
+                            </div>
                         </div>
                     </div>
                 </div>

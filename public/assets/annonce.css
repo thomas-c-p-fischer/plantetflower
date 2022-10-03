@@ -252,58 +252,43 @@
 .description1 {
   display: none;
 }
-.confirm-popup {
-  height: 40vh;
-  width: 100vh;
-  margin-left: auto;
-margin-right: auto;
-left: 0;
-right: 0;
-  text-align: center;
-  margin-top: 30vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 20px;
-  background-color: #fff56e;
-position: absolute;
-visibility: hidden;
+
+#confirm_delete {
+  display: none;
 }
 
-.inner-popup div {
+#confirm_delete p {
   display: flex;
   justify-content: center;
-  gap: 5%;
+  margin: 30px 0 30px;
 }
 
-.inner-popup div div a {
+.container-confirm_answer {
+  display: flex;
+  flex-direction: row;
   text-decoration: none;
-  color: white;
+  justify-content: space-evenly;
 }
 
-.popup-oui {
-  background-color: red;
-  width: 50px;
+.container-confirm_answer a {
+  width: 100px;
   border-radius: 5px;
   height: 30px;
   display: flex;
+  justify-content: center;
   align-items: center;
+  color: white;
+  margin-bottom: 30px;
 }
 
-.popup-non {
+#answer-delete_yes {
+  background-color: red;
+}
+
+#answer-delete_no {
   background-color: green;
-  width: 50px;
-  border-radius: 5px;
-  display: flex;
-  align-items: center;
 }
 
-.inner-popup {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-
-}
 @media only screen and (max-width: 768px) {
   .bigImage {
     grid-column: 1 / span 3;
