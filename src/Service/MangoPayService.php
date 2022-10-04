@@ -6,13 +6,13 @@ use App\Entity\User;
 use MangoPay;
 use MangoPay\BankAccountDetailsIBAN;
 use MangoPay\Wallet;
-use Symfony\Component\Mime\Address;
 
 
 class MangoPayService
 {
     private MangoPay\MangoPayApi $mangoPayApi;
-    private MangoPay\ApiUsers $apiUsers;
+    private $apiUsers;
+
 
     public function __construct()
     {
@@ -41,6 +41,9 @@ class MangoPayService
         $newUser->Address->Country = $user->getCountryOfResidence();
         $newUser->Nationality = $user->getNationality();
         $newUser->CountryOfResidence = $user->getCountryOfResidence();
+        if ($user->getAgreeTerms()) {
+            $newUser->TermsAndConditionsAccepted = true;
+        }
         if ($user->isOwner()) {
             $newUser->UserCategory = "Owner";
         } else {
@@ -66,12 +69,25 @@ class MangoPayService
         return $result->Id;
     }
 
-    public function createBankAccount($idUserMangoPay, $iban)
+
+    public function createBankAccount(User $user, $iban)
     {
+        $idMangoPay = $user->getIdMangopay();
         $bankAccount = new MangoPay\BankAccount();
+        $bankAccount->Type = 'IBAN';
         $bankAccount->Details = new BankAccountDetailsIBAN();
         $bankAccount->Details->IBAN = $iban;
-        $result = $this->mangoPayApi->Users->CreateBankAccount($idUserMangoPay, $bankAccount);
-        return $result->Id;
+        $bankAccount->OwnerAddress = new MangoPay\Address();
+        $bankAccount->OwnerAddress->AddressLine1 = $user->getAddress();
+        $bankAccount->OwnerAddress->PostalCode = $user->getZipCode();
+        $bankAccount->OwnerAddress->City = $user->getCity();
+        $bankAccount->OwnerAddress->Country = $user->getCountryOfResidence();
+        $bankAccount->UserId = $idMangoPay;
+        $bankAccount->OwnerName = $user->getLastName() . ' ' . $user->getFirstName();
+
+        return $this->mangoPayApi->Users->CreateBankAccount($idMangoPay, $bankAccount);
+
+
     }
+
 }
