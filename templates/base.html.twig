@@ -74,7 +74,7 @@
             {% if app.user %}
                 <ul class="nav-list" id="navi-list-profil">
                     <li class="list-item2">
-                        <a href={{ path('user_profil') }}>Profil</a>
+                        <a href={{ path('user_profil',{'id' : app.user.id }) }}>Profil</a>
                     </li>
                     <li class="list-item2">
                         <a href={{ path('security_logout') }}>Déconnexion</a>
