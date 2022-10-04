@@ -13,7 +13,6 @@ class MangoPayService
     private MangoPay\MangoPayApi $mangoPayApi;
     private $apiUsers;
 
-
     public function __construct()
     {
         $this->mangoPayApi = new MangoPay\MangoPayApi();
@@ -69,7 +68,7 @@ class MangoPayService
         return $result->Id;
     }
 
-
+//Methode permettant d'ajouter un compte bancaire au compte mangoPay associé.
     public function createBankAccount(User $user, $iban)
     {
         $idMangoPay = $user->getIdMangopay();
@@ -87,7 +86,17 @@ class MangoPayService
 
         return $this->mangoPayApi->Users->CreateBankAccount($idMangoPay, $bankAccount);
 
+    }
 
+    //Methode permentant d'ajouter un KYC created.
+    public function createKYCDocument(User $user, $document)
+    {
+        $mangoPayIdUser = $user->getIdMangopay();
+        $KYC = new MangoPay\KycDocument();
+        $KYC->UserId = $mangoPayIdUser;
+        $KYC->Type = $document;
+
+        return $this->mangoPayApi->Users->CreateKycDocument($mangoPayIdUser, $KYC);
     }
 
 }

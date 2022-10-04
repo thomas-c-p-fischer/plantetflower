@@ -6,6 +6,7 @@ namespace App\Controller;
 use App\Form\InformationFormType;
 use App\Repository\UserRepository;
 use App\Service\MangoPayService;
+use MangoPay\KycDocumentType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,20 +24,24 @@ class UserProfilController extends AbstractController
         Request         $request,
         MangoPayService $service,
         UserRepository  $userRepository,
-
-
     ): Response
     {
 
+        //Recuperation de l'utilisateur connecté par son Email.
         $mail = $this->getUser()->getUserIdentifier();
+        $userConnect = $userRepository->findOneBy(['email' => $mail]);
+        //Creation du formulaire d'ajout d'IBAN.
         $informationForm = $this->createForm(InformationFormType::class);
         $informationForm->handleRequest($request);
+        //Recuperation de la donnée sans stockage en BDD
         $iban = $informationForm['IBAN']->getData();
-        $userConnect = $userRepository->findOneBy(['email' => $mail]);
+        $document = KycDocumentType::IdentityProof;
         if ($informationForm->isSubmitted() && $informationForm->isValid()) {
+            //Si le formulaire est valide, alors on utilise la methode du service pour ajouter l'iban au compte mangopay associé par l'id.
             $service->createBankAccount($userConnect, $iban);
+            //Utilisation de la methode du service pour creer des KYC documents.
+            $service->createKYCDocument($userConnect, $document);
         }
-
         return $this->renderform('user_profil/userProfil.html.twig', compact('informationForm', 'mail'));
     }
 
