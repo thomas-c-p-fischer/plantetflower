@@ -7,7 +7,6 @@ use MangoPay;
 use MangoPay\BankAccountDetailsIBAN;
 use MangoPay\Wallet;
 
-
 class MangoPayService
 {
     private MangoPay\MangoPayApi $mangoPayApi;
@@ -85,10 +84,9 @@ class MangoPayService
         $bankAccount->OwnerName = $user->getLastName() . ' ' . $user->getFirstName();
 
         return $this->mangoPayApi->Users->CreateBankAccount($idMangoPay, $bankAccount);
-
     }
 
-    //Methode permentant d'ajouter un KYC created.
+    //Methode permettant d'ajouter un KYC created.
     public function createKYCDocument(User $user, $document)
     {
         $mangoPayIdUser = $user->getIdMangopay();
@@ -98,5 +96,13 @@ class MangoPayService
 
         return $this->mangoPayApi->Users->CreateKycDocument($mangoPayIdUser, $KYC);
     }
+
+    public function createKYCPage(User $user, $document, $file)
+    {
+        $mangoPayIdUser = $user->getIdMangopay();
+
+        return $this->mangoPayApi->Users->CreateKycPageFromFile($mangoPayIdUser, $document, $file);
+    }
+
 
 }
