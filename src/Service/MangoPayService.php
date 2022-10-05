@@ -7,11 +7,13 @@ use MangoPay;
 use MangoPay\BankAccountDetailsIBAN;
 use MangoPay\Wallet;
 
+
 class MangoPayService
 {
     private MangoPay\MangoPayApi $mangoPayApi;
     private $apiUsers;
 
+    //Construteur qui sert a l'initialisation de l'api. les "$_ENV" sont les elements a completer dans le .env.local.
     public function __construct()
     {
         $this->mangoPayApi = new MangoPay\MangoPayApi();
@@ -19,6 +21,7 @@ class MangoPayService
         $this->mangoPayApi->Config->ClientPassword = $_ENV['API_KEY'];
         $this->mangoPayApi->Config->BaseUrl = 'https://api.sandbox.mangopay.com';
         $this->mangoPayApi->Config->TemporaryFolder = $_ENV['TMP_PATH'];
+
     }
 
 //Méthode permettant de créer un utilisateur sur MangoPay
@@ -94,15 +97,31 @@ class MangoPayService
         $KYC->UserId = $mangoPayIdUser;
         $KYC->Type = $document;
 
-        return $this->mangoPayApi->Users->CreateKycDocument($mangoPayIdUser, $KYC);
+        $result = $this->mangoPayApi->Users->CreateKycDocument($mangoPayIdUser, $KYC);
+        return $result->Id;
     }
 
-    public function createKYCPage(User $user, $document, $file)
+
+    public function createKYCPage(User $user, $KYCDocumentId, $recto, $verso)
     {
-        $mangoPayIdUser = $user->getIdMangopay();
+        $userId = $user->getIdMangopay();
+        $KYCPage = new \MangoPay\KycPage();
+        $KYCPage->File = $recto;
+        $KYCPage->File .= $verso;
 
-        return $this->mangoPayApi->Users->CreateKycPageFromFile($mangoPayIdUser, $document, $file);
+        $rectoPage = $this->mangoPayApi->Users->CreateKycPageFromFile($userId, $KYCDocumentId, $recto);
+        $versoPage = $this->mangoPayApi->Users->CreateKycPageFromFile($userId, $KYCDocumentId, $verso);
+
+
+        return $KYCDocumentId;
     }
 
-
+    public function submitKYCDocument(User $user, $KYCDocId)
+    {
+        $userId = $user->getIdMangopay();
+        $KYCDocument = new \MangoPay\KycDocument();
+        $KYCDocument->Id = $KYCDocId;
+        $KYCDocument->Status = \MangoPay\KycDocumentStatus::ValidationAsked; // VALIDATION_ASKED
+        return $this->mangoPayApi->Users->UpdateKycDocument($userId, $KYCDocument);
+    }
 }
