@@ -7,13 +7,12 @@ use MangoPay;
 use MangoPay\BankAccountDetailsIBAN;
 use MangoPay\Wallet;
 
-
 class MangoPayService
 {
     private MangoPay\MangoPayApi $mangoPayApi;
     private $apiUsers;
 
-    //Construteur qui sert a l'initialisation de l'api. les "$_ENV" sont les elements a completer dans le .env.local.
+    //Construteur qui sert a l'initialisation de l'api. les "$_ENV" sont les élèments a compléter dans le .env.local.
     public function __construct()
     {
         $this->mangoPayApi = new MangoPay\MangoPayApi();
@@ -101,7 +100,6 @@ class MangoPayService
         return $result->Id;
     }
 
-
     public function createKYCPage(User $user, $KYCDocumentId, $recto, $verso)
     {
         $userId = $user->getIdMangopay();
@@ -111,7 +109,6 @@ class MangoPayService
 
         $rectoPage = $this->mangoPayApi->Users->CreateKycPageFromFile($userId, $KYCDocumentId, $recto);
         $versoPage = $this->mangoPayApi->Users->CreateKycPageFromFile($userId, $KYCDocumentId, $verso);
-
 
         return $KYCDocumentId;
     }
