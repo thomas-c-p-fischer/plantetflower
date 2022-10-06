@@ -137,26 +137,26 @@
                         {{ form_end(informationForm) }}
                     </div>
                 </div>
-                {% endif %}
-            </div>
+            {% endif %}
         </div>
-        <div class="container_onglets_profil">
-            <div class="box_onglets">
-                {# --------------------------Onglets ------------------------- -#}
-                <p class="onglets" id="informations" data-anim="1">Mes informations</p>
-                {% if (app.user.owner) %}
-                    <p class="onglets" data-anim="2">Mes annonces</p>
+    </div>
+    <div class="container_onglets_profil">
+        <div class="box_onglets">
+            {# --------------------------Onglets ------------------------- -#}
+            <p class="onglets" id="informations" data-anim="1">Mes informations</p>
+            {% if (app.user.owner) %}
+                <p class="onglets" data-anim="2">Mes annonces</p>
+            {% endif %}
+            <p class="onglets" data-anim="3">
+                {% if app.user.owner %}
+                    Mes achats et ventes
+                {% elseif app.user.payer %}
+                    Mes achats
+                {% else %}
+                    Mes ventes
                 {% endif %}
-                <p class="onglets" data-anim="3">
-                    {% if app.user.owner %}
-                        Mes achats et ventes
-                    {% elseif app.user.payer %}
-                        Mes achats
-                    {% else %}
-                        Mes ventes
-                    {% endif %}
-                </p>
-            </div>
+            </p>
+        </div>
 
             {# --------------------------Contenus -------------------------- #}
 
