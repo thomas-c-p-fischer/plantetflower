@@ -7,6 +7,8 @@ use App\Entity\Image;
 use App\Form\CreateAnnonceType;
 use App\Form\PaiementFormType;
 use App\Repository\AnnonceRepository;
+
+use App\Service\UploadService;
 use App\Repository\UserRepository;
 use App\Service\MangoPayService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -45,37 +47,41 @@ class AnnonceController extends AbstractController
     public function createAnnonce(
         Request                $request,
         EntityManagerInterface $entityManager,
+        UploadService          $uploadService,
     ): Response
     {
         $annonce = new Annonce();
-
+        $monImage = new Image();
         // création du formulaire de la création d'une annonce
         $form = $this->createForm(CreateAnnonceType::class, $annonce);
         $form->handleRequest($request);
 
         // si le formulaire est envoyé et valide à la fois
         if ($form->isSubmitted() && $form->isValid()) {
+            // On récupère les images transmises
             $images = $form->get('images')->getData();
-            if (count($images) > 3) {
-                $form->addError(new FormError("Trop d'images"));
-            } elseif (count($images) < 1) {
-                $form->addError(new FormError("Vous devez upload au minimum 1 image"));
-            }
-            if ($form->isValid()) {
 
-                // ajout des images de l'utilisateur
-//                foreach ($images as $image) {
-//                    $fichier = md5(uniqid()) . '.' . $image->guessExtension();
-//                    //on copie le fichier dans le dossier uploads
-//                    $image->move(
-//                        $this->getParameter('annonces_directory'),
-//                        $fichier
-//                    );
-//                    $img = new Image();
-//                    $img->setName($fichier);
-//                    $annonce->addImage($img);
-//                }
+            // On boucle sur les images
+            foreach ($images as $image) {
+                // On génère un nouveau nom de fichier
+                $fichier = md5(uniqid()) . '.' . $image->guessExtension();
 
+                // On copie le fichier dans le dossier uploads
+                $image->move(
+                    $this->getParameter('images_directory'),
+                    $fichier
+                );
+
+                // On crée l'image dans la base de données
+                $img = new Image();
+                $img->setName($fichier);
+                $annonce->addImage($img);
+
+                if (count($images) > 3) {
+                    $form->addError(new FormError("Trop d'images"));
+                } elseif (count($images) < 1) {
+                    $form->addError(new FormError("Vous devez upload au minimum 1 image"));
+                }
                 // récupérer les données du formulaire
                 $description = $annonce->getDescription();
                 $shipement = $annonce->isShipement();
@@ -144,14 +150,17 @@ class AnnonceController extends AbstractController
 
                 // redirection sur l'affichage de cette annonce
                 return $this->redirectToRoute("annonce_afficher",
-                    ['annonceId' => $annonce->getId()]
-                );
+                    ['annonceId' => $annonce->getId(),
+                        'img' => $img,
+                    ]);
             }
         }
 
         // redirection vers la page de création d'annonce
         return $this->render('annonce/createAnnonce.html.twig', [
             'CreateAnnonceForm' => $form->createView(),
+
+
         ]);
     }
 
@@ -243,3 +252,6 @@ class AnnonceController extends AbstractController
         return $this->render("annonce/annoncePaiement.html.twig");
     }
 }
+
+
+

@@ -82,7 +82,7 @@ class Annonce
     #[ORM\Column(length: 255)]
     private ?string $status = null;
 
-    #[ORM\OneToMany(mappedBy: 'annonce_id', targetEntity: Image::class)]
+    #[ORM\OneToMany(mappedBy: 'annonce_id', targetEntity: Image::class, cascade: ['persist'])]
     private Collection $images;
 
     #[ORM\ManyToOne(inversedBy: 'annonces')]

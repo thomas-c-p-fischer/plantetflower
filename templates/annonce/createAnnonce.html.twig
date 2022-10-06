@@ -15,13 +15,14 @@
         <div class="container-total_block">
             <div class="container-left_block">
                 <div class="add_img">
-                    {#            {{ form_row(CreateAnnonceForm.images, { #}
-                    {#                'label': '+ Ajoutez vos photos', #}
-                    {#                'attr': { #}
-                    {#                  'class': 'input', #}
-                    {#                }, #}
-                    {#                'id': "get-file" #}
-                    {#            })}} #}
+                    {#                    {{ for image in images }} #}
+                    {#                    {{ form_row(CreateAnnonceForm.image, { #}
+                    {#                        'label': '+ Ajoutez vos photos', #}
+                    {#                        'attr': { #}
+                    {#                            'class': 'input', #}
+                    {#                        }, #}
+                    {#                        'id': "get-file" #}
+                    {#                    }) }} #}
                 </div>
                 <div class="add_img_txt">
                     Ajouter jusqu'à 3 photos. (1 photo minimum est obligatoire pour vendre
@@ -142,7 +143,7 @@
                         <div class="modeFlex">
                             <input type="radio" name="mode" id="mode" class="input checked">
                             <img id="img_mondial_relay" class="img_mondial_relay"
-                                 src="{{ asset('media/img/mondialRelay.png') }}" alt="Logo Mondial Relay"></img>
+                                 src="{{ asset('media/img/mondialRelay.png') }}" alt="Logo Mondial Relay">
                             <p class="mode">Mondial Relay</p>
                         </div>
                         <div class="container-mondial_relay_widget">

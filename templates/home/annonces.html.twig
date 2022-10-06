@@ -48,18 +48,14 @@
             {# Fin bannière #}
             <div class="contenuProducts">
 
-                {% set img = '' %}
+
                 {% for annonce in annonces %}
                     <div class="card">
                         <a class="img-annonce-flex" href={{ path('annonce_afficher', {'annonceId': annonce.id}) }}>
                             <div class="image-annonce">
-                                {#                                {% for image in images %} #}
-                                {#                                    {% if image.annonce.id == annonce.id %} #}
-                                {#                                        {% set img = annonce.images[0].name %} #}
-                                {#                                    {% endif %} #}
-                                {#                                {% endfor %} #}
-                                <img src={{ asset('/uploads/annonces/' ~ img) }} class="img-orchidee"
-                                     alt="Image annonce"/>
+                                {% for image in annonce.images %}
+                                    <img src="{{ asset('/uploads/'~ image.name) }}" alt="Image annonce"/>
+                                {% endfor %}
                             </div>
                             <div class="card-content">
                                 <div class="align-etoile">
