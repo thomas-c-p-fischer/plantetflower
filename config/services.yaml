@@ -7,7 +7,7 @@ parameters:
   CLIENT_ID: '%env(CLIENT_ID)%'
   API_KEY: '%env(API_KEY)%'
   TMP_PATH: '%env(TMP_PATH)'
-  kyc_directory: '%kernel.project_dir%/public/uploads'
+  images_directory: '%kernel.project_dir%/public/uploads'
 
 
 services:
@@ -30,4 +30,4 @@ services:
   # please note that last definitions always *replace* previous ones
   App\Service\UploadService:
     arguments:
-      $targetDirectory: '%kyc_directory%'
+      $targetDirectory: '%images_directory%'
