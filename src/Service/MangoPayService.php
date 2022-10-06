@@ -101,6 +101,8 @@ class MangoPayService
         return $result->Id;
     }
 
+
+    //Methode pour créer un KYC et lui attribuer le statut "CREATED" indispensable pour la suite.
     public function createKYCPage(User $user, $KYCDocumentId, $recto, $verso)
     {
         $userId = $user->getIdMangopay();
@@ -108,12 +110,14 @@ class MangoPayService
         $KYCPage->File = $recto;
         $KYCPage->File .= $verso;
 
-        $rectoPage = $this->mangoPayApi->Users->CreateKycPageFromFile($userId, $KYCDocumentId, $recto);
-        $versoPage = $this->mangoPayApi->Users->CreateKycPageFromFile($userId, $KYCDocumentId, $verso);
+        $this->mangoPayApi->Users->CreateKycPageFromFile($userId, $KYCDocumentId, $recto);
+        $this->mangoPayApi->Users->CreateKycPageFromFile($userId, $KYCDocumentId, $verso);
 
         return $KYCDocumentId;
     }
 
+    //Cette methode est reliée à celle du dessus. Lorsque l'utilisateur insérer ses pieces justificative lors de la creation, la methode ci-dessous
+    //Envoie ces derniers à mangoPay et passe sous le statut "VALIDATION ASKED". MangoPay se charge de les verifier et de les accepter s'ils sont valides.
     public function submitKYCDocument(User $user, $KYCDocId)
     {
         $userId = $user->getIdMangopay();
@@ -123,6 +127,7 @@ class MangoPayService
         return $this->mangoPayApi->Users->UpdateKycDocument($userId, $KYCDocument);
     }
 
+    //Methode de Thomas.
     public function payIn(User $user, $cardNumber, $expirationDate, $cvc)
     {
         $mangoPayApi = $this->mangoPayApi;
@@ -131,16 +136,43 @@ class MangoPayService
         $card->UserId = $userId;
         $card->Currency = "EUR";
         $card->CardType = "CB_VISA_MASTERCARD";
-        $cardRegister= $this->mangoPayApi->CardRegistrations->Create($card);
+        $cardRegister = $this->mangoPayApi->CardRegistrations->Create($card);
         $updatedCardRegister = $mangoPayApi->CardRegistrations->Update($cardRegister);
         if ($updatedCardRegister->Status != MangoPay\CardRegistrationStatus::Validated
-            || !isset($updatedCardRegister->CardId))
-        {
+            || !isset($updatedCardRegister->CardId)) {
             die('<div style="color:red;">La carte n\'est pas reconnue. Le paiement n\'a pas eu lieu.<div>');
         }
 
         $cardProperties = $cardRegister->GetReadOnlyProperties();
         $validatedCard = $mangoPayApi->Cards->Get($updatedCardRegister->CardId);
 
+    }
+
+//Methode pour l'enregistrement de la carte.
+    public function registrationCard(User $user)
+    {
+        $idMangoPayUser = $user->getIdMangopay();
+        $card = new MangoPay\CardRegistration();
+        $card->UserId = $idMangoPayUser;
+        $card->CardType = "CB_VISA_MASTERCARD";
+        $card->Currency = 'EUR';
+        $card->Status = MangoPay\CardRegistrationStatus::Validated;
+        if ($card->Status != \MangoPay\CardRegistrationStatus::Validated || !isset($card->CardId)) {
+            die('<div style="color:red;">"Le paiement n\'a pas été accepté. Vérifier votre carte"<div>');
+        } else {
+            $cardCreated = $this->mangoPayApi->CardRegistrations->Create($card);
+            $_SESSION['cardRegisterId'] = $cardCreated->Id;
+        }
+        return $cardCreated;
+
+    }
+
+    public function createPayInForUserByWallet(User $user)
+    {
+        $IdWalletUser = $user->getidWallet();
+        $registrationCard = $this->mangoPayApi->CardRegistrations->Get($_SESSION['cardRegisterId']);
+        $registrationCard->PreregistrationData = "data=" . $_GET["data"];
+        $registrationCard->AccessKey = "acceskey=" . $_GET['accessKeyRef'];
+        $registrationCard->CardRegistrationURL = $this->mangoPayApi->Config->BaseUrl;
     }
 }
