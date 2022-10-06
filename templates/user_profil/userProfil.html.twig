@@ -137,26 +137,26 @@
                         {{ form_end(informationForm) }}
                     </div>
                 </div>
-            {% endif %}
-        </div>
-    </div>
-    <div class="container_onglets_profil">
-        <div class="box_onglets">
-            {# --------------------------Onglets ------------------------- -#}
-            <p class="onglets" id="informations" data-anim="1">Mes informations</p>
-            {% if (app.user.owner) %}
-                <p class="onglets" data-anim="2">Mes annonces</p>
-            {% endif %}
-            <p class="onglets" data-anim="3">
-                {% if app.user.owner %}
-                    Mes achats et ventes
-                {% elseif app.user.payer %}
-                    Mes achats
-                {% else %}
-                    Mes ventes
                 {% endif %}
-            </p>
+            </div>
         </div>
+        <div class="container_onglets_profil">
+            <div class="box_onglets">
+                {# --------------------------Onglets ------------------------- -#}
+                <p class="onglets" id="informations" data-anim="1">Mes informations</p>
+                {% if (app.user.owner) %}
+                    <p class="onglets" data-anim="2">Mes annonces</p>
+                {% endif %}
+                <p class="onglets" data-anim="3">
+                    {% if app.user.owner %}
+                        Mes achats et ventes
+                    {% elseif app.user.payer %}
+                        Mes achats
+                    {% else %}
+                        Mes ventes
+                    {% endif %}
+                </p>
+            </div>
 
             {# --------------------------Contenus -------------------------- #}
 
@@ -249,15 +249,15 @@
                                     <div class="">
                                         <p class="titre_annonce">{{ annonce.title }}</p>
                                         <div>
-                                            <a href={{ path('annonce_editer', {'id': annonce.id}) }}><i
+                                            <a href={{ path('home_annonces', {'id': annonce.id}) }}><i
                                                         class="fa-solid fa-pen pen"></i></a>
-                                            <a href={{ path('annonce_supprimer', {'id': annonce.id }) }}><i
-                                                        class="fa-solid fa-trash icon"></i></a>
+                                            {#                                            <a href={{ path('annonce_supprimer', {'id': annonce.id }) }}><i #}
+                                            {#                                                        class="fa-solid fa-trash icon"></i></a> #}
                                         </div>
                                     </div>
                                     <p class="prix_annonce">{{ annonce.priceTotal }} €</p>
                                     <div class="mode_livraison_annonce">
-                                        {% if annonce.shipment %}
+                                        {% if annonce.shipement %}
                                             <p class="livraison">Livraison possible</p>
                                         {% else %}
                                             <p class="livraison">Livraison impossible</p>
@@ -274,10 +274,10 @@
                                     <div class="flex">
                                         <p class="titre_annonce">{{ annonce.title }}</p>
                                         <div>
-                                            <a href={{ path('annonce_editer', {'id': annonce.id}) }}><i
+                                            <a href={{ path('home_annonces', {'id': annonce.id}) }}><i
                                                         class="fa-solid fa-pen pen"></i></a>
-                                            <a href={{ path('annonce_supprimer', {'id': annonce.id }) }}><i
-                                                        class="fa-solid fa-trash icon"></i></a>
+                                            {#                                            <a href={{ path('annonce_supprimer', {'id': annonce.id }) }}><i #}
+                                            {#                                                        class="fa-solid fa-trash icon"></i></a> #}
                                         </div>
                                     </div>
                                     <p class="prix_annonce">{{ annonce.priceTotal }} €</p>

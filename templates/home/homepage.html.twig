@@ -90,7 +90,7 @@
             <div id="slideshow">
                 <div id="slides">
                     {% for lastannonce in lastAnnonces %}
-                        //Boucle pour afficher les images associées a son annonces
+                        {# Boucle pour afficher les images associées a son annonces #}
                         {% if lastannonce.sold == false %}
                             <div class="item" data-ref={{ lastannonce.id }}>
                                 <a href={{ path('home_annonces', {'id': lastannonce.id}) }}>
