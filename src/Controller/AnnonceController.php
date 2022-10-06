@@ -221,4 +221,30 @@ class AnnonceController extends AbstractController
             }
         }
     }
+    
+    #[Route('/paiement/{annonceId}', name: '_paiement')]
+    public function paiement(
+        Request         $request,
+        MangoPayService $service,
+        UserRepository $userRepository
+    ): Response
+    {
+        //Récupération de l'utilisateur connecté par son Email.
+        $mail = $this->getUser()->getUserIdentifier();
+        $userConnect = $userRepository->findOneBy(['email' => $mail]);
+        //Création du formulaire de paiement
+        $form = $this->createForm(PaiementFormType::class);
+        $form->handleRequest($request);
+        //Récupération des différentes données de la carte de paiement sans stockage en BDD
+        $numeroCarte = $form['cardNumber']->getData();
+        $dateExpiration = $form['expirationDate']->getData();
+        $cvc = $form['CVC']->getData();
+        //Si le formulaire est soumis et qu'il est valide alors on fait appelle aux fonctions de paiement
+        if ($form->isSubmitted() && $form->isValid())
+        {
+
+        }
+
+        return $this->render("annonce/annoncePaiement.html.twig");
+    }
 }
