@@ -5,9 +5,6 @@ namespace App\Controller;
 use App\Form\InformationFormType;
 use App\Repository\UserRepository;
 use App\Service\MangoPayService;
-use App\Service\UploadService;
-use EasyCorp\Bundle\EasyAdminBundle\Form\Type\FileUploadType;
-use MangoPay\KycDocumentStatus;
 use MangoPay\KycDocumentType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,7 +19,6 @@ class UserProfilController extends AbstractController
         Request         $request,
         MangoPayService $service,
         UserRepository  $userRepository,
-        UploadService   $uploadService
     ): Response
     {
 
@@ -36,8 +32,6 @@ class UserProfilController extends AbstractController
         $iban = $informationForm['IBAN']->getData();
         $document = KycDocumentType::IdentityProof;
         if ($informationForm->isSubmitted() && $informationForm->isValid()) {
-
-
             //Si le formulaire est valide, alors on utilise la méthode du service pour ajouter l'iban au compte mangopay associé par l'id.
             $service->createBankAccount($userConnect, $iban);
             //Utilisation de la méthode du service pour créer des KYC documents.

@@ -5,8 +5,12 @@ namespace App\Controller;
 use App\Entity\Annonce;
 use App\Entity\Image;
 use App\Form\CreateAnnonceType;
+use App\Form\PaiementFormType;
 use App\Repository\AnnonceRepository;
+
 use App\Service\UploadService;
+use App\Repository\UserRepository;
+use App\Service\MangoPayService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -221,7 +225,7 @@ class AnnonceController extends AbstractController
             }
         }
     }
-    
+
     #[Route('/paiement/{annonceId}', name: '_paiement')]
     public function paiement(
         Request         $request,
@@ -248,3 +252,6 @@ class AnnonceController extends AbstractController
         return $this->render("annonce/annoncePaiement.html.twig");
     }
 }
+
+
+
