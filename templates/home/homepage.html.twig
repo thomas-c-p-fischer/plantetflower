@@ -34,18 +34,15 @@
 
             {# Fin bannière #}
             <div class="contenu" id="annonce">
-                {% set img = '' %}
                 {% for annonce in annonces %}
                     <div class="card">
                         <a class="img-annonce-flex" href={{ path('home_annonces', {'id': annonce.id}) }}>
                             <div class="image-annonce">
-                                {% for image in images %}
-                                    {% if image.annonceId.id == annonce.id %}
-                                        {% set img = annonce.images[0].name %}
-                                    {% endif %}
+                                {% for image in annonce.images %}
+                                    <img src="{{ asset('/uploads/' ~ image.name) }}" class="img-orchidee"
+                                         alt="Image annonce"/>
                                 {% endfor %}
-                                <img src={{ asset('/uploads/annonces/' ~ img) }} class="img-orchidee"
-                                     alt="Image annonce"/>
+
                             </div>
                             <div class="card-content">
                                 <div class="align-etoile">
@@ -93,15 +90,14 @@
             <div id="slideshow">
                 <div id="slides">
                     {% for lastannonce in lastAnnonces %}
+                        //Boucle pour afficher les images associées a son annonces
                         {% if lastannonce.sold == false %}
                             <div class="item" data-ref={{ lastannonce.id }}>
                                 <a href={{ path('home_annonces', {'id': lastannonce.id}) }}>
                                     <div class="image-annonce">
-                                        {% for image in images %}
-                                            {% if image.annonceId.id == lastannonce.id %}
-                                                <img src={{ asset('/uploads/annonces/' ~ lastannonce.images[0].name) }} class="img-orchidee"
-                                                     alt="Image annonce"/>
-                                            {% endif %}
+                                        {% for image in lastannonce.images %}
+                                            <img src="{{ asset('/uploads//' ~ image.name) }}"
+                                                 alt="{{ lastannonce.title }}"/>
                                         {% endfor %}
                                     </div>
                                     <div class="card-content">
