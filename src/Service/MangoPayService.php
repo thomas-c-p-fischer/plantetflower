@@ -5,6 +5,7 @@ namespace App\Service;
 use App\Entity\User;
 use MangoPay;
 use MangoPay\BankAccountDetailsIBAN;
+use MangoPay\CardRegistration;
 use MangoPay\Wallet;
 
 class MangoPayService
@@ -120,5 +121,26 @@ class MangoPayService
         $KYCDocument->Id = $KYCDocId;
         $KYCDocument->Status = \MangoPay\KycDocumentStatus::ValidationAsked; // VALIDATION_ASKED
         return $this->mangoPayApi->Users->UpdateKycDocument($userId, $KYCDocument);
+    }
+
+    public function payIn(User $user, $cardNumber, $expirationDate, $cvc)
+    {
+        $mangoPayApi = $this->mangoPayApi;
+        $userId = $user->getIdMangopay();
+        $card = new CardRegistration();
+        $card->UserId = $userId;
+        $card->Currency = "EUR";
+        $card->CardType = "CB_VISA_MASTERCARD";
+        $cardRegister= $this->mangoPayApi->CardRegistrations->Create($card);
+        $updatedCardRegister = $mangoPayApi->CardRegistrations->Update($cardRegister);
+        if ($updatedCardRegister->Status != MangoPay\CardRegistrationStatus::Validated
+            || !isset($updatedCardRegister->CardId))
+        {
+            die('<div style="color:red;">La carte n\'est pas reconnue. Le paiement n\'a pas eu lieu.<div>');
+        }
+
+        $cardProperties = $cardRegister->GetReadOnlyProperties();
+        $validatedCard = $mangoPayApi->Cards->Get($updatedCardRegister->CardId);
+
     }
 }
