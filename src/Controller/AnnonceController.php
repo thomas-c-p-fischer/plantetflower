@@ -228,11 +228,12 @@ class AnnonceController extends AbstractController
 
     #[Route('/paiement/{id}', name: '_paiement')]
     public function paiement(
-        Request           $request,
-        MangoPayService   $service,
-        UserRepository    $userRepository,
-        AnnonceRepository $annonceRepository,
-                          $id
+        Request                $request,
+        MangoPayService        $service,
+        EntityManagerInterface $entityManager,
+        UserRepository         $userRepository,
+        AnnonceRepository      $annonceRepository,
+                               $id
 
     ): Response
     {
@@ -245,7 +246,6 @@ class AnnonceController extends AbstractController
         }
         //Récupération de l'utilisateur connecté par son Email.
         $mail = $this->getUser()->getUserIdentifier();
-        $annonce = $annonceRepository->findBy((array)('id'));
         $userConnect = $userRepository->findOneBy(['email' => $mail]);
         //Création du formulaire de paiement
         $paiementForm = $this->createForm(PaiementFormType::class);
@@ -256,10 +256,12 @@ class AnnonceController extends AbstractController
         $cvc = $paiementForm['CVC']->getData();
         //Si le formulaire est soumis et qu'il est valide alors on fait appelle aux fonctions de paiement
         if ($paiementForm->isSubmitted() && $paiementForm->isValid()) {
-
+            $myAnnonce = $annonce->setTitle('vendu');
+            $entityManager->persist($myAnnonce);
+            $entityManager->flush();
         }
 
-        return $this->renderForm("annonce/annonce.html.twig",
+        return $this->renderForm("annonce/annoncePaiement.html.twig",
             compact('paiementForm', 'annonce'));
     }
 }
