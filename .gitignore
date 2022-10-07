@@ -1,6 +1,6 @@
 
 ###> symfony/framework-bundle ###
-
+/public/MangoPaySdkStorage.tmp.php
 /.env.local
 /.env.local.php
 /.env.*.local

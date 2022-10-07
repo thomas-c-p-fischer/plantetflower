@@ -31,15 +31,12 @@ class RegistrationFormType extends AbstractType
             ->add('firstname', TextType::class, array(
                 'constraints' => array(
                     new NotBlank())))
-            ->add('streetNumber', TextType::class, array(
-                'constraints' => array(
-                    new NotBlank())))
             ->add('address', TextType::class, array(
                 'constraints' => array(
                     new NotBlank())))
-            ->add('address2', TextType::class, array(
-                'constraints' => array(
-                    new NotBlank())))
+            ->add('address2', TextType::class, [
+                'required' => false,
+            ])
             ->add('zipCode', TextType::class, array(
                 'constraints' => array(
                     new NotBlank())))

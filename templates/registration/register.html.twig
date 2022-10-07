@@ -39,9 +39,6 @@
             <div class="birthday">
                 {{ form_row(registrationForm.birthday) }}
             </div>
-            <div class="street_number">
-                {{ form_row(registrationForm.streetNumber, {'label': false,'attr': {'placeholder': 'N° rue*'}} ) }}
-            </div>
             <div class="address">
                 {{ form_row(registrationForm.address, {'label': false,'attr': {'placeholder': 'Adresse*'}} ) }}
             </div>
@@ -51,50 +48,51 @@
             <div class="zipcode">
                 {{ form_row(registrationForm.zipCode, {'label': false,'attr': {'placeholder': 'Code postale*'}} ) }}
             </div>
+            <div class="city">
+                {{ form_row(registrationForm.city, {'label': false,'attr': {'placeholder': 'Ville*'}}) }}
+            </div>
             <div class="country">
                 {{ form_row(registrationForm.countryOfResidence, {'label': false,'attr': {'placeholder': 'Votre pays de résidence*'}} ) }}
             </div>
             <div class="nationality">
                 {{ form_row(registrationForm.nationality, {'attr': {'placeholder': 'Votre nationnalité*'}} ) }}
             </div>
-        </div>
-        <div class="container-UserCategory-email">
-            <div class="UserCategory">
-                <div>{{ form_row(registrationForm.Owner) }}</div>
+            <div class="container-UserCategory-email">
+                <div class="UserCategory">
+                    {{ form_row(registrationForm.Owner) }}
+                </div>
+                <div class="email">
+                    {{ form_row(registrationForm.email, {'attr': {'placeholder': 'Votre Email*'}} ) }}
+                </div>
+                <div class="password">
+                    {{ form_row(registrationForm.plainPassword, {'attr': {'placeholder': 'Mot de passe*'}}) }}
+                </div>
             </div>
-            <div class="email">
-                {{ form_row(registrationForm.email, {'attr': {'placeholder': 'Votre Email*'}} ) }}
+
+            {#         captcha #}
+
+            {# doit être le même nom que celui indiqué sur le formulaire #}
+            {{ form_row(registrationForm.recaptcha) }}
+
+            {#         Cela affichera l’erreur du captcha à l’utilisateur #}
+            {{ form_errors(registrationForm.recaptcha) }}
+
+            <div class="agree_terms">
+                {{ form_row(registrationForm.agreeTerms, {
+                    'attr': {'label': false,},'help_html': true,
+                }) }}
             </div>
+
+            <button type="submit" class="btn_registration">
+                {#                        {% if editMode %} #}
+                {#                            Modifier #}
+
+                {#                        {% else %} #}
+                           Inscription
+
+                {#                        {% endif %} #}
+            </button>
         </div>
-        <div class="container-password">
-            <div class="password">
-                {{ form_row(registrationForm.plainPassword, {'attr': {'placeholder': 'Mot de passe*'}}) }}
-            </div>
-        </div>
-
-        {# captcha #}
-
-        {# doit être le même nom que celui indiqué sur le formulaire #}
-        {{ form_row(registrationForm.recaptcha) }}
-
-        {# Cela affichera l’erreur du captcha à l’utilisateur #}
-        {{ form_errors(registrationForm.recaptcha) }}
-
-        <div class="agree_terms">
-            {{ form_row(registrationForm.agreeTerms, {
-                'attr': {'label': false,},'help_html': true,
-            }) }}
-        </div>
-
-        <button type="submit" class="btn_registration">
-            {#            {% if editMode %} #}
-            {#                Modifier #}
-
-            {#            {% else %} #}
-            Inscription
-
-            {#            {% endif %} #}
-        </button>
+        {{ form_end(registrationForm) }}
     </div>
-    {{ form_end(registrationForm) }}
 {% endblock %}

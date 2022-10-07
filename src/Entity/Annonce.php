@@ -82,7 +82,7 @@ class Annonce
     #[ORM\Column(length: 255)]
     private ?string $status = null;
 
-    #[ORM\OneToMany(mappedBy: 'annonce_id', targetEntity: Image::class)]
+    #[ORM\OneToMany(mappedBy: 'annonce_id', targetEntity: Image::class, cascade: ['persist'])]
     private Collection $images;
 
     #[ORM\ManyToOne(inversedBy: 'annonces')]
@@ -92,6 +92,9 @@ class Annonce
     #[ORM\ManyToOne(inversedBy: 'annonces')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Category $category = null;
+
+    #[ORM\ManyToOne(inversedBy: 'annonces')]
+    private ?Favori $favori = null;
 
     public function __construct()
     {
@@ -405,6 +408,18 @@ class Annonce
     public function setCategory(?Category $category): self
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    public function getFavori(): ?Favori
+    {
+        return $this->favori;
+    }
+
+    public function setFavori(?Favori $favori): self
+    {
+        $this->favori = $favori;
 
         return $this;
     }

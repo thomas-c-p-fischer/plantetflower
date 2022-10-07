@@ -81,9 +81,6 @@ class User extends \MangoPay\UserLegal implements UserInterface, PasswordAuthent
     private ?string $gender = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $street_number = null;
-
-    #[ORM\Column(length: 255)]
     private ?string $zip_code = null;
 
     #[ORM\Column(length: 255)]
@@ -119,9 +116,13 @@ class User extends \MangoPay\UserLegal implements UserInterface, PasswordAuthent
     #[ORM\Column]
     private ?bool $Payer = false;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Favori::class)]
+    private Collection $favoris;
+
     public function __construct()
     {
         $this->annonces = new ArrayCollection();
+        $this->favoris = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -386,18 +387,6 @@ class User extends \MangoPay\UserLegal implements UserInterface, PasswordAuthent
         return $this;
     }
 
-    public function getStreetNumber(): ?string
-    {
-        return $this->street_number;
-    }
-
-    public function setStreetNumber(?string $street_number): self
-    {
-        $this->street_number = $street_number;
-
-        return $this;
-    }
-
     public function getZipCode(): ?string
     {
         return $this->zip_code;
@@ -556,6 +545,36 @@ class User extends \MangoPay\UserLegal implements UserInterface, PasswordAuthent
     public function setPayer(bool $Payer): self
     {
         $this->Payer = $Payer;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Favori>
+     */
+    public function getFavoris(): Collection
+    {
+        return $this->favoris;
+    }
+
+    public function addFavori(Favori $favori): self
+    {
+        if (!$this->favoris->contains($favori)) {
+            $this->favoris->add($favori);
+            $favori->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFavori(Favori $favori): self
+    {
+        if ($this->favoris->removeElement($favori)) {
+            // set the owning side to null (unless already changed)
+            if ($favori->getUser() === $this) {
+                $favori->setUser(null);
+            }
+        }
 
         return $this;
     }
