@@ -1,0 +1,392 @@
+.annonceForm h2 {
+    display: flex;
+    justify-content: start;
+    margin: 50px auto 30px 40px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    font-size: 40px;
+    color: #48945d;
+}
+
+.container-form_cea-img_cea {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.form_cea {
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 80px;
+    font-size: 12px;
+    border: 2px solid #79c990;
+    border-radius: 18px;
+    background-color: rgba(255, 255, 255, 0.5);
+    width: 60%;
+}
+
+.form_cea_left {
+    margin: 42px 0 0 20px;
+}
+
+.form_cea p {
+    display: flex;
+    text-align: start;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 15px;
+    font-weight: bold;
+    color: #48945d;
+    margin: 20px;
+}
+
+.container-add_img label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='18' ry='18' stroke='darkseagreen' stroke-width='4' stroke-dasharray='20%2c 30' stroke-dashoffset='47' stroke-linecap='square'/%3e%3c/svg%3e");
+    border-radius: 18px;
+    margin: 22px 20px 0;
+    padding: 35px;
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
+    font-size: 20px;
+    color: #48945d;
+}
+
+
+.add_img {
+    all: unset;
+    margin-top: -10px;
+    visibility: hidden;
+}
+
+/*.container-img_annonce {*/
+/*  flex-direction: row;*/
+/*  display: flex;*/
+
+/*}*/
+
+/*.img_preview {*/
+/*  border-radius: 15px;*/
+/*  width: 100%;*/
+/*  height: 120px;*/
+/*}*/
+
+.cea-item {
+    margin: 20px 20px 50px 20px;
+}
+
+h3 {
+    display: flex;
+    justify-content: start;
+    margin: 0 0 10px 20px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
+    font-size: 20px;
+    color: #48945d;
+}
+
+.cea-item input {
+    background-color: rgba(255, 255, 255, 0.5);
+    border: 1px solid #c0c0c0;
+    border-radius: 20px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
+    font-size: 15px;
+    color: #2f2f2f;
+}
+
+.cea-item .input {
+    display: flex;
+    justify-content: start;
+}
+
+.cea-item ::placeholder {
+    color: #c0c0c0;
+}
+
+.cea-choice_type .input {
+    background-color: rgba(255, 255, 255, 0.5);
+    text-align: center;
+    padding: 10px;
+    width: 101%;
+    border: 1px solid #c0c0c0;
+    border-radius: 20px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
+    font-size: 15px;
+    color: #2f2f2f;
+}
+
+.cea-item textarea {
+    background-color: rgba(255, 255, 255, 0.5);
+    text-align: center;
+    padding: 10px 10px 50px 10px;
+    border: 1px solid #c0c0c0;
+    border-radius: 20px;
+    width: 96%;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
+    font-size: 15px;
+    color: #2f2f2f;
+    resize: none;
+}
+
+.form_cea_right {
+    margin: 42px 20px 0 0;
+    width: 80%;
+}
+
+.cea-container-all_price {
+    margin-bottom: 33px;
+
+}
+
+.cea-all_price {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+}
+
+.cea-price {
+    flex: 1 0 auto;
+    width: 80px;
+
+}
+
+.cea-origin_price {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+}
+
+.cea-origin_price p {
+    display: block;
+    flex: 1 0 auto;
+    margin: 10px;
+    font-size: 20px;
+}
+
+.cea-total_price p {
+    display: flex;
+    justify-content: end;
+    font-size: 20px;
+}
+
+.cea-container-all_check_annonce {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 50px 0;
+}
+
+.cea-container-check_annonce_left {
+    display: flex;
+    flex-direction: column;
+}
+
+.cea-container-check_annonce {
+    display: flex;
+    flex-direction: row;
+}
+
+.cea-container-check_annonce h3 {
+    align-items: center;
+    margin: 0 0 3px 20px;
+    font-size: 15px;
+}
+
+.cea-container-check_annonce input {
+    width: 20px;
+}
+
+.cea-container-check_annonce_right {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+}
+
+.img_mondial_relay {
+    width: 25px;
+    height: 25px;
+    margin: 5px 0 0 20px;
+}
+
+/*.container-mondial_relay_widget {*/
+/*  width: 90%;*/
+/*  display: none;*/
+/*  margin: 5px auto;*/
+/*}*/
+
+.cea-container-shipping_address {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 50px;
+}
+
+.cea-shipp_add-address_item {
+    margin-right: 20px;
+}
+
+.cea-shipp_add-address_item input {
+    margin-right: 150px;
+}
+
+.cea-shipp_add-city_zipcode {
+    display: flex;
+    flex-direction: row;
+}
+
+.cea-shipp_add-zipcode_item {
+    margin-left: 20px;
+}
+
+.cea-container-button_submit {
+    display: flex;
+    justify-content: center;
+}
+
+.form_cea button {
+    display: flex;
+    padding: 10px 50px;
+    background-color: #48945d;
+    box-shadow: 0 15px 10px -15px #111;
+    font-size: 18px;
+    color: white;
+    border-radius: 25px;
+    border: 2px solid #48945d;
+    cursor: pointer;
+}
+
+.form_cea button:hover {
+    background-color: white;
+    color: #48945d;
+    border: 2px solid #48945d;
+}
+
+.container-img_cea {
+    width: 25%;
+}
+
+@media screen and (max-width: 1502px) {
+    .form_cea_left {
+        width: 50%;
+    }
+}
+
+@media screen and (max-width: 1435px) {
+    .form_cea label {
+        font-size: 16px;
+    }
+
+    .cea-item textarea {
+        width: 90%;
+    }
+}
+
+@media screen and (max-width: 1280px) {
+    .annonceForm h2 {
+        font-size: 30px;
+    }
+
+    .form_cea h3, .form_cea button {
+        font-size: 15px;
+    }
+
+    .form_cea input,
+    .form_cea .input,
+    .form_cea label,
+    .form_cea p,
+    .cea-container-check_annonce h3 {
+        font-size: 12px;
+    }
+
+    .cea-choice_type .input {
+        padding: 10px 0;
+    }
+}
+
+@media screen and (max-width: 1115px) {
+    .cea-item, .container-add_img label {
+        margin-bottom: 0;
+    }
+
+    .container-add_img label {
+        padding: 35px 0;
+    }
+
+    .cea-item textarea {
+        padding-bottom: 100px;
+    }
+
+    .cea-container-all_check_annonce,
+    .cea-container-shipping_address,
+    .form_cea button {
+        flex-direction: column;
+        margin: 0 0 20px;
+    }
+
+    .cea-shipp_add-address_item, .cea-shipp_add-zipcode_item {
+        margin: 0 0 10px;
+    }
+
+    .cea-shipp_add-city_zipcode {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .cea-shipp_add-city_item {
+        margin-right: 5px;
+    }
+
+    .cea-shipp_add-zipcode_item {
+        margin-left: 5px;
+    }
+
+    .form_cea button {
+        justify-content: center;
+    }
+}
+
+@media screen and (max-width: 860px) {
+    .annonceForm h2 {
+        justify-content: center;
+        margin-top: 10px;
+    }
+
+    .container-img_cea {
+        margin-bottom: 10px;
+
+    }
+
+    .container-form_cea-img_cea {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+@media screen and (max-width: 830px) {
+    .form_cea_left {
+        width: 40%;
+        margin-bottom: 20px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .form_cea_left, .form_cea_right {
+        justify-content: center;
+        margin: 20px;
+        width: auto;
+    }
+
+    .form_cea {
+        flex-direction: column;
+
+    }
+}

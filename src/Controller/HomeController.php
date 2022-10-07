@@ -7,6 +7,8 @@ use App\Entity\Image;
 use App\Form\SearchAnnonceType;
 use App\Repository\AnnonceRepository;
 use App\Repository\ImageRepository;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -66,11 +68,57 @@ class HomeController extends AbstractController
     //route de la page annonces
     #[Route('/annonces', name: '_annonces')]
     public function annonces(
-        AnnonceRepository $annoncesRepository,
+        AnnonceRepository $annonceRepository,
+        EntityManagerInterface $entityManager,
     ): Response
     {
         // récupération de toutes les annonces
-        $annonces = $annoncesRepository->findAll();
+        $annonces = $annonceRepository->findAll();
+
+        // création de la variable "maintenant"
+        $now = new \DateTime();
+
+        // boucle toutes les annonces
+        foreach ($annonces as $annonce) {
+
+            // si le produit de l'annonce n'est pas encore vendu
+            if (!$annonce->isSold()) {
+
+                // boolean vrai si différence de temps entre l'expiration de l'annonce et maintenant
+                $diff = $annonce->getDateExpiration()->diff($now);
+
+                // retire l'annonce si elle est antérieure à maintenant
+                if ($diff->invert == 0) {
+                    $annonceRepository->remove($annonce);
+                    $entityManager->flush();
+                }
+
+                // si le produit de l'annonce est vendu
+            } else {
+
+                // nombre de jours de conservation de l'annonce après sa date d'expiration
+                $delay = 5;
+
+                // création d'une nouvelle variable "maintenant"
+                $delayDate = new \DateTime();
+
+                // date antérieure de x jours (aujourd'hui - délai)
+                $delayDate->modify('-'. $delay .' day');
+
+                // boolean vrai si différence de temps entre l'expiration de l'annonce et la "date antérieure de x jours"
+                $diff = $annonce->getDateExpiration()->diff($delayDate);
+
+                // retire l'annonce si elle est antérieure à la "date antérieure de x jours"
+                if ($diff->invert == 0) {
+                    $annonceRepository->remove($annonce);
+                    $entityManager->flush();
+                }
+            }
+        }
+
+        // nouvelle récupération des annonces après avoir retiré celles éventuellement expirées
+        $annonces = $annonceRepository->findAll();
+
         // total de toutes les annonces
         $totalAnnonces = count($annonces);
 

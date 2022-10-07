@@ -5,7 +5,7 @@ namespace App\Form;
 use App\Entity\Annonce;
 use App\Entity\Category;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -14,10 +14,9 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 
-class CreateAnnonceType extends AbstractType
+class AnnonceForm extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -29,17 +28,21 @@ class CreateAnnonceType extends AbstractType
                 'attr' => array('accept' => 'image/jpeg,image/png,image/jpg'),
                 'required' => true,
             ])
-            ->add('description', null, [
+            ->add('description', TextareaType::class, [
+                'attr' => ['class' => 'tinymce'],
                 'required' => false,
             ])
             ->add('shipement', CheckboxType::class, [
+                'label' => false,
                 'required' => false,
             ])
             ->add('priceOrigin', MoneyType::class, [
+                'currency' => '',
                 'required' => true,
                 'invalid_message' => 'Nous ne prenons pas en compte votre annonce au-delà de 100€, veuillez nous excuser'
             ])
             ->add('plantPot', CheckboxType::class, [
+                'label' => false,
                 'required' => false,
             ])
             ->add('dateExpiration', DateType::class, [
@@ -78,8 +81,7 @@ class CreateAnnonceType extends AbstractType
             ->add('expRelId', HiddenType::class, [
                 'required' => false,
                 'empty_data' => '',
-            ])
-            ->add('Envoyer', SubmitType::class, ['attr' => ['class' => "button"]]);;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
