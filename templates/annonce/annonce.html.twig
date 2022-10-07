@@ -69,9 +69,9 @@
                             {% if annonce.sold %}
                                 <button class="acheter" disabled>Déjà vendu</button>
                             {% elseif (app.user) and (app.user.id == annonce.user.id) %}
-                                <button id="delete_btn" style="cursor:pointer">Retirer l'annonce</button>
+                                <button id="delete_btn">Retirer l'annonce</button>
                             {% else %}
-                                <a href={{ path('annonce_paiement' , {'annonceId': annonce.id} ) }}>
+                                <a href={{ path('annonce_paiement', {'id': annonce.id}) }}>
                                     <button class="acheter">Acheter</button>
                                 </a>
                             {% endif %}
@@ -119,7 +119,7 @@
                             <h2>{{ annonce.user.firstName }}
                                 {{ annonce.user.lastName }}</h2>
                             <p>Rate</p>
-                            <div id="toggle-list" class="headInfo row" style="cursor:pointer">
+                            <div id="toggle-list" class="headInfo row">
                                 <h3>
                                     {% if totalAnnoncesAuthor < 2 %}
                                         {{ totalAnnoncesAuthor }} Annonce

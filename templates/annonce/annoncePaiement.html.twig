@@ -4,4 +4,21 @@
 
 {% block body %}
 
+    {{ form_start(paiementForm) }}
+    <div class="paiementForm">
+        <div class="numeroCarte">
+            {{ form_row(paiementForm.cardNumber, {'label': false, 'attr': {'placeholder': 'Numéro de carte*'}}) }}
+        </div>
+        <div class="dateExpiration">
+            {{ form_row(paiementForm.expirationDate, {'label': false, 'attr': {'placeholder': 'Date d\'expiration*'}}) }}
+        </div>
+        <div class="cvc">
+            {{ form_row(paiementForm.CVC, {'label': false, 'attr': {'placeholder': 'Cryptogramme*'}}) }}
+        </div>
+        <div class="btnSend">
+            {{ form_row(paiementForm.send, {'label': false, 'attr': {'placeholder': 'Valider'}}) }}
+        </div>
+    </div>
+    {{ form_end(paiementForm) }}
+
 {% endblock %}
