@@ -166,7 +166,7 @@ class AnnonceController extends AbstractController
 
 
     //Fonction pour supprimer une annonce manuellement.
-    #[Route('/supprimer/{annonceId}', name: '_supprimer', requirements: ['annonceId' => '\d+'])]
+    #[Route('/supprimer/{id}', name: '_supprimer', requirements: ['annonceId' => '\d+'])]
     public function deleteAnnonce(
         AnnonceRepository      $annonceRepository,
         EntityManagerInterface $entityManager,
@@ -177,7 +177,7 @@ class AnnonceController extends AbstractController
         // récupération de l'annonce par son Id
         $annonce = $annonceRepository->find($annonceId);
 
-        // si l'utilisateur est bien celui qui a créée l'annonce
+        // si l'utilisateur est bien celui qui a créé l'annonce
         if ($this->getUser() === $annonce->getUser()) {
 
             // suppression de l'annonce

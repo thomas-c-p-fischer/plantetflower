@@ -72,7 +72,7 @@
                                 <button id="delete_btn">Retirer l'annonce</button>
                             {% else %}
                                 <a href={{ path('annonce_paiement', {'id': annonce.id}) }}>
-                                    <button class="acheter">Acheter</button>
+                                    Acheter
                                 </a>
                             {% endif %}
                         </div>
@@ -80,7 +80,7 @@
                             <p>Êtes-vous sûr de vouloir supprimer l'annonce ?</p>
                             <div class="container-confirm_answer">
                                 <a id="answer-delete_yes"
-                                   href="{{ path('annonce_supprimer' , {'annonceId': annonce.id}) }}">Oui</a>
+                                   href="{{ path('annonce_supprimer', {'id': annonce.id}) }}">Oui</a>
                                 <a id="answer-delete_no" href="">Non</a>
                             </div>
                         </div>

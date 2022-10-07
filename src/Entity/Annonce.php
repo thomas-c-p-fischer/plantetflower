@@ -93,6 +93,9 @@ class Annonce
     #[ORM\JoinColumn(nullable: false)]
     private ?Category $category = null;
 
+    #[ORM\ManyToOne(inversedBy: 'annonces')]
+    private ?Favori $favori = null;
+
     public function __construct()
     {
         $this->images = new ArrayCollection();
@@ -405,6 +408,18 @@ class Annonce
     public function setCategory(?Category $category): self
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    public function getFavori(): ?Favori
+    {
+        return $this->favori;
+    }
+
+    public function setFavori(?Favori $favori): self
+    {
+        $this->favori = $favori;
 
         return $this;
     }
