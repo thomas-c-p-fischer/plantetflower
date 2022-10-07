@@ -24,8 +24,7 @@ class PaiementFormType extends AbstractType
             ])
             ->add('send', SubmitType::class, [
                 'label' => 'Valider votre carte'
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

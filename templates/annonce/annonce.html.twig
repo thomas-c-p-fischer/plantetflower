@@ -120,44 +120,44 @@
                                 {{ annonce.user.lastName }}</h2>
                             <p>Rate</p>
                             <div id="toggle-list" class="headInfo row">
-                                <h3>
-                                    {% if totalAnnoncesAuthor < 2 %}
-                                        {{ totalAnnoncesAuthor }} Annonce
-                                    {% else %}
-                                        {{ totalAnnoncesAuthor }} Annonces
-                                    {% endif %}</h3>
-                                <button class="dropdown-button">
-                                    <img src="{{ asset('media/img/down-arrow.png') }}" alt="Étoile"/>
-                                </button>
-                            </div>
-                            <div id="list-annonce" class="col list-annonce inactive">
-                                {% for eachAnnonces in annoncesAuthor %}
-                                    {% if eachAnnonces.sold == false %}
-                                        <a href={{ path('home_annonces', {'id': eachAnnonces.id}) }}>
-                                            <div class="bg-gray col">
-                                                <div class="row">
-                                                    <h4>{{ eachAnnonces.title }}</h4>
-                                                    <img src="{{ asset('media/img/star.png') }}" alt="Étoile">
-                                                </div>
-                                                <div class="row">
-                                                    <h5>{{ eachAnnonces.ville }}</h5>
-                                                    <p>
-                                                        {% if eachAnnonces.shipement %}
-                                                            Livraison possible
-                                                        {% else %}
-                                                            Livraison non disponible
-                                                        {% endif %}
-                                                    </p>
-                                                </div>
-                                                <div class="row">
-                                                    <p>Date d'expiration
-                                                        {{ eachAnnonces.dateExpiration  | date('d/m/Y') }}</p>
-                                                    <h2>{{ eachAnnonces.priceTotal }}€</h2>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    {% endif %}
-                                {% endfor %}
+                                {#                                <h3> #}
+                                {#                                    {% if totalAnnoncesAuthor < 2 %} #}
+                                {#                                        {{ totalAnnoncesAuthor }} Annonce #}
+                                {#                                    {% else %} #}
+                                {#                                        {{ totalAnnoncesAuthor }} Annonces #}
+                                {#                                    {% endif %}</h3> #}
+                                {#                                <button class="dropdown-button"> #}
+                                {#                                    <img src="{{ asset('media/img/down-arrow.png') }}" alt="Étoile"/> #}
+                                {#                                </button> #}
+                                {#                            </div> #}
+                                {#                            <div id="list-annonce" class="col list-annonce inactive"> #}
+                                {#                                {% for eachAnnonces in annoncesAuthor %} #}
+                                {#                                    {% if eachAnnonces.sold == false %} #}
+                                {#                                        <a href={{ path('home_annonces', {'id': eachAnnonces.id}) }}> #}
+                                {#                                            <div class="bg-gray col"> #}
+                                {#                                                <div class="row"> #}
+                                {#                                                    <h4>{{ eachAnnonces.title }}</h4> #}
+                                {#                                                    <img src="{{ asset('media/img/star.png') }}" alt="Étoile"> #}
+                                {#                                                </div> #}
+                                {#                                                <div class="row"> #}
+                                {#                                                    <h5>{{ eachAnnonces.ville }}</h5> #}
+                                {#                                                    <p> #}
+                                {#                                                        {% if eachAnnonces.shipement %} #}
+                                {#                                                            Livraison possible #}
+                                {#                                                        {% else %} #}
+                                {#                                                            Livraison non disponible #}
+                                {#                                                        {% endif %} #}
+                                {#                                                    </p> #}
+                                {#                                                </div> #}
+                                {#                                                <div class="row"> #}
+                                {#                                                    <p>Date d'expiration #}
+                                {#                                                        {{ eachAnnonces.dateExpiration  | date('d/m/Y') }}</p> #}
+                                {#                                                    <h2>{{ eachAnnonces.priceTotal }}€</h2> #}
+                                {#                                                </div> #}
+                                {#                                            </div> #}
+                                {#                                        </a> #}
+                                {#                                    {% endif %} #}
+                                {#                                {% endfor %} #}
                             </div>
                         </div>
                     </div>
