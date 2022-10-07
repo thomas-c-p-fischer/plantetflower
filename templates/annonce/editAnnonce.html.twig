@@ -1,6 +1,6 @@
 {% extends "base.html.twig" %} 
 
-{% block title %}Création d'une annonce - Plant&Flower{% endblock %}
+{% block title %}Modification d'une annonce - Plant&Flower{% endblock %}
 
 {% block js %}
     <script defer src={{ asset('assets/Javascript/annonce.js') }}></script>
@@ -9,7 +9,7 @@
 {% block body %}
     {{ form_start(annonceForm) }}
     <div class="annonceForm">
-        <h2>Vendez votre végétal</h2>
+        <h2>Modification</h2>
     </div>
     <div class="container-form_cea-img_cea">
         <div class="container-img_cea">
@@ -26,19 +26,23 @@
                         },
                     }) }}
                 </div>
-                <div class="add_img_txt">
-                    Ajouter jusqu'à 3 photos. (1 photo minimum est obligatoire pour vendre
-                    votre végétal)
-                </div>
                 <div class="container-img_annonce">
                     <div class="container-img_preview">
-                        {#                            <img class="img_preview" src="" height="100" width="100"/> #}
+                        {#                                                    <img class="image img_preview" src="{{ asset('/uploads/annonces/' ~ images[0].name) }}"/> #}
                     </div>
                     <div class="container-img_preview">
-                        {#                            <img class="img_preview" src="" height="100" width="100"/> #}
+                        {% if images|length > 1 %}
+                            <img class="image img_preview" src="{{ asset('/uploads/annonces/' ~ images[1].name) }}"/>
+                        {% else %}
+                            <img class="image img_preview" src="" style='display : none'/>
+                        {% endif %}
                     </div>
                     <div class="container-img_preview">
-                        {#                            <img class="img_preview" src="" height="100" width="100"/> #}
+                        {% if images|length > 2 %}
+                            <img class="image img_preview" src="{{ asset('/uploads/annonces/' ~ images[2].name) }}"/>
+                        {% else %}
+                            <img class="image img_preview" src="" style='display : none'/>
+                        {% endif %}
                     </div>
                 </div>
                 {% if not annonceForm.vars.valid %}
@@ -52,7 +56,7 @@
                         'label': false,
                         'attr': {
                             'class': 'input',
-                            'placeholder': 'ex. Orchidée',
+                            'placeholder': 'ex: Orchidée',
                         }
                     }) }}
                 </div>
@@ -72,7 +76,7 @@
                         'label': false,
                         'attr': {
                             'class': 'input',
-                            'placeholder': 'ex. cactus en bonne état',
+                            'placeholder': 'ex: cactus en bonne état',
                         }
                     }) }}
                 </div>
@@ -96,7 +100,6 @@
                         }
                     }) }}
                 </div>
-
                 <div class="cea-item cea-container-all_price">
                     <div class="cea-all_price">
                         <div class="cea-price">
@@ -104,10 +107,10 @@
                             <div class="cea-origin_price">
                                 {{ form_row(annonceForm.priceOrigin, {
                                     'label': false,
-                                    'id': 'createAnnonce_origin_price',
+                                    'id': 'editAnnonce_origin_price',
                                     'attr': {
                                         'class': 'input',
-                                        'placeholder': 'ex. 2.50',
+                                        'placeholder': 'ex: 2.50',
                                     }
                                 }) }}
                                 <p>€</p>
@@ -116,11 +119,11 @@
                         <div class="cea-price">
                             <h3>Prix définitif</h3>
                             <div class="cea-total_price">
-                                <p id="createAnnonce_total_price">€</p>
+                                <p id="editAnnonce_total_price">€</p>
                             </div>
                         </div>
                     </div>
-                    <div id="createAnnonce_price_message"></div>
+                    <div id="editAnnonce_price_message"></div>
                 </div>
                 <p class="cea-taxes_txt">
                     Pour que le site reste gratuit, nous appliquons des frais de<br> commission
@@ -152,7 +155,7 @@
                                 <h3 class="mode">Remise en main propre</h3>
                             </div>
                             <div class="cea-container-check_annonce">
-                                <input type="radio" name="mode" id="mode" class="input checked">
+                                <input type="radio" name="mode" id="mode" class="">
                                 <h3 class="mode">Mondial Relay</h3>
                                 <img class="img_mondial_relay"
                                      src="{{ asset('media/img/mondialRelay.png') }}"
@@ -185,7 +188,7 @@
                                         'label': false,
                                         'attr': {
                                             'class': 'input',
-                                            'placeholder': 'ex. Paris',
+                                            'placeholder': 'Ville',
                                         }
                                     }) }}
                                 </div>
@@ -202,7 +205,7 @@
                         </div>
                     </div>
                     <div class="cea-item cea-container-button_submit">
-                        <button id="createAnnonce_submit" type="submit">+ AJOUTER</button>
+                        <button id="editAnnonce_submit" type="submit">MODIFIER</button>
                     </div>
                 </div>
             </div>
@@ -211,4 +214,5 @@
     {{ form_end(annonceForm) }}
     <div id="Zone_Widget"></div>
     <input type="hidden" id="expRelId"/>
+
 {% endblock %}
