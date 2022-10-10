@@ -15,9 +15,19 @@
             {# Bannière #}
             <div class="container_imgsearchProducts">
                 <img class="img-banniere" src="{{ asset('media/img/banniere-search.png') }}" alt="banniere"/>
+
                 <div class="txt_banniereProducts">
                     Donnez à vos végétaux une seconde
                     vie, et achetez-en de nouveaux
+                </div>
+                <div class="container-btn_create_annonce">
+                    {% if (app.user) %}
+                        <a class="btn-create_annonce"
+                           href="{{ path('annonce_ajouter') }}">Créer une annonce</a>
+                    {% else %}
+                        <a class="btn-create_annonce"
+                           href="{{ path('security_login') }}">Créer une annonce</a>
+                    {% endif %}
                 </div>
                 {#                filtre à installer #}
                 {#                {{ form_start(form, {'attr': {'class': 'filtre searchProducts'}} ) }} #}
@@ -44,11 +54,8 @@
                     {#                    {{ knp_pagination_render(annonces) }} #}
                 </div>
             </div>
-
             {# Fin bannière #}
             <div class="contenuProducts">
-
-
                 {% for annonce in annonces %}
                     <div class="card">
                         <a class="img-annonce-flex" href={{ path('annonce_afficher', {'annonceId': annonce.id}) }}>
