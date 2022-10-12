@@ -6,6 +6,9 @@
 
     {{ form_start(paiementForm) }}
     <div class="paiementForm">
+        {{ form_row(paiementForm.accessKey) }}
+        {{ form_row(paiementForm.preregistrationData) }}
+        {{ form_row(paiementForm.returnUrl) }}
         <div class="numeroCarte">
             {{ form_row(paiementForm.cardNumber, {'label': false, 'attr': {'placeholder': 'Numéro de carte*'}}) }}
         </div>

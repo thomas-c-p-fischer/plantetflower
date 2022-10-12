@@ -290,39 +290,58 @@ class AnnonceController extends AbstractController
     public function paiement(
         Request                $request,
         MangoPayService        $service,
-        EntityManagerInterface $entityManager,
         UserRepository         $userRepository,
         AnnonceRepository      $annonceRepository,
                                $id
-
     ): Response
     {
+        // build the return URL to capture token response
+        $returnUrl = 'http' . ( isset($_SERVER['HTTPS']) ? 's' : '' ) . '://' . $_SERVER['HTTP_HOST'];
+        $returnUrl .= substr($_SERVER['REQUEST_URI'], 0, strripos($_SERVER['REQUEST_URI'], '/') + 1);
+        $returnUrl .= 'PaiementController.php';
+        //Déclaration des variables
+        $accessKey = "";
+        $preregistrationData = "";
+        $cardRegistrationUrl = "";
         //Récupération de l'annonce par son Id
         $annonce = $annonceRepository->findOneBy(['id' => $id]);
         //Vérification du statut de l'annonce, si elle est "sold" ou pas
-        if ($annonce->isSold()) {
-            $this->addFlash('error', 'Cette annonce a déjà été vendue');
-            return $this->redirectToRoute('user_profil');
-        }
+//        if ($annonce->isSold()) {
+//            $this->addFlash('error', 'Cette annonce a déjà été vendue');
+//            return $this->redirectToRoute('user_profil');
+//        }
         //Récupération de l'utilisateur connecté par son Email.
         $mail = $this->getUser()->getUserIdentifier();
         $userConnect = $userRepository->findOneBy(['email' => $mail]);
         //Création du formulaire de paiement
         $paiementForm = $this->createForm(PaiementFormType::class);
         $paiementForm->handleRequest($request);
-        //Récupération des différentes données de la carte de paiement sans stockage en BDD
-        $numeroCarte = $paiementForm['cardNumber']->getData();
-        $dateExpiration = $paiementForm['expirationDate']->getData();
-        $cvc = $paiementForm['CVC']->getData();
         //Si le formulaire est soumis et qu'il est valide alors on fait appelle aux fonctions de paiement
         if ($paiementForm->isSubmitted() && $paiementForm->isValid()) {
-            $myAnnonce = $annonce->setTitle('vendu');
-            $entityManager->persist($myAnnonce);
-            $entityManager->flush();
+            //Récupération des différentes données de la carte de paiement sans stockage en BDD
+//            $numeroCarte = $paiementForm['cardNumber']->getData();
+//            $dateExpiration = $paiementForm['expirationDate']->getData();
+//            $cvc = $paiementForm['CVC']->getData();
+            $cardRegistration = $service->createCardRegistration($userConnect);
+            $_SESSION['cardRegisterId'] = $cardRegistration->Id;
+            $cardRegistrationUrl = $cardRegistration->CardRegistrationURL;
+            $accessKey = $cardRegistration->AccessKey;
+            $preregistrationData = $cardRegistration->PreregistrationData;
+
+//            $annonce->isSold() === true;
+//            $entityManager->persist($annonce);
+//            $entityManager->flush();
         }
 
         return $this->renderForm("annonce/annoncePaiement.html.twig",
-            compact('paiementForm', 'annonce'));
+            compact(
+                'paiementForm',
+                'annonce',
+                'accessKey',
+                'preregistrationData',
+                'cardRegistrationUrl',
+                'returnUrl'
+            ));
     }
 }
 
