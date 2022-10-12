@@ -41,7 +41,10 @@ class PaiementFormType extends AbstractType
                 'required' => true
             ])
             ->add('send', SubmitType::class, [
-                'label' => 'Valider votre carte'
+                'label' => 'Valider le paiement',
+                'attr' => [
+                    'value' => 'Pay'
+                ]
             ]);
     }
 
