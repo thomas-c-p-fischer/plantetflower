@@ -3,8 +3,8 @@
 namespace App\Controller;
 
 use App\Service\MangoPayService;
+use JetBrains\PhpStorm\NoReturn;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use MangoPay;
 
@@ -25,18 +25,15 @@ class PaiementController extends AbstractController
 
     }
 
-    #[Route('/', name: '_updateRegistrationCard')]
+    #[NoReturn] #[Route('/', name: '_updateRegistrationCard')]
     public function updateRegistrationCard(
         MangoPayService $service
-    ): Response
+    ): Void
     {
         session_start();
         // update register card with registration data from Payline service
         $cardRegister = $this->mangoPayApi->CardRegistrations->Get($_SESSION['cardRegisterId']);
-        $cardRegister->RegistrationData = isset($_GET['data']) ? 'data=' . $_GET['data'] : 'errorCode=' . $_GET['errorCode'];
-        $updatedCard = $service->updateCardRegistration($cardRegister);
-        dd($updatedCard);
-
-        return $this->render('paiement/index.html.twig');
+//        $cardRegister->RegistrationData = isset($_GET['data']) ? 'data=' . $_GET['data'] : 'errorCode=' . $_GET['errorCode'];
+//        $updatedCard = $service->updateCardRegistration($cardRegister);
     }
 }
