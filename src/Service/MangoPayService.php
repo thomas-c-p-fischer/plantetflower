@@ -131,23 +131,24 @@ class MangoPayService
     }
 
     //Methode de Thomas.
-    public function createCardRegistration(User $user): CardRegistration
+    public function createCardRegistration(User $user)
     {
         try {
             $userId = $user->getIdMangopay();
             $cardRegistration = new CardRegistration();
             $cardRegistration->UserId = $userId;
-            $cardRegistration->Currency = "EUR";
-            $cardRegistration->CardType = "CB_VISA_MASTERCARD";
-            $result = $this->mangoPayApi->CardRegistrations->Create($cardRegistration);
-            } catch (Exception $e) {
-            $result = null;
+            $cardRegistration->Currency = 'EUR';
+            $cardRegistration->CardType = 'CB_VISA_MASTERCARD';
+            $createdCardRegister = $this->mangoPayApi->CardRegistrations->Create($cardRegistration);
+            $_SESSION['idCard'] = $createdCardRegister->Id;
+        } catch (Exception $e) {
+            $createdCardRegister = null;
             dump($e);
         }
-        return $result;
+        return $createdCardRegister;
     }
 
-    public function updateCardRegistration(CardRegistration $cardRegistration): CardRegistration
+    public function updateCardRegistration($cardRegistration)
     {
         try {
             $cardInfo = $this->mangoPayApi->CardRegistrations->Update($cardRegistration);

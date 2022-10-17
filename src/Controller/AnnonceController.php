@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\Annonce;
 use App\Form\AnnonceForm;
 use App\Entity\Image;
-use App\Form\PaiementFormType;
 use App\Repository\AnnonceRepository;
 use App\Service\UploadService;
 use App\Repository\UserRepository;
@@ -16,6 +15,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 #[Route('/annonce', name: 'annonce')]
 class AnnonceController extends AbstractController
@@ -26,13 +27,10 @@ class AnnonceController extends AbstractController
     {
         // Récupération de l'annonce par son Id
         $annonce = $annonceRepository->find($annonceId);
-
         // Récupération de l'id de l'auteur de l'annonce
         $idAuthorAnnonce = $annonce->getUser()->getId();
-
         // Récupération des annonces de l'auteur concernant l'annonce actuel
         $annoncesAuthor = $annonceRepository->findBy(array('user' => $idAuthorAnnonce));
-
         // Total des annonces de l'auteur concernant l'annonce actuel
         $totalAnnoncesAuthor = count($annoncesAuthor);
 
@@ -286,62 +284,42 @@ class AnnonceController extends AbstractController
         }
     }
 
+
     #[Route('/paiement/{id}', name: '_paiement')]
     public function paiement(
-        Request                $request,
-        MangoPayService        $service,
-        UserRepository         $userRepository,
-        AnnonceRepository      $annonceRepository,
-                               $id
+        Request               $request,
+        MangoPayService       $service,
+        UserRepository        $userRepository,
+        AnnonceRepository     $annonceRepository,
+        HttpClientInterface   $client,
+                              $id,
+        UrlGeneratorInterface $generator,
+
     ): Response
     {
-        // build the return URL to capture token response
-        $returnUrl = 'http' . ( isset($_SERVER['HTTPS']) ? 's' : '' ) . '://' . $_SERVER['HTTP_HOST'];
-        $returnUrl .= substr($_SERVER['REQUEST_URI'], 0, strripos($_SERVER['REQUEST_URI'], '/') + 1);
-        $returnUrl .= 'PaiementController.php';
-        //Déclaration des variables
-        $accessKey = "";
-        $preregistrationData = "";
-        $cardRegistrationUrl = "";
-        //Récupération de l'annonce par son Id
-        $annonce = $annonceRepository->findOneBy(['id' => $id]);
-        //Vérification du statut de l'annonce, si elle est "sold" ou pas
-//        if ($annonce->isSold()) {
-//            $this->addFlash('error', 'Cette annonce a déjà été vendue');
-//            return $this->redirectToRoute('user_profil');
-//        }
-        //Récupération de l'utilisateur connecté par son Email.
+        //Création de l'url de retour sur lequel la data est renvoyer
+        $returnURL = $this->generateUrl('paiement_updateRegistrationCard', [], UrlGeneratorInterface::ABSOLUTE_URL);
+        // Recuperation de l'annonce par son Id
+        $annonce = $annonceRepository->findOneBy(["id" => $id]);
+        //Recuperation de l'utilisateur connecté.
         $mail = $this->getUser()->getUserIdentifier();
         $userConnect = $userRepository->findOneBy(['email' => $mail]);
-        //Création du formulaire de paiement
-        $paiementForm = $this->createForm(PaiementFormType::class);
-        $paiementForm->handleRequest($request);
-        //Si le formulaire est soumis et qu'il est valide alors on fait appelle aux fonctions de paiement
-        if ($paiementForm->isSubmitted() && $paiementForm->isValid()) {
-            //Récupération des différentes données de la carte de paiement sans stockage en BDD
-//            $numeroCarte = $paiementForm['cardNumber']->getData();
-//            $dateExpiration = $paiementForm['expirationDate']->getData();
-//            $cvc = $paiementForm['CVC']->getData();
-            $cardRegistration = $service->createCardRegistration($userConnect);
-            $_SESSION['cardRegisterId'] = $cardRegistration->Id;
-            $cardRegistrationUrl = $cardRegistration->CardRegistrationURL;
-            $accessKey = $cardRegistration->AccessKey;
-            $preregistrationData = $cardRegistration->PreregistrationData;
+        // utilisation de la methode du service pour creer une nouvelle carte et insertion des données prérequises dans le formulaire sans les afficher
+        $cardRegistration = $service->createCardRegistration($userConnect);
+        $accessKey = $cardRegistration->AccessKey;
+        $preregistrationData = $cardRegistration->PreregistrationData;
+        $cardRegistrationUrl = $cardRegistration->CardRegistrationURL;
 
-//            $annonce->isSold() === true;
-//            $entityManager->persist($annonce);
-//            $entityManager->flush();
-        }
 
-        return $this->renderForm("annonce/annoncePaiement.html.twig",
+        return $this->render("annonce/annoncePaiement.html.twig",
             compact(
-                'paiementForm',
                 'annonce',
                 'accessKey',
                 'preregistrationData',
-                'cardRegistrationUrl',
-                'returnUrl'
+                'returnURL',
+                'cardRegistrationUrl'
             ));
+
     }
 }
 
