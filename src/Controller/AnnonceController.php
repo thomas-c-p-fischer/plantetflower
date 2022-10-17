@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\Annonce;
 use App\Form\AnnonceForm;
 use App\Entity\Image;
-use App\Form\PaiementFormType;
 use App\Repository\AnnonceRepository;
 use App\Service\UploadService;
 use App\Repository\UserRepository;
@@ -16,6 +15,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 #[Route('/annonce', name: 'annonce')]
 class AnnonceController extends AbstractController
@@ -26,13 +27,10 @@ class AnnonceController extends AbstractController
     {
         // Récupération de l'annonce par son Id
         $annonce = $annonceRepository->find($annonceId);
-
         // Récupération de l'id de l'auteur de l'annonce
         $idAuthorAnnonce = $annonce->getUser()->getId();
-
         // Récupération des annonces de l'auteur concernant l'annonce actuel
         $annoncesAuthor = $annonceRepository->findBy(array('user' => $idAuthorAnnonce));
-
         // Total des annonces de l'auteur concernant l'annonce actuel
         $totalAnnoncesAuthor = count($annoncesAuthor);
 
@@ -286,40 +284,42 @@ class AnnonceController extends AbstractController
         }
     }
 
+
     #[Route('/paiement/{id}', name: '_paiement')]
     public function paiement(
-        Request                $request,
-        MangoPayService        $service,
-        UserRepository         $userRepository,
-        AnnonceRepository      $annonceRepository,
-                               $id
+        Request               $request,
+        MangoPayService       $service,
+        UserRepository        $userRepository,
+        AnnonceRepository     $annonceRepository,
+        HttpClientInterface   $client,
+                              $id,
+        UrlGeneratorInterface $generator,
+
     ): Response
     {
-        //Construction du return url pour récupérer le token de réponse
-        $returnUrl = 'http' . ( isset($_SERVER['HTTPS']) ? 's' : '' ) . '://' . $_SERVER['HTTP_HOST'];
-        $returnUrl .= substr($_SERVER['REQUEST_URI'], 0, strripos($_SERVER['REQUEST_URI'], '/') + 1);
-        $returnUrl .= 'PaiementController.php';
-        //Récupération de l'annonce par son Id
-        $annonce = $annonceRepository->findOneBy(['id' => $id]);
-        //Récupération de l'utilisateur connecté par son Email.
+
+        //Création de l'url de retour sur lequel la data est renvoyer
+        $returnURL = $this->generateUrl('paiement_updateRegistrationCard', [], UrlGeneratorInterface::ABSOLUTE_URL);
+        //Récuperation de l'annonce par son Id
+        $annonce = $annonceRepository->findOneBy(["id" => $id]);
+        //Récuperation de l'utilisateur connecté.
         $mail = $this->getUser()->getUserIdentifier();
         $userConnect = $userRepository->findOneBy(['email' => $mail]);
+        //Utilisation de la méthode du service pour créer une nouvelle carte et insertion des données prérequises dans le formulaire sans les afficher
         $cardRegistration = $service->createCardRegistration($userConnect);
-        $_SESSION['cardRegisterId'] = $cardRegistration->Id;
-        $cardRegistrationUrl = $cardRegistration->CardRegistrationURL;
         $accessKey = $cardRegistration->AccessKey;
         $preregistrationData = $cardRegistration->PreregistrationData;
-        $cardRegistration->RegistrationData = isset($_GET['data']) ? 'data=' . $_GET['data'] : 'errorCode=' . $_GET['errorCode'];
-        $updatedCard = $service->updateCardRegistration($cardRegistration);
-        dd($updatedCard);
+        $cardRegistrationUrl = $cardRegistration->CardRegistrationURL;
+
         return $this->render("annonce/annoncePaiement.html.twig",
             compact(
                 'annonce',
                 'accessKey',
                 'preregistrationData',
-                'cardRegistrationUrl',
-                'returnUrl'
+                'returnURL',
+                'cardRegistrationUrl'
             ));
+
     }
 }
 

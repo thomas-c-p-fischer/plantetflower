@@ -2,26 +2,28 @@
 
 {% block title %}Paiement - Plant et Flower{% endblock %}
 
-{% block body %}
 
+
+{% block body %}
+    
     <form action="{{ cardRegistrationUrl }}" method="post">
-        <input type="hidden" name="data" value="{{ preregistrationData }}" />
-        <input type="hidden" name="accessKeyRef" value="{{ accessKey }}" />
-        <input type="hidden" name="returnURL" value="{{ returnUrl }}" />
+        <input type="hidden" name="data" value="{{ preregistrationData }}"/>
+        <input type="hidden" name="accessKeyRef" value="{{ accessKey }}"/>
+        <input type="hidden" name="returnURL" value="{{ returnURL }}"/>
 
         <label for="cardNumber">Card Number</label>
-        <input type="text" name="cardNumber" value="" />
+        <input type="text" name="cardNumber" value=""/>
         <div class="clear"></div>
 
         <label for="cardExpirationDate">Expiration Date</label>
-        <input type="text" name="cardExpirationDate" value="" />
+        <input type="text" name="cardExpirationDate" value=""/>
         <div class="clear"></div>
 
         <label for="cardCvx">CVV</label>
-        <input type="text" name="cardCvx" value="" />
+        <input type="text" name="cardCvx" value=""/>
         <div class="clear"></div>
 
-        <input type="submit" value="Pay" />
+        <input type="submit" value="Pay"/>
     </form>
 
 {% endblock %}

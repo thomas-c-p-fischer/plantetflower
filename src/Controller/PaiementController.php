@@ -2,38 +2,44 @@
 
 namespace App\Controller;
 
+use App\Repository\UserRepository;
 use App\Service\MangoPayService;
 use JetBrains\PhpStorm\NoReturn;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
 use MangoPay;
+use MangoPay\Libraries\ResponseException;
 
-#[Route('/paiement', name: 'paiement')]
+#[Route('/annonce', name: 'paiement')]
 class PaiementController extends AbstractController
 {
-    private MangoPay\MangoPayApi $mangoPayApi;
-
-    //Constructeur qui sert à l'initialisation de l'api.
-    // Les "$_ENV" sont les éléments à compléter dans le .env.local.
-    public function __construct()
-    {
-        $this->mangoPayApi = new MangoPay\MangoPayApi();
-        $this->mangoPayApi->Config->ClientId = $_ENV['CLIENT_ID'];
-        $this->mangoPayApi->Config->ClientPassword = $_ENV['API_KEY'];
-        $this->mangoPayApi->Config->BaseUrl = 'https://api.sandbox.mangopay.com';
-        $this->mangoPayApi->Config->TemporaryFolder = $_ENV['TMP_PATH'];
-
-    }
-
-    #[NoReturn] #[Route('/', name: '_updateRegistrationCard')]
+// Controller de callback.
+    #[Route('/paiement', name: '_updateRegistrationCard')]
     public function updateRegistrationCard(
-        MangoPayService $service
-    ): Void
+        MangoPayService $service,
+        UserRepository  $userRepository,
+        Session         $session,
+    ): Response
     {
         session_start();
-        // update register card with registration data from Payline service
-        $cardRegister = $this->mangoPayApi->CardRegistrations->Get($_SESSION['cardRegisterId']);
-//        $cardRegister->RegistrationData = isset($_GET['data']) ? 'data=' . $_GET['data'] : 'errorCode=' . $_GET['errorCode'];
-//        $updatedCard = $service->updateCardRegistration($cardRegister);
+        //Instance de l'api avec la même config que le service
+        $mangoPayApi = new MangoPay\MangoPayApi();
+        $mangoPayApi->Config->ClientId = $_ENV['CLIENT_ID'];
+        $mangoPayApi->Config->ClientPassword = $_ENV['API_KEY'];
+        $mangoPayApi->Config->BaseUrl = 'https://api.sandbox.mangopay.com';
+        $mangoPayApi->Config->TemporaryFolder = $_ENV['TMP_PATH'];
+        //Récuperation de la carte créée lors du paiement placée en session
+        $cardRegister = $mangoPayApi->CardRegistrations->Get($_SESSION['idCard']);
+        //Recuperation du param "data=" de l'url de retour si ell est set sinon erreur.
+        $cardRegister->RegistrationData = isset($_GET['data']) ? 'data=' . $_GET['data'] : 'errorCode=' . $_GET['errorCode'];
+        //Méthode du service permettant de update la carte avec la data récuperer afin de finaliser l'enregistrement de la carte
+        $service->updateCardRegistration($cardRegister);
+
+        //Puis on redirige vers l'endroit où l'ont veut.
+        return $this->redirectToRoute('annonce_ajouter');
     }
+
 }
