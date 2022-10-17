@@ -297,19 +297,19 @@ class AnnonceController extends AbstractController
 
     ): Response
     {
+
         //Création de l'url de retour sur lequel la data est renvoyer
         $returnURL = $this->generateUrl('paiement_updateRegistrationCard', [], UrlGeneratorInterface::ABSOLUTE_URL);
-        // Recuperation de l'annonce par son Id
+        //Récuperation de l'annonce par son Id
         $annonce = $annonceRepository->findOneBy(["id" => $id]);
-        //Recuperation de l'utilisateur connecté.
+        //Récuperation de l'utilisateur connecté.
         $mail = $this->getUser()->getUserIdentifier();
         $userConnect = $userRepository->findOneBy(['email' => $mail]);
-        // utilisation de la methode du service pour creer une nouvelle carte et insertion des données prérequises dans le formulaire sans les afficher
+        //Utilisation de la méthode du service pour créer une nouvelle carte et insertion des données prérequises dans le formulaire sans les afficher
         $cardRegistration = $service->createCardRegistration($userConnect);
         $accessKey = $cardRegistration->AccessKey;
         $preregistrationData = $cardRegistration->PreregistrationData;
         $cardRegistrationUrl = $cardRegistration->CardRegistrationURL;
-
 
         return $this->render("annonce/annoncePaiement.html.twig",
             compact(
