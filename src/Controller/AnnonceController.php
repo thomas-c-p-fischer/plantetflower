@@ -6,7 +6,6 @@ use App\Entity\Annonce;
 use App\Form\AnnonceForm;
 use App\Entity\Image;
 use App\Repository\AnnonceRepository;
-use App\Service\UploadService;
 use App\Repository\UserRepository;
 use App\Service\MangoPayService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -16,13 +15,12 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-#[Route('/annonce', name: 'annonce')]
+#[Route('/annonce', 'annonce')]
 class AnnonceController extends AbstractController
 {
     //  fonction pour afficher une annonce
-    #[Route('/{annonceId}', name: '_afficher', requirements: ['annonceId' => '\d+'])]
+    #[Route('/{annonceId}', '_afficher', requirements: ['annonceId' => '\d+'])]
     public function showAnnonce(AnnonceRepository $annonceRepository, $annonceId): Response
     {
         // Récupération de l'annonce par son Id
@@ -47,7 +45,6 @@ class AnnonceController extends AbstractController
     public function createAnnonce(
         Request                $request,
         EntityManagerInterface $entityManager,
-        UploadService          $uploadService,
     ): Response
     {
         // Création d'une nouvelle annonce
@@ -82,7 +79,7 @@ class AnnonceController extends AbstractController
     }
 
     // Fonction pour éditer une annonce
-    #[Route('/edit/{annonceId}', name: '_editer', requirements: ['annonceId' => '\d+'])]
+    #[Route('/edit/{annonceId}', '_editer', requirements: ['annonceId' => '\d+'])]
     public function editAnnonce(
         AnnonceRepository      $annonceRepository,
         Request                $request,
@@ -116,11 +113,15 @@ class AnnonceController extends AbstractController
             ]);
         }
         // Redirection vers la page d'édition de l'annonce
-        return $this->renderForm('annonce/editAnnonce.html.twig', compact('annonceForm', 'images'));
+        return $this->renderForm('annonce/editAnnonce.html.twig',
+            compact(
+                'annonceForm',
+                'images'
+            ));
     }
 
     //Fonction pour supprimer une annonce manuellement.
-    #[Route('/supprimer/{id}', name: '_supprimer', requirements: ['annonceId' => '\d+'])]
+    #[Route('/supprimer/{id}', '_supprimer', requirements: ['annonceId' => '\d+'])]
     public function deleteAnnonce(
         AnnonceRepository      $annonceRepository,
         EntityManagerInterface $entityManager,
@@ -135,7 +136,7 @@ class AnnonceController extends AbstractController
             // Suppression de l'annonce
             $entityManager->remove($annonce);
             $entityManager->flush();
-            $this->addFlash('succes', "L'annonce a bien été supprimé");
+            $this->addFlash('success', "L'annonce a bien été supprimé");
         } else {
             $this->addFlash('error', 'Vous ne pouvez pas supprimer les annonces des autres utilisateurs');
         }
@@ -240,7 +241,7 @@ class AnnonceController extends AbstractController
             // Récupération du prix initial (celui de l'utilisateur)
             $originPrice = $annonce->getPriceOrigin();
 
-            // Déclaration des valeurs ajoutées:
+            // Déclaration des valeurs ajoutées :
             // Frais fixes
             $fixedFee = 0.7;
 
@@ -284,28 +285,77 @@ class AnnonceController extends AbstractController
         }
     }
 
+    #[Route('/modeDeRemise/{id}', '_modeDeRemise')]
+    public function modeDeRemise(
+        Request           $request,
+        AnnonceRepository $annonceRepository,
+        UserRepository    $userRepository,
+                          $id
+    ): Response
+    {
+        //Récupération de l'annonce par son Id
+        $annonce = $annonceRepository->findOneBy(["id" => $id]);
+        //Récupération de l'user par son mail
+        $mail = $this->getUser()->getUserIdentifier();
+        $user = $userRepository->findOneBy(['email' => $mail]);
+        $form = $this->createForm('form');
+        $form->handleRequest($request);
+        $annonceTitle = $annonce->getTitle();
+        $annoncePriceOrigin = $annonce->getPriceOrigin();
+        $annoncePriceTotal = $annonce->getPriceTotal();
+        $annoncePoids = $annonce->getPoids();
+        $annonceShipment = $annonce->isShipement();
 
-    #[Route('/paiement/{id}', name: '_paiement')]
+
+        return $this->renderForm("annonce/modeDeRemise.html.twig",
+            compact(
+                'form',
+                'annonceTitle',
+                'user',
+                'annoncePriceOrigin',
+                'annoncePriceTotal',
+                'annoncePoids',
+                'annonceShipment'
+            ));
+    }
+
+    #[Route('/paiement/{id}', '_paiement')]
     public function paiement(
-        Request               $request,
-        MangoPayService       $service,
-        UserRepository        $userRepository,
-        AnnonceRepository     $annonceRepository,
-        HttpClientInterface   $client,
-                              $id,
-        UrlGeneratorInterface $generator,
-
+        MangoPayService   $service,
+        UserRepository    $userRepository,
+        AnnonceRepository $annonceRepository,
+                          $id,
     ): Response
     {
 
-        //Création de l'url de retour sur lequel la data est renvoyer
+        //Création de l'URL de retour sur lequel la data est renvoyée
         $returnURL = $this->generateUrl('paiement_updateRegistrationCard', [], UrlGeneratorInterface::ABSOLUTE_URL);
-        //Récuperation de l'annonce par son Id
+        //Récupération de l'annonce par son Id
         $annonce = $annonceRepository->findOneBy(["id" => $id]);
-        //Récuperation de l'utilisateur connecté.
+        //Stockage en variable des données utiles pour le récapitulatif de la somme à payer
+        $annoncePriceOrigin = $annonce->getPriceOrigin();
+        $annoncePriceTotal = $annonce->getPriceTotal();
+        $annoncePoids = $annonce->getPoids();
+        $annonceShipment = $annonce->isShipement();
+        $prixPoids = 0;
+        if ($annoncePoids == "0g - 500g")
+        {
+            $prixPoids = 5;
+        } elseif ($annoncePoids  == "501g - 1kg")
+        {
+            $prixPoids = 5.5;
+        }elseif ($annoncePoids == "1.1kg - 2kg")
+        {
+            $prixPoids = 7.5;
+        }elseif ($annoncePoids == "2.1kg - 3kg")
+        {
+            $prixPoids = 7.5;
+        }
+        //Récupération de l'utilisateur connecté.
         $mail = $this->getUser()->getUserIdentifier();
         $userConnect = $userRepository->findOneBy(['email' => $mail]);
-        //Utilisation de la méthode du service pour créer une nouvelle carte et insertion des données prérequises dans le formulaire sans les afficher
+        //Utilisation de la méthode du service pour créer une nouvelle carte et insertion des données pré-requises
+        //dans le formulaire sans les afficher
         $cardRegistration = $service->createCardRegistration($userConnect);
         $accessKey = $cardRegistration->AccessKey;
         $preregistrationData = $cardRegistration->PreregistrationData;
@@ -317,11 +367,12 @@ class AnnonceController extends AbstractController
                 'accessKey',
                 'preregistrationData',
                 'returnURL',
-                'cardRegistrationUrl'
+                'cardRegistrationUrl',
+                'annoncePriceOrigin',
+                'annoncePriceTotal',
+                'annoncePoids',
+                'prixPoids',
+                'annonceShipment'
             ));
-
     }
 }
-
-
-

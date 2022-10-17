@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mode de remise{% endblock %}
+
+{% block body %}
+    <h1>Etape 1/2</h1>
+    <h2>Mode de remise</h2>
+    <div class="delivery_choice">
+{#        ici l'image de l'annonce avec a sa droite le titre et le price_total#}
+        <div class="imgAnnonce">{{  }}</div>
+        <h3>Mode de remise</h3>
+        <label>
+            <input type="radio">
+            <h4>Remise en main propre</h4>
+        </label>
+        <label>
+            <input type="radio">
+            <h4>Mondial Relay</h4><img src="{{ asset('media/img/logo_mondial_relay.svg') }}" alt="Mondial Relay">
+{#            ici le prix de la livraison mondial relay#}
+        </label>
+        <h3>Total</h3>
+{#        ici le prix total si livraison : price_total + le prix de la livraison mondial relay#}
+    </div>
+{% endblock %}

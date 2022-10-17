@@ -5,25 +5,49 @@
 
 
 {% block body %}
-    
+    <h1>Etape 2/2</h1>
+    <h2>Paiement</h2>
+    <h3>Votre récapitulatif</h3>
+    <p>Montant de l'achat : </p><p>{{ annoncePriceOrigin }}€</p>
+    <p>Frais Plantetflower : </p><p>{{ annoncePriceTotal - annoncePriceOrigin }}€</p>
+    {% if annonceShipment == true %}
+        <p>Coûts de livraison Mondial Relay</p>
+        <p>
+            {% if  annoncePoids  == "0g - 500g" %}
+                <span class="priceLivraison">5€</span>
+                <input type="hidden" value="{{ prixPoids == 5 }}">
+            {% elseif  annoncePoids  == "501g - 1kg" %}
+                <span class="priceLivraison">5.5€</span>
+                <input type="hidden" value="{{ prixPoids == 5.5 }}">
+            {% elseif   annoncePoids  == "1.1kg - 2kg" %}
+                <span class="priceLivraison">7.5€</span>
+                <input type="hidden" value="{{ prixPoids == 7.5 }}">
+            {% elseif annoncePoids  == "2.1kg - 3kg" %}
+                <span class="priceLivraison">7.5€</span>
+                <input type="hidden" value="{{ prixPoids == 7.5 }}">
+            {% endif %}
+        </p>
+        <h3>Total à payer : </h3><h3>{{ annoncePriceTotal + prixPoids }}€</h3>
+    {% else %}
+        <h3>Total à payer : </h3><h3>{{ annoncePriceTotal }}€</h3>
+    {%  endif %}
     <form action="{{ cardRegistrationUrl }}" method="post">
         <input type="hidden" name="data" value="{{ preregistrationData }}"/>
         <input type="hidden" name="accessKeyRef" value="{{ accessKey }}"/>
         <input type="hidden" name="returnURL" value="{{ returnURL }}"/>
 
-        <label for="cardNumber">Card Number</label>
+        <label for="cardNumber">Numéro de carte</label>
         <input type="text" name="cardNumber" value=""/>
         <div class="clear"></div>
 
-        <label for="cardExpirationDate">Expiration Date</label>
+        <label for="cardExpirationDate">Date d'expiration</label>
         <input type="text" name="cardExpirationDate" value=""/>
         <div class="clear"></div>
 
-        <label for="cardCvx">CVV</label>
+        <label for="cardCvx">Cryptogramme</label>
         <input type="text" name="cardCvx" value=""/>
         <div class="clear"></div>
 
         <input type="submit" value="Pay"/>
     </form>
-
 {% endblock %}

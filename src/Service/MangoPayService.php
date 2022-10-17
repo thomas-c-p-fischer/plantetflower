@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Entity\Annonce;
 use App\Entity\User;
 use Exception;
 use MangoPay;
@@ -157,5 +158,18 @@ class MangoPayService
             dump($e);
         }
         return $cardInfo;
+    }
+
+    public function createDirectPayin(User $user, Annonce $annonce)
+    {
+        $payIn = new \MangoPay\PayIn();
+        $payIn->CreditedWalletId = $user->getidWallet();
+        $payIn->AuthorId = $user->getIdMangopay();
+        $payIn->DebitedFunds = new \MangoPay\Money();
+        $payIn->DebitedFunds->Amount = $annonce->getPriceTotal();
+        $payIn->DebitedFunds->Currency = 'EUR';
+        $payIn->Fees = new \MangoPay\Money();
+        $payIn->Fees->Amount = $annonce->getPriceTotal() - $annonce->getPriceOrigin();
+        $payIn->Fees->Currency = 'EUR';
     }
 }

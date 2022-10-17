@@ -64,9 +64,9 @@ class AnnonceForm extends AbstractType
                 'placeholder' => 'Choisissez le poids de votre plante',
                 'choices' => [
                     '0g - 500g' => '0g - 500g',
-                    '500g - 1kg' => '500g - 1kg',
-                    '1kg - 2kg' => '1kg - 2kg',
-                    '2kg - 3kg' => '2kg - 3kg',
+                    '501g - 1kg' => '501g - 1kg',
+                    '1.1kg - 2kg' => '1.1kg - 2kg',
+                    '2.1kg - 3kg' => '2.1kg - 3kg',
                 ],
                 'required' => true,
             ])

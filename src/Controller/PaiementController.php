@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\AnnonceRepository;
 use App\Repository\UserRepository;
 use App\Service\MangoPayService;
 use JetBrains\PhpStorm\NoReturn;
@@ -20,8 +21,6 @@ class PaiementController extends AbstractController
     #[Route('/paiement', name: '_updateRegistrationCard')]
     public function updateRegistrationCard(
         MangoPayService $service,
-        UserRepository  $userRepository,
-        Session         $session,
     ): Response
     {
         session_start();
@@ -35,10 +34,10 @@ class PaiementController extends AbstractController
         $cardRegister = $mangoPayApi->CardRegistrations->Get($_SESSION['idCard']);
         //Recuperation du param "data=" de l'url de retour si ell est set sinon erreur.
         $cardRegister->RegistrationData = isset($_GET['data']) ? 'data=' . $_GET['data'] : 'errorCode=' . $_GET['errorCode'];
-        //Méthode du service permettant de update la carte avec la data récuperer afin de finaliser l'enregistrement de la carte
+        //Méthode du service permettant de update la carte avec la data récupérer afin de finaliser l'enregistrement de la carte
         $service->updateCardRegistration($cardRegister);
 
-        //Puis on redirige vers l'endroit où l'ont veut.
+        //Puis on redirige vers l'endroit où l'on veut.
         return $this->redirectToRoute('annonce_ajouter');
     }
 
