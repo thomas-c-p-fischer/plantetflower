@@ -1,7 +1,7 @@
 .annonceForm h2 {
     display: flex;
     justify-content: start;
-    margin: 50px auto 30px 40px;
+    margin: 20px auto 30px 40px;
     font-family: 'Montserrat', sans-serif;
     font-weight: 500;
     font-size: 40px;
@@ -12,6 +12,10 @@
     display: flex;
     flex-direction: row;
     justify-content: space-around;
+}
+
+.container-img_cea {
+    width: 25%;
 }
 
 .form_cea {
@@ -40,42 +44,85 @@
     margin: 20px;
 }
 
-.container-add_img label {
+.container-img_annonce {
+    flex-direction: row;
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.container-img_preview {
+    margin: 0 5px;
+}
+
+.img_preview {
+    border-radius: 15px;
+    width: 120px;
+    height: 130px;
+    cursor: pointer;
+}
+
+.container-confirm_del_img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 120px;
+    height: 130px;
     background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='18' ry='18' stroke='darkseagreen' stroke-width='4' stroke-dasharray='20%2c 30' stroke-dashoffset='47' stroke-linecap='square'/%3e%3c/svg%3e");
     border-radius: 18px;
-    margin: 22px 20px 0;
-    padding: 35px;
-    cursor: pointer;
-    font-family: 'Montserrat', sans-serif;
-    font-weight: bold;
-    font-size: 20px;
     color: #48945d;
 }
 
-
-.add_img {
-    all: unset;
-    margin-top: -10px;
-    visibility: hidden;
+.restore_img {
+    width: 100px;
+    border-radius: 5px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    margin-bottom: 30px;
+    background-color: green;
+    cursor: pointer;
 }
 
-/*.container-img_annonce {*/
-/*  flex-direction: row;*/
-/*  display: flex;*/
+.container-img_preview p {
+    text-align: center;
+    flex-wrap: wrap;
+    margin: 10px 0 10px 0;
+}
 
-/*}*/
+.container-img_preview a {
+    width: 50px;
+}
 
-/*.img_preview {*/
-/*  border-radius: 15px;*/
-/*  width: 100%;*/
-/*  height: 120px;*/
-/*}*/
+.container-img_preview label {
+
+    background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='18' ry='18' stroke='darkseagreen' stroke-width='4' stroke-dasharray='20%2c 30' stroke-dashoffset='47' stroke-linecap='square'/%3e%3c/svg%3e");
+    border-radius: 18px;
+    margin: 0;
+    padding: 15px;
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
+    font-size: 80px;
+    color: #48945d;
+    width: 120px;
+    height: 130px;
+}
+
+.add_img {
+    display: none;
+}
+
+#annonce_form_image_0,
+#annonce_form_image_1,
+#annonce_form_image_2 {
+    display: none;
+}
 
 .cea-item {
-    margin: 20px 20px 50px 20px;
+    margin: 20px 0;
 }
 
 h3 {
@@ -134,6 +181,22 @@ h3 {
     resize: none;
 }
 
+.cea-check_plantPot {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+}
+
+.cea-check_plantPot h3 {
+    align-items: center;
+    margin: 0 0 3px 20px;
+    font-size: 15px;
+}
+
+.cea-check_plantPot input {
+    width: 20px;
+}
+
 .form_cea_right {
     margin: 42px 20px 0 0;
     width: 80%;
@@ -178,37 +241,25 @@ h3 {
     font-size: 20px;
 }
 
-.cea-container-all_check_annonce {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    margin: 50px 0;
-}
-
-.cea-container-check_annonce_left {
+.cea-container-delivery_mod {
     display: flex;
     flex-direction: column;
+    justify-content: start;
 }
 
-.cea-container-check_annonce {
+.cea-check_delivery_mod {
     display: flex;
     flex-direction: row;
 }
 
-.cea-container-check_annonce h3 {
+.cea-check_delivery_mod h3 {
     align-items: center;
     margin: 0 0 3px 20px;
     font-size: 15px;
 }
 
-.cea-container-check_annonce input {
+.cea-check_delivery_mod input {
     width: 20px;
-}
-
-.cea-container-check_annonce_right {
-    display: flex;
-    flex-direction: column;
-    justify-content: start;
 }
 
 .img_mondial_relay {
@@ -250,12 +301,14 @@ h3 {
 .cea-container-button_submit {
     display: flex;
     justify-content: center;
+    margin-bottom: 20px;
 }
 
 .form_cea button {
     display: flex;
     padding: 10px 50px;
     background-color: #48945d;
+    transition: background-color 0.2s;
     box-shadow: 0 15px 10px -15px #111;
     font-size: 18px;
     color: white;
@@ -266,12 +319,74 @@ h3 {
 
 .form_cea button:hover {
     background-color: white;
+    transition: background-color 0.2s;
     color: #48945d;
     border: 2px solid #48945d;
 }
 
-.container-img_cea {
-    width: 25%;
+.container-return_delete_btn {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.cea-return {
+    display: flex;
+    padding: 5px 20px;
+    background-color: #c6ffd0;
+    transition: background-color 0.2s;
+    box-shadow: 0 15px 10px -15px #111;
+    font-size: 15px;
+    color: #48945d;
+    border-radius: 25px;
+    border: 2px solid #48945d;
+    cursor: pointer;
+}
+
+.cea-return:hover {
+    background-color: #48945d;
+    transition: background-color 0.2s;
+    color: white;
+    border: 2px solid #48945d;
+}
+
+.cea-delete_btn {
+    display: flex;
+    padding: 5px 20px;
+    background-color: #c6ffd0;
+    transition: background-color 0.2s;
+    box-shadow: 0 15px 10px -15px #111;
+    font-size: 15px;
+    color: #48945d;
+    border-radius: 25px;
+    border: 2px solid #ff0000;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.cea-delete_btn:hover {
+    background-color: #a40000;
+    transition: background-color 0.2s;
+    color: white;
+    border: 2px solid #a40000;
+}
+
+#editAnnonce-confirm_delete {
+    display: none;
+}
+
+#editAnnonce-confirm_delete p {
+    display: flex;
+    justify-content: center;
+}
+
+#editAnnonce-confirm_delete a {
+    margin: 0;
 }
 
 @media screen and (max-width: 1502px) {
@@ -325,7 +440,7 @@ h3 {
         padding-bottom: 100px;
     }
 
-    .cea-container-all_check_annonce,
+    .cea-container-delivery_mod,
     .cea-container-shipping_address,
     .form_cea button {
         flex-direction: column;
@@ -355,6 +470,10 @@ h3 {
 }
 
 @media screen and (max-width: 860px) {
+    .form_cea {
+        width: 90%;
+    }
+
     .annonceForm h2 {
         justify-content: center;
         margin-top: 10px;
@@ -387,6 +506,10 @@ h3 {
 
     .form_cea {
         flex-direction: column;
+    }
 
+    .cea-item textarea {
+        padding-bottom: 0;
+        width: 96%;
     }
 }

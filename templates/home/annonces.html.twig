@@ -1,10 +1,5 @@
 {% extends 'base.html.twig' %}
-{# Attention choses à ajouter et changer, certains path et directory pour les images upload par les user #}
-{# Attention choses à ajouter et changer, certains path et directory pour les images upload par les user #}
-{# Attention choses à ajouter et changer, certains path et directory pour les images upload par les user #}
-{# Attention choses à ajouter et changer, certains path et directory pour les images upload par les user #}
-{# Attention choses à ajouter et changer, certains path et directory pour les images upload par les user #}
-{# Attention choses à ajouter et changer, certains path et directory pour les images upload par les user #}
+
 {% block title %}
     Annonces - Plant et Flower
 {% endblock %}
@@ -14,8 +9,6 @@
         <div class="containerGlobaleProducts">
             {# Bannière #}
             <div class="container_imgsearchProducts">
-                <img class="img-banniere" src="{{ asset('media/img/banniere-search.png') }}" alt="banniere"/>
-
                 <div class="txt_banniereProducts">
                     Donnez à vos végétaux une seconde
                     vie, et achetez-en de nouveaux
@@ -47,7 +40,7 @@
 
                 <div class="total-annonce">
                     {#                    changer le premier total par le nombre total d'annonces affichées selon le filtre ou la pagination sélectionner #}
-                    {{ total }} annonces sur {{ total }}
+                    {{ totalAnnonces }} annonces sur {{ totalAnnonces }}
                 </div>
                 <div class="navigation">
                     {#                    pagination à installer avec kplabs #}
@@ -60,7 +53,7 @@
                     <div class="card">
                         <a class="img-annonce-flex" href={{ path('annonce_afficher', {'annonceId': annonce.id}) }}>
                             <div class="image-annonce">
-                                {% for image in annonce.images %}
+                                {% for image in annonce.images|slice(0,1) %}
                                     <img src="{{ asset('/uploads/'~ image.name) }}" alt="Image annonce"/>
                                 {% endfor %}
                             </div>
@@ -76,7 +69,8 @@
                                         <p class="livraison">
                                             Livraison possible
                                         </p>
-                                    {% else %}
+                                    {% endif %}
+                                    {% if annonce.handDelivery == true %}
                                         <p class="not-livraison">
                                             Remise en main propre
                                         </p>

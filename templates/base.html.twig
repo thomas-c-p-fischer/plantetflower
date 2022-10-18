@@ -10,6 +10,7 @@
         {% block title %}Plant et flower{% endblock %}
     </title>
     <link rel="stylesheet" href="{{ asset("assets/app.css") }}">
+    <link rel="stylesheet" href="{{ asset("assets/homepage.css") }}">
     <link rel="stylesheet" href="{{ asset("/assets/about.css") }}">
     <link rel="stylesheet" href="{{ asset("/assets/cgu.css") }}">
     <link rel="stylesheet" href="{{ asset("/assets/faq.css") }}">
@@ -74,10 +75,14 @@
             {% if app.user %}
                 <ul class="nav-list" id="navi-list-profil">
                     <li class="list-item2">
-                        <a href={{ path('user_profil',{'id' : app.user.id }) }}>Profil</a>
+                        <a href={{ path('user_profil',{'id' : app.user.id }) }}>
+                            <img class="userIcons" src="{{ asset('media/img/user-pen-solid.png') }}" alt="user-profil">
+                        </a>
                     </li>
                     <li class="list-item2">
-                        <a href={{ path('security_logout') }}>Déconnexion</a>
+                        <a href={{ path('security_logout') }}>
+                            <img class="userIcons" src="{{ asset('media/img/person-exit-solid.png') }}" alt="user-disconnect">
+                        </a>
                     </li>
 
                     {% if is_granted('ROLE_ADMIN') %}
@@ -90,11 +95,15 @@
                 <ul class="nav-list" id="navi-list-profil">
                     <li class="list-item2">
                         {# <div class="btn-inscription"> #}
-                        <a href={{ path('registration_register') }} class="btn-inscription">Inscription</a>
+                        <a href={{ path('registration_register') }}>
+                            <img class="userIcons" src="{{ asset('media/img/user-plus-solid.png') }}" alt="user-register">
+                        </a>
                         {# </div> #}
                     </li>
                     <li class="list-item2">
-                        <a href={{ path('security_login') }}>Connexion</a>
+                        <a href={{ path('security_login') }}>
+                            <img class="userIcons" src="{{ asset('media/img/user-solid.png') }}" alt="user-connect">
+                        </a>
                     </li>
                 </ul>
             {% endif %}

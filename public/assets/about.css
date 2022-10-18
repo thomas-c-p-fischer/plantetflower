@@ -1,9 +1,5 @@
 .container-about {
     display: flex;
-    background-image: url("../media/img/background-yellow-green.png");
-    background-position: 10%;
-    background-repeat: no-repeat;
-    background-size: 100%;
     margin-bottom: 60px;
 }
 

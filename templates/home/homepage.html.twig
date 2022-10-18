@@ -2,24 +2,19 @@
 
 {% block title %}Accueil - Plant&Flower{% endblock %}
 
-{% block stylesheets %}
-    <link rel="stylesheet" href="{{ asset("assets/homepage.css") }}">
-{% endblock %}
-		{% block javascripts %}
-            {{ encore_entry_script_tags("app") }}
-        {% endblock %}
+{% block js %}
+    <script defer src={{ asset('assets/Javascript/homepage.js') }}></script>
+{% endblock js %}
 
 {% block body %}
     <main>
         <div class="containerGlobale">
             {# Bannière #}
             <div class="container_imgsearch">
-                <img class="img-banniere" src="{{ asset('media/img/banniere-search.png') }}" alt="banniere"/>
                 <div class="txt_banniere">
                     Donnez à vos végétaux une seconde
                     vie et achetez-en de nouveaux
                 </div>
-
                 <div class="search">
                     {{ form_start(form, {'attr': {'class': 'search-formulaire'}} ) }}
                     <div class="titre-search">
@@ -29,6 +24,42 @@
                         {{ form_row(form.Rechercher) }}
                     </div>
                     {{ form_end(form) }}
+                </div>
+                <div class="slideshow-container">
+                    {% for annonce in annoncesAll %}
+                        {% if annonce.sold == false %}
+                            <div class="mySlides item" data-ref={{ annonce.id }}>
+                                <a href={{ path('annonce_afficher', {'annonceId': annonce.id}) }}>
+                                    {% for image in annonce.images|slice(0,1) %}
+                                        <img src="{{ asset('/uploads//' ~ image.name) }}"
+                                             alt="{{ annonce.title }}"/>
+                                    {% endfor %}
+                                    <div class="card-content">
+                                        <div class="align-etoile">
+                                            <span class="nom-plante">{{ annonce.title }}</span>
+                                            <p class="etoile">☆</p>
+                                            <p class="prix">Prix : {{ annonce.priceTotal }}€</p>
+                                        </div>
+                                        <span class="ville">{{ annonce.ville | upper }}</span>
+                                        <div class="align-livraison">
+                                            {% if annonce.shipement == true %}
+                                                <p class="livraison">
+                                                    Livraison possible
+                                                </p>
+                                            {% else %}
+                                                <p class="not-livraison">
+                                                    Remise en main propre
+                                                </p>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <div>
+                    <img class="img-exchange" src="{{ asset('media/img/exchange.png') }}" alt="banniere"/>
                 </div>
             </div>
 
@@ -85,49 +116,49 @@
             </div>
 
 
-            {# Début caroussel test #}
+            {#            #}{# Début caroussel test #}
 
-            <div id="slideshow">
-                <div id="slides">
-                    {% for lastannonce in lastAnnonces %}
-                        {# Boucle pour afficher les images associées a son annonces #}
-                        {% if lastannonce.sold == false %}
-                            <div class="item" data-ref={{ lastannonce.id }}>
-                                <a href={{ path('home_annonces', {'id': lastannonce.id}) }}>
-                                    <div class="image-annonce">
-                                        {% for image in lastannonce.images %}
-                                            <img src="{{ asset('/uploads//' ~ image.name) }}"
-                                                 alt="{{ lastannonce.title }}"/>
-                                        {% endfor %}
-                                    </div>
-                                    <div class="card-content">
-                                        <div class="align-etoile">
-                                            <span class="nom-plante">{{ lastannonce.title }}</span>
-                                            <p class="etoile">☆</p>
-                                            <p class="prix">Prix : {{ lastannonce.priceTotal }}€</p>
-                                        </div>
-                                        <div class="align-livraison">
-									<span class="ville">
-										{{ lastannonce.ville | upper }}
-									</span>
-                                            {% if lastannonce.shipement == true %}
-                                                <p class="livraison">
-                                                    Livraison possible
-                                                </p>
-                                            {% else %}
-                                                <p class="not-livraison">
-                                                    Remise en main propre
-                                                </p>
-                                            {% endif %}
-                                        </div>
+            {#            <div id="slideshow"> #}
+            {#                <div id="slides"> #}
+            {#                    {% for lastannonce in lastAnnonces %} #}
+            {#                        #}{# Boucle pour afficher les images associées a son annonces #}
+            {#                        {% if lastannonce.sold == false %} #}
+            {#                            <div class="item" data-ref={{ lastannonce.id }}> #}
+            {#                                <a href={{ path('home_annonces', {'id': lastannonce.id}) }}> #}
+            {#                                    <div class="image-annonce"> #}
+            {#                                        {% for image in lastannonce.images %} #}
+            {#                                            <img src="{{ asset('/uploads//' ~ image.name) }}" #}
+            {#                                                 alt="{{ lastannonce.title }}"/> #}
+            {#                                        {% endfor %} #}
+            {#                                    </div> #}
+            {#                                    <div class="card-content"> #}
+            {#                                        <div class="align-etoile"> #}
+            {#                                            <span class="nom-plante">{{ lastannonce.title }}</span> #}
+            {#                                            <p class="etoile">☆</p> #}
+            {#                                            <p class="prix">Prix : {{ lastannonce.priceTotal }}€</p> #}
+            {#                                        </div> #}
+            {#                                        <div class="align-livraison"> #}
+            {#                                    <span class="ville"> #}
+            {#                                        {{ lastannonce.ville | upper }} #}
+            {#                                    </span> #}
+            {#                                            {% if lastannonce.shipement == true %} #}
+            {#                                                <p class="livraison"> #}
+            {#                                                    Livraison possible #}
+            {#                                                </p> #}
+            {#                                            {% else %} #}
+            {#                                                <p class="not-livraison"> #}
+            {#                                                    Remise en main propre #}
+            {#                                                </p> #}
+            {#                                            {% endif %} #}
+            {#                                        </div> #}
 
-                                    </div>
-                                </a>
-                            </div>
-                        {% endif %}
-                    {% endfor %}
-                </div>
-            </div>
+            {#                                    </div> #}
+            {#                                </a> #}
+            {#                            </div> #}
+            {#                        {% endif %} #}
+            {#                    {% endfor %} #}
+            {#                </div> #}
+            {#            </div> #}
 
             <div class="btn-vegetaux-mobile">
                 <button class="btn-vegetaux"><a class="lien-btn-vegetaux" href="{{ path('home_annonces') }}">Tous les
@@ -140,7 +171,6 @@
                 Comment ça fonctionne ?</p>
 
             <div class="container-fonctionnement">
-                <img class="img-fonctionnement" src="{{ asset('media/img/background-ccm.png') }}" alt="banniere"/>
                 <div class="decouvre">
                     <div class="decouvre-img"><img src="{{ asset('media/img/decouvre.png') }}" alt=""></div>
                     <div class="txt-decouvre">
