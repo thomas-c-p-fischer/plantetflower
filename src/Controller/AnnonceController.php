@@ -172,7 +172,7 @@ class AnnonceController extends AbstractController
 
 
     //Fonction pour supprimer une annonce manuellement.
-    #[Route('/supprimer/{annonceId}', '_supprimer', requirements: ['annonceId' => '\d+'])]
+    #[Route('/supprimer/{annonceId}', name: '_supprimer', requirements: ['annonceId' => '\d+'])]
     public function deleteAnnonce(
         AnnonceRepository      $annonceRepository,
         EntityManagerInterface $entityManager,
@@ -197,7 +197,7 @@ class AnnonceController extends AbstractController
             $this->addFlash('error', 'Vous ne pouvez pas supprimer les annonces des autres utilisateurs');
         }
         // Redirection vers le profil de l'utilisateur
-        return $this->redirectToRoute("user_profil",);
+        return $this->redirectToRoute("user_profil");
     }
 
     // Fonction permettant d'enregistrer un formulaire d'annonce en base de données
@@ -352,6 +352,7 @@ class AnnonceController extends AbstractController
         $annoncePriceTotal = $annonce->getPriceTotal();
         $annoncePoids = $annonce->getPoids();
         $annonceShipment = $annonce->isShipement();
+        $annonceHandDelivery = $annonce->isHandDelivery();
         //Variable qui va changer le prix total si mondial relay est choisi par rapport au poids
         $prixPoids = 0;
         if ($annoncePoids == "0g - 500g")
@@ -376,7 +377,8 @@ class AnnonceController extends AbstractController
                 'annoncePriceTotal',
                 'annoncePoids',
                 'annonceShipment',
-                'prixPoids'
+                'prixPoids',
+                'annonceHandDelivery'
             ));
     }
 
