@@ -47,7 +47,7 @@ class Annonce
     private ?\DateTimeInterface $date_expiration = null;
 
     #[ORM\Column]
-    private ?bool $sold = null;
+    private ?bool $sold = false;
 
     #[ORM\Column(length: 255)]
     private ?string $poids = null;

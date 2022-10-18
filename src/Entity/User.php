@@ -13,7 +13,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
-class User extends \MangoPay\UserLegal implements UserInterface, PasswordAuthenticatedUserInterface
+class User extends \MangoPay\UserNatural implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -95,7 +95,7 @@ class User extends \MangoPay\UserLegal implements UserInterface, PasswordAuthent
     #[ORM\Column(length: 255)]
     private ?string $nationality = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 255)]
     private ?string $idWallet = null;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Annonce::class, orphanRemoval: true)]

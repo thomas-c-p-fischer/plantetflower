@@ -2,20 +2,52 @@
 
 {% block title %}Paiement - Plant et Flower{% endblock %}
 
+
+
 {% block body %}
+    <h1>Etape 2/2</h1>
+    <h2>Paiement</h2>
+    <h3>Votre récapitulatif</h3>
+    <p>Montant de l'achat : </p><p>{{ annoncePriceOrigin }}€</p>
+    <p>Frais Plantetflower : </p><p>{{ annoncePriceTotal - annoncePriceOrigin }}€</p>
+    {% if annonceShipment == true %}
+        <p>Coûts de livraison Mondial Relay</p>
+        <p>
+            {% if  annoncePoids  == "0g - 500g" %}
+                <span class="priceLivraison">5€</span>
+                <input type="hidden" value="{{ prixPoids == 5 }}">
+            {% elseif  annoncePoids  == "501g - 1kg" %}
+                <span class="priceLivraison">5.5€</span>
+                <input type="hidden" value="{{ prixPoids == 5.5 }}">
+            {% elseif   annoncePoids  == "1.1kg - 2kg" %}
+                <span class="priceLivraison">7.5€</span>
+                <input type="hidden" value="{{ prixPoids == 7.5 }}">
+            {% elseif annoncePoids  == "2.1kg - 3kg" %}
+                <span class="priceLivraison">7.5€</span>
+                <input type="hidden" value="{{ prixPoids == 7.5 }}">
+            {% endif %}
+        </p>
+        <h3>Total à payer : </h3><h3>{{ annoncePriceTotal + prixPoids }}€</h3>
+    {% else %}
+        <h3>Total à payer : </h3><h3>{{ annoncePriceTotal }}€</h3>
+    {%  endif %}
+    <form action="{{ cardRegistrationUrl }}" method="post">
+        <input type="hidden" name="data" value="{{ preregistrationData }}"/>
+        <input type="hidden" name="accessKeyRef" value="{{ accessKey }}"/>
+        <input type="hidden" name="returnURL" value="{{ returnURL }}"/>
 
-    {{ form_start(paiementForm) }}
-    <div class="paiementForm">
-        <div class="numeroCarte">
-            {{ form_row(paiementForm.cardNumber, {'label': false, 'attr': {'placeholder': 'Numéro de carte*'}}) }}
-        </div>
-        <div class="dateExpiration">
-            {{ form_row(paiementForm.expirationDate, {'label': false, 'attr': {'placeholder': 'Date d\'expiration*'}}) }}
-        </div>
-        <div class="cvc">
-            {{ form_row(paiementForm.CVC, {'label': false, 'attr': {'placeholder': 'Cryptogramme*'}}) }}
-        </div>
-    </div>
-    {{ form_end(paiementForm) }}
+        <label for="cardNumber">Numéro de carte</label>
+        <input type="text" name="cardNumber" value=""/>
+        <div class="clear"></div>
 
+        <label for="cardExpirationDate">Date d'expiration</label>
+        <input type="text" name="cardExpirationDate" value=""/>
+        <div class="clear"></div>
+
+        <label for="cardCvx">Cryptogramme</label>
+        <input type="text" name="cardCvx" value=""/>
+        <div class="clear"></div>
+
+        <input type="submit" value="Pay"/>
+    </form>
 {% endblock %}
