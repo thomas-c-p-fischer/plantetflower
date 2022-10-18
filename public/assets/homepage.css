@@ -1,3 +1,105 @@
+/*Début page accueil*/
+
+/*Contenu de la bannière*/
+.container_imgsearch {
+    text-align: center;
+    grid-area: imgsearch;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-template-rows: 150px 200px 300px;
+    width: 100%;
+    background-size: cover;
+    grid-template-areas:
+                "txt_banniere txt_banniere txt_banniere txt_banniere img-exchange img-exchange img-exchange"
+                "search search search search img-exchange img-exchange img-exchange"
+                "slideshow-container slideshow-container slideshow-container slideshow-container img-exchange img-exchange img-exchange";
+}
+
+.txt_banniere {
+    color: #48945D;
+    font-size: 2vw;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    grid-area: txt_banniere;
+    z-index: 1;
+    grid-column-start: 1;
+    grid-column-end: 5;
+    grid-row: 1;
+    align-self: self-end;
+    width: 90%;
+    margin: 0 auto;
+}
+
+.search {
+    grid-area: search;
+    z-index: 2;
+    grid-column-start: 1;
+    grid-column-end: 5;
+    grid-row: 2;
+    width: 60%;
+    margin: 20px auto;
+}
+
+.slideshow-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    grid-column-start: 1;
+    grid-column-end: 5;
+    grid-row: 3;
+}
+
+.img-exchange {
+    margin: 0;
+    width: 300%;
+    grid-row-start: 1;
+}
+
+/* Début carrousel */
+
+.slideshow-container .item {
+    margin: 10px;
+}
+
+
+.slideshow-container img {
+    width: 100%;
+    height: 125px;
+
+}
+
+/*début du carroussel test*/
+
+.mySlides {
+    display: none;
+    justify-content: center;
+    width: 150px;
+    height: 250px;
+    border: 2px solid #fff;
+    background-color: #C6FFD0;
+    border-radius: 10px;
+    box-shadow: 2px 2px 5px 2px grey;
+    overflow: hidden;
+    align-items: start;
+    cursor: pointer;
+}
+
+/*fin du carroussel test*/
+
+/*#slideshow {*/
+/*    margin: 1em auto;*/
+/*    position: relative;*/
+/*    overflow: hidden;*/
+/*    max-height: 400px;*/
+/*    max-width: 1000px;*/
+/*    grid-area: slider;*/
+/*}*/
+
+/*fin slider*/
+
+
+
 .decouvre {
     grid-area: decouvre;
     display: flex;
@@ -49,5 +151,75 @@
 }
 
 .container-fonctionnement {
-    background-image: url("/public/media/img/background-ccm.png");
 }
+
+.containerGlobale {
+
+    /*    display: grid;*/
+    /*    grid-area: main;*/
+    /*    grid-template-columns: repeat(3, 1fr);*/
+    /*    grid-template-rows: repeat(12, 1fr);*/
+    /*    grid-template-areas:*/
+    /*                "imgsearch imgsearch imgsearch"*/
+    /*                "imgsearch imgsearch imgsearch"*/
+    /*                "imgsearch imgsearch imgsearch"*/
+    /*                "contenu contenu contenu"*/
+    /*                "dernieres-annonces dernieres-annonces dernieres-annonces"*/
+    /*                "slider slider slider"*/
+    /*                "slider slider slider"*/
+    /*                ". btn-vegetaux-mobile ."*/
+    /*                "title-fonctionnement title-fonctionnement title-fonctionnement"*/
+    /*                "fonctionnement fonctionnement fonctionnement"*/
+    /*                "container-fonctionnement container-fonctionnement container-fonctionnement"*/
+    /*                "container-fonctionnement container-fonctionnement container-fonctionnement";*/
+}
+
+/*.container_imgsearchProducts {*/
+/*    text-align: center;*/
+/*    grid-area: imgsearchProducts;*/
+/*    margin-bottom: 15px;*/
+/*    display: grid;*/
+/*    grid-template-columns: 1fr 1fr 1fr;*/
+/*    grid-template-rows: 150px 200px 200px;*/
+/*    width: 100%;*/
+/*    grid-template-areas:*/
+/*                ". txt_banniereProducts . img-exchange"*/
+/*                ". total-annonce . "*/
+/*                ". navigation .";*/
+/*}*/
+
+/*.total-annonce {*/
+/*    grid-column-start: 1;*/
+/*    grid-column-end: 5;*/
+/*    align-self: self-end;*/
+/*    width: 40%;*/
+/*    margin: 0 auto;*/
+/*    grid-area: total-annonce;*/
+/*    font-size: 20px;*/
+/*    font-weight: 500;*/
+/*    color: #48945D;*/
+/*    background-color: #FFF56E;*/
+/*    border-radius: 40px;*/
+/*    box-shadow: 0 2px 2px #000;*/
+/*    grid-row-start: 5;*/
+/*}*/
+
+/*.txt_banniereProducts {*/
+/*    color: #48945D;*/
+/*    font-size: 2vw;*/
+/*    font-family: 'Montserrat', sans-serif;*/
+/*    font-weight: 700;*/
+/*    grid-area: txt_banniereProducts;*/
+/*    z-index: 1;*/
+/*    grid-column-start: 1;*/
+/*    grid-column-end: 5;*/
+/*    grid-row-start: 4;*/
+/*    align-self: center;*/
+/*    width: 90%;*/
+/*    margin: 0 auto;*/
+/*}*/
+
+/*.img-banniere {*/
+/*    grid-area: img-banniere;*/
+/*    grid-row-start: 1;*/
+/*}*/
