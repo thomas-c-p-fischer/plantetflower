@@ -10,199 +10,214 @@
     {{ form_start(annonceForm) }}
     <div class="annonceForm">
         <h2>Vendez votre végétal</h2>
-    </div>
-    <div class="container-form_cea-img_cea">
-        <div class="container-img_cea">
-            <img src="{{ asset('media/img/reserve.png') }}">
-        </div>
-        <div class="form_cea">
-            <div class="form_cea_left">
-                <div class="container-add_img">
-                    <p>Ajouter jusqu'à 3 photos. (1 photo minimum est obligatoire pour vendre votre végétal)</p>
-                    {{ form_row(annonceForm.images, {
-                        'label': '+ Ajoutez vos photos',
-                        'attr': {
-                            'class': 'add_img',
-                        },
-                    }) }}
-                </div>
-                <div class="add_img_txt">
-                    Ajouter jusqu'à 3 photos. (1 photo minimum est obligatoire pour vendre
-                    votre végétal)
-                </div>
-                <div class="container-img_annonce">
-                    <div class="container-img_preview">
-                        {#                            <img class="img_preview" src="" height="100" width="100"/> #}
-                    </div>
-                    <div class="container-img_preview">
-                        {#                            <img class="img_preview" src="" height="100" width="100"/> #}
-                    </div>
-                    <div class="container-img_preview">
-                        {#                            <img class="img_preview" src="" height="100" width="100"/> #}
-                    </div>
-                </div>
-                {% if not annonceForm.vars.valid %}
-                    <div>
-                        {{ form_errors(annonceForm) }}
-                    </div>
-                {% endif %}
-                <div class="cea-item">
-                    <h3>Titre</h3>
-                    {{ form_row(annonceForm.title, {
-                        'label': false,
-                        'attr': {
-                            'class': 'input',
-                            'placeholder': 'ex. Orchidée',
-                        }
-                    }) }}
-                </div>
-                <div class="cea-item cea-choice_type">
-                    <h3>Catégorie</h3>
-                    {{ form_row(annonceForm.category, {
-                        'label': false,
-                        'placeholder': 'Choisissez votre catégorie',
-                        'attr': {
-                            'class': 'input',
-                        }
-                    }) }}
-                </div>
-                <div class="cea-item">
-                    <h3>Décrivez votre végétal (facultatif)</h3>
-                    {{ form_row(annonceForm.description, {
-                        'label': false,
-                        'attr': {
-                            'class': 'input',
-                            'placeholder': 'ex. cactus en bonne état',
-                        }
-                    }) }}
-                </div>
-                <div class="cea-item cea-choice_type">
-                    <h3>Poids du végétal:</h3>
-                    {{ form_row(annonceForm.poids, {
-                        'label': false,
-                        'attr': {
-                            'class': 'input',
-                        }
-                    }) }}
-                </div>
+        <div class="container-form_cea-img_cea">
+            <div class="container-img_cea">
+                <img src="{{ asset('media/img/reserve.png') }}">
             </div>
-            <div class="form_cea_right">
-                <div class="cea-item">
-                    <h3>Date d'expiration</h3>
-                    {{ form_row(annonceForm.dateExpiration, {
-                        'label': false,
-                        'attr': {
-                            'class': 'input',
-                        }
-                    }) }}
+            <div class="form_cea">
+                <div class="form_cea_left">
+                    <p>Ajouter jusqu'à 3 photos. (1 photo minimum est obligatoire pour vendre votre végétal)</p>
+                    <div class="container-img_annonce">
+                        <div class="container-img_preview" id="createAnnonce-uploader_0">
+                            {{ form_row(annonceForm.image_0, {
+                                'label': '+',
+                                'attr': {
+                                    'class': 'add_img',
+                                    'onchange': 'createAnnoncePreviewNewImg0(this)',
+                                },
+                            }) }}
+                        </div>
+                        <div class="container-img_preview new_img">
+                            <img class="img_preview" id="createAnnonce-new_img_0" src="#">
+                        </div>
+                        <div class="container-img_preview" id="createAnnonce-uploader_1">
+                            {{ form_row(annonceForm.image_1, {
+                                'label': '+',
+                                'attr': {
+                                    'class': 'add_img',
+                                    'onchange': 'createAnnoncePreviewNewImg1(this)',
+                                },
+                            }) }}
+                        </div>
+                        <div class="container-img_preview new_img">
+                            <img class="img_preview" id="createAnnonce-new_img_1" src="#">
+                        </div>
+                        <div class="container-img_preview" id="createAnnonce-uploader_2">
+                            {{ form_row(annonceForm.image_2, {
+                                'label': '+',
+                                'attr': {
+                                    'class': 'add_img',
+                                    'onchange': 'createAnnoncePreviewNewImg2(this)',
+                                },
+                            }) }}
+                        </div>
+                        <div class="container-img_preview new_img">
+                            <img class="img_preview" id="createAnnonce-new_img_2" src="#">
+                        </div>
+                    </div>
+                    {% if not annonceForm.vars.valid %}
+                        <div>
+                            {{ form_errors(annonceForm) }}
+                        </div>
+                    {% endif %}
+                    <div class="cea-item">
+                        <h3>Titre</h3>
+                        {{ form_row(annonceForm.title, {
+                            'label': false,
+                            'attr': {
+                                'class': 'input',
+                                'placeholder': 'ex. Orchidée',
+                            }
+                        }) }}
+                    </div>
+                    <div class="cea-item cea-choice_type">
+                        <h3>Catégorie</h3>
+                        {{ form_row(annonceForm.category, {
+                            'label': false,
+                            'placeholder': 'Choisissez votre catégorie',
+                            'attr': {
+                                'class': 'input',
+                            }
+                        }) }}
+                    </div>
+                    <div class="cea-item">
+                        <h3>Décrivez votre végétal (facultatif)</h3>
+                        {{ form_row(annonceForm.description, {
+                            'label': false,
+                            'attr': {
+                                'class': 'input',
+                                'placeholder': 'ex. cactus en bonne état',
+                            }
+                        }) }}
+                    </div>
+                    <div class="cea-item cea-choice_type">
+                        <h3>Poids du végétal</h3>
+                        {{ form_row(annonceForm.poids, {
+                            'label': false,
+                            'attr': {
+                                'class': 'input',
+                            }
+                        }) }}
+                    </div>
                 </div>
+                <div class="form_cea_right">
+                    <div class="cea-item">
+                        <h3>Date d'expiration</h3>
+                        {{ form_row(annonceForm.dateExpiration, {
+                            'label': false,
+                            'attr': {
+                                'class': 'input',
+                            }
+                        }) }}
+                    </div>
 
-                <div class="cea-item cea-container-all_price">
-                    <div class="cea-all_price">
-                        <div class="cea-price">
-                            <h3>Prix</h3>
-                            <div class="cea-origin_price">
-                                {{ form_row(annonceForm.priceOrigin, {
-                                    'label': false,
-                                    'id': 'createAnnonce_origin_price',
-                                    'attr': {
-                                        'class': 'input',
-                                        'placeholder': 'ex. 2.50',
-                                    }
-                                }) }}
-                                <p>€</p>
+                    <div class="cea-item cea-container-all_price">
+                        <div class="cea-all_price">
+                            <div class="cea-price">
+                                <h3>Prix</h3>
+                                <div class="cea-origin_price">
+                                    {{ form_row(annonceForm.priceOrigin, {
+                                        'label': false,
+                                        'id': 'createAnnonce_origin_price',
+                                        'attr': {
+                                            'class': 'input',
+                                            'placeholder': 'ex. 2.50',
+                                        }
+                                    }) }}
+                                    <p>€</p>
+                                </div>
+                            </div>
+                            <div class="cea-price">
+                                <h3>Prix définitif</h3>
+                                <div class="cea-total_price">
+                                    <p id="createAnnonce_total_price">€</p>
+                                </div>
                             </div>
                         </div>
-                        <div class="cea-price">
-                            <h3>Prix définitif</h3>
-                            <div class="cea-total_price">
-                                <p id="createAnnonce_total_price">€</p>
-                            </div>
-                        </div>
+                        <div id="createAnnonce_price_message"></div>
                     </div>
-                    <div id="createAnnonce_price_message"></div>
-                </div>
-                <p class="cea-taxes_txt">
-                    Pour que le site reste gratuit, nous appliquons des frais de<br> commission
-                    qui servent à financer la maintenance du service (hébergement, domaines, équipes, matériel...).
-                </p>
-                <div class="cea-item">
-                    <div class='cea-container-all_check_annonce'>
-                        <div class='cea-container-check_annonce_left'>
-                            <div class="cea-container-check_annonce">
-                                {{ form_row(annonceForm.shipement,{
-                                    'attr': {
-                                        'class': 'cea-check_annonce',
-                                    }
-                                }) }}
-                                <h3>Livraison possible</h3>
+                    <p class="cea-taxes_txt">
+                        Pour que le site reste gratuit, nous appliquons des frais de commission
+                        qui servent à financer la maintenance du service (hébergement, domaines, équipes, matériel...).
+                    </p>
+                    <div class="cea-item">
+                        <div class='cea-container-all_check_annonce'>
+                            <div class='cea-container-check_annonce_left'>
+                                <div class="cea-container-check_annonce">
+                                    {{ form_row(annonceForm.plantPot,{
+                                        'attr': {
+                                            'class': 'cea-check_annonce',
+                                        }
+                                    }) }}
+                                    <h3>Pot disponible</h3>
+                                </div>
                             </div>
-                            <div class="cea-container-check_annonce">
-                                {{ form_row(annonceForm.plantPot,{
-                                    'attr': {
-                                        'class': 'cea-check_annonce',
-                                    }
-                                }) }}
-                                <h3>Pot disponible</h3>
-                            </div>
-                        </div>
-                        <div class='cea-container-check_annonce_right'>
-                            <div class="cea-container-check_annonce">
-                                <input type="radio" name="mode" id="remise" class="active" checked>
-                                <h3 class="mode">Remise en main propre</h3>
-                            </div>
-                            <div class="cea-container-check_annonce">
-                                <input type="radio" name="mode" id="mode" class="input checked">
-                                <h3 class="mode">Mondial Relay</h3>
-                                <img class="img_mondial_relay"
-                                     src="{{ asset('media/img/mondialRelay.png') }}"
-                                     alt="Logo Mondial Relay">
-                                <div class="container-mondial_relay_widget">
-                                    <div class="mondial_relay_widget" id="Zone_Widget">
-                                    </div>
-                                    <div>
-                                        <input type="hidden" id="ParcelShopCode" name="ParcelShopCode"/>
+                            <div class='cea-container-check_annonce_right'>
+                                <div class="cea-container-check_annonce">
+                                    <input type="checkbox" name="mode" id="createAnnonce-hand_delivery"
+                                           class="cea-check_active" checked>
+                                    <h3 class="mode">Remise en main propre</h3>
+                                </div>
+                                <div class="cea-container-check_annonce">
+                                    <div class="cea-container-check_annonce">
+                                        {{ form_row(annonceForm.shipement,{
+                                            'id': 'createAnnonce_shipement',
+                                            'attr': {
+                                                'class': 'cea-check_annonce',
+                                            }
+                                        }) }}
+                                        <h3 class="mode">Livraison Mondial Relay</h3>
+                                        <img class="img_mondial_relay"
+                                             src="{{ asset('media/img/mondialRelay.png') }}"
+                                             alt="Logo Mondial Relay">
+                                        <div class="container-mondial_relay_widget">
+                                            <div class="mondial_relay_widget" id="Zone_Widget">
+                                            </div>
+                                            <div>
+                                                <input type="hidden" id="ParcelShopCode" name="ParcelShopCode"/>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div>
-                        <h3>Adresse d'expédition</h3>
-                        <div class="cea-container-shipping_address">
-                            <div class="cea-shipp_add-address_item">
-                                {{ form_row(annonceForm.expAdress, {
-                                    'label': false,
-                                    'attr': {
-                                        'class': 'input',
-                                        'placeholder': 'Adresse',
-                                    }
-                                }) }}
-                            </div>
-                            <div class="cea-shipp_add-city_zipcode">
-                                <div class="cea-shipp_add-city_item">
-                                    {{ form_row(annonceForm.ville, {
+                        <div>
+                            <h3>Adresse d'expédition</h3>
+                            <div class="cea-container-shipping_address">
+                                <div class="cea-shipp_add-address_item">
+                                    {{ form_row(annonceForm.expAdress, {
                                         'label': false,
                                         'attr': {
                                             'class': 'input',
-                                            'placeholder': 'ex. Paris',
+                                            'placeholder': 'Adresse',
                                         }
                                     }) }}
                                 </div>
-                                <div class="cea-shipp_add-zipcode_item">
-                                    {{ form_row(annonceForm.expZipCode, {
-                                        'label': false,
-                                        'attr': {
-                                            'class': 'input',
-                                            'placeholder': 'Code Postal',
-                                        }
-                                    }) }}
+                                <div class="cea-shipp_add-city_zipcode">
+                                    <div class="cea-shipp_add-city_item">
+                                        {{ form_row(annonceForm.ville, {
+                                            'label': false,
+                                            'attr': {
+                                                'class': 'input',
+                                                'placeholder': 'ex. Paris',
+                                            }
+                                        }) }}
+                                    </div>
+                                    <div class="cea-shipp_add-zipcode_item">
+                                        {{ form_row(annonceForm.expZipCode, {
+                                            'label': false,
+                                            'attr': {
+                                                'class': 'input',
+                                                'placeholder': 'Code Postal',
+                                            }
+                                        }) }}
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="cea-item cea-container-button_submit">
-                        <button id="createAnnonce_submit" type="submit">+ AJOUTER</button>
+                        <div class="cea-item cea-container-button_submit">
+                            <button id="createAnnonce_submit" type="submit">+ AJOUTER</button>
+                        </div>
                     </div>
                 </div>
             </div>

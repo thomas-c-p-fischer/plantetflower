@@ -7,6 +7,7 @@ use App\Form\AnnonceForm;
 use App\Entity\Image;
 use App\Form\PaiementFormType;
 use App\Repository\AnnonceRepository;
+use App\Repository\ImageRepository;
 use App\Service\UploadService;
 use App\Repository\UserRepository;
 use App\Service\MangoPayService;
@@ -67,14 +68,6 @@ class AnnonceController extends AbstractController
             // Envoi de l'annonce et du formulaire à une fonction permettant d'enregistrer en base de données
             $this->dataSave($annonce, $entityManager, $annonceForm);
 
-
-//        // redirection sur l'affichage de cette annonce
-//        return $this->redirectToRoute("annonce_afficher",
-//            ['annonceId' => $annonce->getId(),
-//                'img' => $img,
-//            ]);
-
-
             // Redirection sur l'affichage de cette annonce
             return $this->redirectToRoute("annonce_afficher", ['annonceId' => $annonce->getId()]);
         }
@@ -106,23 +99,84 @@ class AnnonceController extends AbstractController
         $annonceForm = $this->createForm(AnnonceForm::class, $annonce);
         $annonceForm->handleRequest($request);
 
-        $images = $annonce->getImages();
+        $actualImages = $annonce->getImages();
 
         // Si le formulaire est envoyé et valide à la fois
         if ($annonceForm->isSubmitted() && $annonceForm->isValid()) {
-            // Envoi de l'annonce et du formulaire à une fonction permettant d'enregistrer en base de données
-            $this->dataSave($annonce, $entityManager, $annonceForm);
+
+            // On récupère les nouvelles images transmises
+            $newImages = array(
+                $annonceForm->get('image_0')->getData(),
+                $annonceForm->get('image_1')->getData(),
+                $annonceForm->get('image_2')->getData()
+            );
+
+            $nbNewImages = 0;
+            // On boucle sur les nouvelles images
+            foreach ($newImages as $image) {
+                // Si l'image existe
+                if ($image) {
+                    // Le nombre de nouvelles images est incrémenté à +1
+                    $nbNewImages++;
+                }
+            }
+
+            $nbActualImages = count($actualImages);
+
+            $nbTotalImages = $nbActualImages + $nbNewImages;
+
+            // Si aucune image
+            if ($nbTotalImages < 1) {
+                $annonceForm->addError(new FormError("Vous devez importer au minimum 1 image"));
+                // Si trop d'images
+            } elseif ($nbTotalImages > 3) {
+                $annonceForm->addError(new FormError("Vous ne pouvez importer que 3 images pour une annonce"));
+            } else {
+                // Envoi de l'annonce et du formulaire à une fonction permettant d'enregistrer en base de données
+                $this->dataSave($annonce, $entityManager, $annonceForm);
+                // Redirection sur l'affichage de cette annonce
+                return $this->redirectToRoute("annonce_afficher", [
+                    'annonceId' => $annonce->getId()
+                ]);
+            }
+        }
+        // Redirection vers la page d'édition de l'annonce
+        return $this->renderForm('annonce/editAnnonce.html.twig', compact('annonce', 'annonceForm', 'actualImages'));
+    }
+
+    // Fonction pour supprimer l'image d'une annonce
+    #[Route('/supprimerImage/{imageId}', name: '_supprimerImage', requirements: ['imageId' => '\d+'])]
+    public function deleteAnnonceImg(
+        ImageRepository        $ImageRepository,
+        AnnonceRepository      $annonceRepository,
+        EntityManagerInterface $entityManager,
+                               $imageId
+    ): Response
+    {
+        // Récupération de l'image par son Id
+        $image = $ImageRepository->find($imageId);
+        // Récupération de l'annonce par l'image
+        $annonce = $annonceRepository->find($image->getAnnonceId());
+        // Si l'utilisateur n'est pas celui qui a créé l'annonce
+        if ($this->getUser() !== $annonce->getUser()) {
+            $this->addFlash('error', 'Vous ne pouvez pas modifier les annonces des autres utilisateurs');
             // Redirection sur l'affichage de cette annonce
             return $this->redirectToRoute("annonce_afficher", [
                 'annonceId' => $annonce->getId()
             ]);
+        } else if (count($annonce->getImages()) > 1) {
+            $entityManager->remove($image);
+            $entityManager->flush();
+            $this->addFlash('succes', "L'image a bien été supprimé");
         }
+
         // Redirection vers la page d'édition de l'annonce
-        return $this->renderForm('annonce/editAnnonce.html.twig', compact('annonceForm', 'images'));
+        return $this->redirectToRoute("annonce_editer", ['annonceId' => $annonce->getId()]);
     }
 
+
     //Fonction pour supprimer une annonce manuellement.
-    #[Route('/supprimer/{id}', name: '_supprimer', requirements: ['annonceId' => '\d+'])]
+    #[Route('/supprimer/{annonceId}', name: '_supprimer', requirements: ['annonceId' => '\d+'])]
     public function deleteAnnonce(
         AnnonceRepository      $annonceRepository,
         EntityManagerInterface $entityManager,
@@ -131,9 +185,14 @@ class AnnonceController extends AbstractController
     {
         // Récupération de l'annonce par son Id
         $annonce = $annonceRepository->find($annonceId);
-        // si l'utilisateur est bien celui qui a créé l'annonce
-
+        // Si l'utilisateur est bien celui qui a créé l'annonce
         if ($this->getUser() === $annonce->getUser()) {
+            // Récupération des images de l'annonce
+            $actualImages = $annonce->getImages();
+            foreach ($actualImages as $image) {
+                $entityManager->remove($image);
+                $entityManager->flush();
+            }
             // Suppression de l'annonce
             $entityManager->remove($annonce);
             $entityManager->flush();
@@ -142,8 +201,7 @@ class AnnonceController extends AbstractController
             $this->addFlash('error', 'Vous ne pouvez pas supprimer les annonces des autres utilisateurs');
         }
         // Redirection vers le profil de l'utilisateur
-        return $this->redirectToRoute("user_profil",
-        );
+        return $this->redirectToRoute("user_profil",);
     }
 
     // Fonction permettant d'enregistrer un formulaire d'annonce en base de données
@@ -153,137 +211,136 @@ class AnnonceController extends AbstractController
                                $form
     ): void
     {
-        // Création de la variable image
-        $images = $form->get('images')->getData();
-        // Si trop d'images
-        if (count($images) > 3) {
-            $form->addError(new FormError("Trop d'images"));
-            // Si aucune image
-        } elseif (count($images) < 1) {
-            $form->addError(new FormError("Vous devez upload au minimum 1 image"));
+        // On récupère les nouvelles images transmises
+        $newImages = array(
+            $form->get('image_0')->getData(),
+            $form->get('image_1')->getData(),
+            $form->get('image_2')->getData()
+        );
+
+        // On boucle sur les nouvelles images
+        foreach ($newImages as $image) {
+            // Si l'image existe
+            if ($image) {
+                // On génère un nouveau nom de fichier
+                $fichier = md5(uniqid()) . '.' . $image->guessExtension();
+                // On copie le fichier dans le dossier uploads
+                $image->move(
+                    $this->getParameter('images_directory'),
+                    $fichier
+                );
+                // On crée l'image dans la base de données
+                $img = new Image();
+                $img->setName($fichier);
+                $annonce->addImage($img);
+            }
         }
 
-        // On récupère les images transmises
-        $images = $form->get('images')->getData();
-        // On boucle sur les images
-        foreach ($images as $image) {
-            // On génère un nouveau nom de fichier
-            $fichier = md5(uniqid()) . '.' . $image->guessExtension();
-            // On copie le fichier dans le dossier uploads
-            $image->move(
-                $this->getParameter('images_directory'),
-                $fichier
-            );
-            // On crée l'image dans la base de données
-            $img = new Image();
-            $img->setName($fichier);
-            $annonce->addImage($img);
+        // Récupération des réponses données par l'utilisateur :
+        // Variables créée pour certaines réponses de l'utilisateur nécessitant une condition
+        $description = $annonce->getDescription();
+        $handDelivery = $annonce->isHandDelivery();
+        $shipement = $annonce->isShipement();
+        $plantPot = $annonce->isPlantPot();
+        $expRelID = $form->get('expRelId')->getData();
+        // Si une description est existante
+        if ($description) {
+            $annonce->setDescription($description);
+        }
+        // Si un pôt est existant
+        if ($plantPot) {
+            $annonce->setPlantPot(true);
+        } else {
+            $annonce->setPlantPot(false);
+        }
+        // Si l'annonce fonctionne par remise en main propre
+        if ($handDelivery) {
+            $annonce->setHandDelivery(true);
+        } else {
+            $annonce->setHandDelivery(false);
+        }
+        // Si l'annonce fonctionne par livraison
+        if ($shipement) {
+            $annonce->setShipement(true);
+        } else {
+            $annonce->setShipement(false);
+        }
+        // Si l'annonce contient un ID du point de relai pour l'expédition
+        if ($expRelID != '') {
+            $annonce->setExpRelId($form->get('expRelId')->getData());
+        }
+        // Prix initial
+        $annonce->setPriceOrigin($form->get('priceOrigin')->getData());
+        // Date d'expiration
+        $annonce->setDateExpiration($form->get('dateExpiration')->getData());
+        // Titre
+        $annonce->setTitle($form->get('title')->getData());
+        // Catégorie
+        $annonce->setCategory($form->get('category')->getData());
+        // Poids de la plante
+        $annonce->setPoids($form->get('poids')->getData());
+        // Vendu (boolean)
+        $annonce->setSold(false);
+        $annonce->setVille(strtoupper($form->get('ville')->getData()));
+        // L'utilisateur actuel
+        $annonce->setUser($this->getUser());
+        // Date et de l'heure actuel
+        $annonce->setCreatedAt(new \DateTime());
+        // L'adresse
+        $annonce->setExpAdress($form->get('expAdress')->getData());
+        // Code postal
+        $annonce->setExpZipCode($form->get('expZipCode')->getData());
+        // Le statut de livraison est initialisé à faux
+        $annonce->setStatutLivraison(false);
+        // Statut initialisé à "non vendu"
+        $annonce->setStatus("not sold");
 
-            if (count($images) > 3) {
-                $form->addError(new FormError("Trop d'images"));
-            } elseif (count($images) < 1) {
-                $form->addError(new FormError("Vous devez upload au minimum 1 image"));
-            }
+        // Calcul du prix total:
+        // Récupération du prix initial (celui de l'utilisateur)
+        $originPrice = $annonce->getPriceOrigin();
 
-            // Récupération des réponses données par l'utilisateur :
-            // Variables créée pour certaines réponses de l'utilisateur nécessitant une condition
-            $description = $annonce->getDescription();
-            $shipement = $annonce->isShipement();
-            $plantPot = $annonce->isPlantPot();
-            $expRelID = $form->get('expRelId')->getData();
-            // Si une description est existante
-            if ($description) {
-                $annonce->setDescription($description);
-            }
-            // Si un pôt est existant
-            if ($plantPot) {
-                $annonce->setPlantPot(true);
-            } else {
-                $annonce->setPlantPot(false);
-            }
+        // Déclaration des valeurs ajoutées:
+        // Frais fixes
+        $fixedFee = 0.7;
 
-            // Si l'annonce fonctionne par expédition
-            if ($shipement) {
-                $annonce->setShipement(true);
-            } else {
-                $annonce->setShipement(false);
-            }
-            // Si l'annonce contient un ID du point de relai pour l'expédition
-            if ($expRelID != '') {
-                $annonce->setExpRelId($form->get('expRelId')->getData());
-            }
-            // Prix initial
-            $annonce->setPriceOrigin($form->get('priceOrigin')->getData());
-            // Date d'expiration
-            $annonce->setDateExpiration($form->get('dateExpiration')->getData());
-            // Titre
-            $annonce->setTitle($form->get('title')->getData());
-            // Catégorie
-            $annonce->setCategory($form->get('category')->getData());
-            // Poids de la plante
-            $annonce->setPoids($form->get('poids')->getData());
-            // Vendu (boolean)
-            $annonce->setSold(false);
-            $annonce->setVille(strtoupper($form->get('ville')->getData()));
-            // L'utilisateur actuel
-            $annonce->setUser($this->getUser());
-            // Date et de l'heure actuel
-            $annonce->setCreatedAt(new \DateTime());
-            // L'adresse
-            $annonce->setExpAdress($form->get('expAdress')->getData());
-            // Code postal
-            $annonce->setExpZipCode($form->get('expZipCode')->getData());
-            // Le statut de livraison est initialisé à faux
-            $annonce->setStatutLivraison(false);
-            // Statut initialisé à "non vendu"
-            $annonce->setStatus("not sold");
+        // Pourcentage de marge
+        $marginPercentage = 0.12;
 
-            // Calcul du prix total:
-            // Récupération du prix initial (celui de l'utilisateur)
-            $originPrice = $annonce->getPriceOrigin();
+        // Calcul de la marge
+        $margin = $originPrice * $marginPercentage;
 
-            // Déclaration des valeurs ajoutées:
-            // Frais fixes
-            $fixedFee = 0.7;
+        // Calcul du prix taxé arrondi au 3e chiffre après la virgule
+        $taxedPrice = round($originPrice + $fixedFee + $margin, 3);
 
-            // Pourcentage de marge
-            $marginPercentage = 0.12;
+        // Arrondissement à la demi-unité supérieure
 
-            // Calcul de la marge
-            $margin = $originPrice * $marginPercentage;
+        // Récupération du modulo du prix taxé
+        $moduloTaxedPrice = fmod($taxedPrice, 1);
 
-            // Calcul du prix taxé arrondi au 3e chiffre après la virgule
-            $taxedPrice = round($originPrice + $fixedFee + $margin, 3);
+        // Initialisation de la variable du prix total
+        $totalPrice = "";
 
-            // Arrondissement à la demi-unité supérieure
-
-            // Récupération du modulo du prix taxé
-            $moduloTaxedPrice = fmod($taxedPrice, 1);
-
-            // Initialisation de la variable du prix total
-            $totalPrice = "";
-
-            // Si le modulo du prix taxé est entre 0 et 0,5
-            if ($moduloTaxedPrice > 0 && $moduloTaxedPrice < 0.5) {
-                // Arrondissement du prix total à l'entier supérieur ajouté à 0,5
-                $totalPrice = round($taxedPrice, 0) + 0.5;
-                // Si le modulo du prix taxé est supérieur ou égal à 0,5 et inférieur à 1
-            } else if ($moduloTaxedPrice >= 0.5 && $moduloTaxedPrice < 1) {
-                // Arrondissement du prix total à l'entier supérieur
-                $totalPrice = round($taxedPrice, 0);
-            }
+        // Si le modulo du prix taxé est entre 0 et 0,5
+        if ($moduloTaxedPrice > 0 && $moduloTaxedPrice < 0.5) {
+            // Arrondissement du prix total à l'entier supérieur ajouté à 0,5
+            $totalPrice = round($taxedPrice, 0) + 0.5;
+            // Si le modulo du prix taxé est supérieur ou égal à 0,5 et inférieur à 1
+        } else if ($moduloTaxedPrice >= 0.5 && $moduloTaxedPrice < 1) {
+            // Arrondissement du prix total à l'entier supérieur
+            $totalPrice = round($taxedPrice, 0);
+        }
 
 //        $totalFees = $totalPrice - $taxedPrice + $fixedFee + $marginPercentage;
 //        $commissionSite = $totalFees - (0.018 * $totalPrice + 0.18);
 //        $a = array($totalPrice, $taxedPrice, $totalFees, $commissionSite);
 
-            // Assignation du prix total à l'annonce
-            $annonce->setPriceTotal($totalPrice);
+        // Assignation du prix total à l'annonce
+        $annonce->setPriceTotal($totalPrice);
 
-            // Envoie des informations en base de donnée
-            $entityManager->persist($annonce);
-            $entityManager->flush();
-        }
+        // Envoie des informations en base de donnée
+        $entityManager->persist($annonce);
+        $entityManager->flush();
+
     }
 
     #[Route('/paiement/{id}', name: '_paiement')]

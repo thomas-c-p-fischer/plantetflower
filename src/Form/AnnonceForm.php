@@ -21,33 +21,26 @@ class AnnonceForm extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('images', FileType::class, [
+            ->add('image_0', FileType::class, [
                 'label' => false,
-                'multiple' => true,
+                'multiple' => false,
                 'mapped' => false,
                 'attr' => array('accept' => 'image/jpeg,image/png,image/jpg'),
-                'required' => true,
-            ])
-            ->add('description', TextareaType::class, [
-                'attr' => ['class' => 'tinymce'],
                 'required' => false,
             ])
-            ->add('shipement', CheckboxType::class, [
+            ->add('image_1', FileType::class, [
                 'label' => false,
+                'multiple' => false,
+                'mapped' => false,
+                'attr' => array('accept' => 'image/jpeg,image/png,image/jpg'),
                 'required' => false,
             ])
-            ->add('priceOrigin', MoneyType::class, [
-                'currency' => '',
-                'required' => true,
-                'invalid_message' => 'Nous ne prenons pas en compte votre annonce au-delà de 100€, veuillez nous excuser'
-            ])
-            ->add('plantPot', CheckboxType::class, [
+            ->add('image_2', FileType::class, [
                 'label' => false,
+                'multiple' => false,
+                'mapped' => false,
+                'attr' => array('accept' => 'image/jpeg,image/png,image/jpg'),
                 'required' => false,
-            ])
-            ->add('dateExpiration', DateType::class, [
-                'widget' => 'single_text',
-                'required' => true,
             ])
             ->add('title', null, [
                 'required' => true,
@@ -57,8 +50,9 @@ class AnnonceForm extends AbstractType
                 'choice_label' => 'content',
                 'required' => true,
             ])
-            ->add('ville', null, [
-                'required' => true,
+            ->add('description', TextareaType::class, [
+                'attr' => ['class' => 'tinymce'],
+                'required' => false,
             ])
             ->add('poids', ChoiceType::class, [
                 'placeholder' => 'Choisissez le poids de votre plante',
@@ -70,9 +64,35 @@ class AnnonceForm extends AbstractType
                 ],
                 'required' => true,
             ])
+            ->add('plantPot', CheckboxType::class, [
+                'label' => false,
+                'required' => false,
+            ])
+            ->add('dateExpiration', DateType::class, [
+                'widget' => 'single_text',
+                'required' => true,
+            ])
+            ->add('priceOrigin', MoneyType::class, [
+                'currency' => '',
+                'required' => true,
+                'invalid_message' => 'Nous ne prenons pas en compte votre annonce au-delà de 100€, veuillez nous excuser'
+            ])
+            ->add('handDelivery', CheckboxType::class, [
+                'label' => false,
+                'required' => false,
+                'data' => true,
+            ])
+            ->add('shipement', CheckboxType::class, [
+                'label' => false,
+                'required' => false,
+                'data' => true,
+            ])
             ->add('expAdress', null, [
                 'required' => true,
                 'empty_data' => '',
+            ])
+            ->add('ville', null, [
+                'required' => true,
             ])
             ->add('expZipCode', null, [
                 'required' => true,

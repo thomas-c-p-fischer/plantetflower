@@ -23,6 +23,9 @@ class Annonce
     private ?string $description = null;
 
     #[ORM\Column]
+    private ?bool $hand_delivery = null;
+
+    #[ORM\Column]
     private ?bool $shipement = null;
 
     #[ORM\Column]
@@ -114,6 +117,18 @@ class Annonce
     public function setDescription(?string $description): self
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    public function isHandDelivery(): ?bool
+    {
+        return $this->hand_delivery;
+    }
+
+    public function setHandDelivery(bool $hand_delivery): self
+    {
+        $this->hand_delivery = $hand_delivery;
 
         return $this;
     }

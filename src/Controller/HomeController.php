@@ -21,9 +21,6 @@ class HomeController extends AbstractController
 
     //route de la page d'accueil
     #[Route('/', name: '_homepage')]
-    /**
-     * @param Annonce $annonce
-     */
     public function homepage(
         AnnonceRepository $annoncesRepository,
         Request           $request,
@@ -37,7 +34,7 @@ class HomeController extends AbstractController
         $total = $annoncesRepository->getTotalAnnonces();
         $lastAnnonces = $annoncesRepository->getLastAnnonces();
         $images = $imageRepository->findAll();
-        $annoncesAll = $imageRepository->findAll();
+        $annoncesAll = $annoncesRepository->findAll();
         $form = $this->createForm(SearchAnnonceType::class);
         $form->handleRequest($request);
         $annonces = [];
@@ -92,27 +89,6 @@ class HomeController extends AbstractController
                     $annonceRepository->remove($annonce);
                     $entityManager->flush();
                 }
-
-                // si le produit de l'annonce est vendu
-            } else {
-
-                // nombre de jours de conservation de l'annonce après sa date d'expiration
-                $delay = 5;
-
-                // création d'une nouvelle variable "maintenant"
-                $delayDate = new \DateTime();
-
-                // date antérieure de x jours (aujourd'hui - délai)
-                $delayDate->modify('-'. $delay .' day');
-
-                // boolean vrai si différence de temps entre l'expiration de l'annonce et la "date antérieure de x jours"
-                $diff = $annonce->getDateExpiration()->diff($delayDate);
-
-                // retire l'annonce si elle est antérieure à la "date antérieure de x jours"
-                if ($diff->invert == 0) {
-                    $annonceRepository->remove($annonce);
-                    $entityManager->flush();
-                }
             }
         }
 
@@ -121,11 +97,7 @@ class HomeController extends AbstractController
 
         // total de toutes les annonces
         $totalAnnonces = count($annonces);
-
-        return $this->render('home/annonces.html.twig', [
-            'annonces' => $annonces,
-            'total' => $totalAnnonces,
-        ]);
+        return $this->render('home/annonces.html.twig', compact('annonces', 'totalAnnonces'));
     }
 
     //route de la page À propos
