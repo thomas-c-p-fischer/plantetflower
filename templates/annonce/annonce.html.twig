@@ -71,7 +71,7 @@
                             {% elseif (app.user) and (app.user.id == annonce.user.id) %}
                                 <button id="delete_btn">Retirer l'annonce</button>
                             {% else %}
-                                <a href={{ path('annonce_paiement', {'id': annonce.id}) }}>
+                                <a href={{ path('annonce_modeDeRemise', {'id': annonce.id}) }}>
                                     Acheter
                                 </a>
                             {% endif %}
