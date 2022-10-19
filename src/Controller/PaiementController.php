@@ -21,9 +21,12 @@ class PaiementController extends AbstractController
     #[Route('/paiement', name: '_updateRegistrationCard')]
     public function updateRegistrationCard(
         MangoPayService $service,
+        UserRepository  $userRepository,
     ): Response
     {
-        session_start();
+        $mail = $this->getUser()->getUserIdentifier();
+        $userConnect = $userRepository->findOneBy(['email' => $mail]);
+
         //Instance de l'api avec la même config que le service
         $mangoPayApi = new MangoPay\MangoPayApi();
         $mangoPayApi->Config->ClientId = $_ENV['CLIENT_ID'];
@@ -35,7 +38,9 @@ class PaiementController extends AbstractController
         //Recuperation du param "data=" de l'url de retour si ell est set sinon erreur.
         $cardRegister->RegistrationData = isset($_GET['data']) ? 'data=' . $_GET['data'] : 'errorCode=' . $_GET['errorCode'];
         //Méthode du service permettant de update la carte avec la data récupérer afin de finaliser l'enregistrement de la carte
-        $service->updateCardRegistration($cardRegister);
+        $card = $service->updateCardRegistration($cardRegister);
+        $cardId = $card->CardId;
+        $payIn = $service->createPayin($userConnect, $cardId);
 
         //Puis on redirige vers l'endroit où l'on veut.
         return $this->redirectToRoute('annonce_ajouter');

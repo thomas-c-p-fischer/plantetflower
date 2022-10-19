@@ -2,13 +2,19 @@
 
 namespace App\Service;
 
-use App\Entity\Annonce;
+
 use App\Entity\User;
 use Exception;
 use MangoPay;
 use MangoPay\BankAccountDetailsIBAN;
+use MangoPay\BrowserInfo;
 use MangoPay\CardRegistration;
+use MangoPay\Money;
+use MangoPay\PayIn;
+use MangoPay\PayInExecutionDetailsDirect;
+use MangoPay\PayInPaymentDetailsCard;
 use MangoPay\Wallet;
+
 
 class MangoPayService
 {
@@ -131,7 +137,7 @@ class MangoPayService
         return $this->mangoPayApi->Users->UpdateKycDocument($userId, $KYCDocument);
     }
 
-    //Methode de Thomas.
+    //Methode permettant de créer les paramètres requis pour la creation d'une carte bancaire lors du click sur achat de l'annonce.
     public function createCardRegistration(User $user)
     {
         try {
@@ -142,34 +148,90 @@ class MangoPayService
             $cardRegistration->CardType = 'CB_VISA_MASTERCARD';
             $createdCardRegister = $this->mangoPayApi->CardRegistrations->Create($cardRegistration);
             $_SESSION['idCard'] = $createdCardRegister->Id;
+            $_SESSION['currency'] = $cardRegistration->Currency;
         } catch (Exception $e) {
             $createdCardRegister = null;
             dump($e);
         }
         return $createdCardRegister;
     }
-
+//Methode qui récupère les paramètres de la methode ci-dessus afin de finaliser la creation de la carte sécurisée.
+//Cette methode utilise la récupération d'un token unique via un controller de callBack (PaiementController) qui se déclenche à partir de annonceController $returnUrl.
     public function updateCardRegistration($cardRegistration)
     {
         try {
             $cardInfo = $this->mangoPayApi->CardRegistrations->Update($cardRegistration);
+            $_SESSION['cardIdFinale'] = $cardInfo;
+
         } catch (Exception $e) {
             $cardInfo = null;
             dump($e);
         }
         return $cardInfo;
     }
-
-    public function createDirectPayin(User $user, Annonce $annonce)
+// Une fois la carte créée le payin se fait : l'utilisateur se fait débiter de la somme de l'annonce voit son wallet créditer de cette somme, si la carte est valide(date expiration,bonne carte...)
+// Les méthodes createCardRegistration, updateCardRegistration et createPayin se font les unes à la suite de l'autre et sont instanées si aucune d'elle ne rencontre d'erreur(s).
+    public function createPayin(User $user, $cardId)
     {
-        $payIn = new \MangoPay\PayIn();
-        $payIn->CreditedWalletId = $user->getidWallet();
-        $payIn->AuthorId = $user->getIdMangopay();
-        $payIn->DebitedFunds = new \MangoPay\Money();
-        $payIn->DebitedFunds->Amount = $annonce->getPriceTotal();
-        $payIn->DebitedFunds->Currency = 'EUR';
-        $payIn->Fees = new \MangoPay\Money();
-        $payIn->Fees->Amount = $annonce->getPriceTotal() - $annonce->getPriceOrigin();
-        $payIn->Fees->Currency = 'EUR';
+
+        if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+            $ip = $_SERVER['HTTP_CLIENT_IP'];
+        } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+        } else {
+            $ip = $_SERVER['REMOTE_ADDR'];
+        }
+
+        $idMangoPayUser = $user->getIdMangopay();
+        $idWalletUser = $user->getidWallet();
+        try {
+            $payIn = new PayIn();
+            $payIn->AuthorId = $idMangoPayUser;
+            $payIn->CreditedWalletId = $idWalletUser;
+            $payIn->PaymentType = 'CARD';
+            $payIn->ExecutionType = 'DIRECT';
+            $payIn->DebitedFunds = new Money();
+            $payIn->DebitedFunds->Currency = 'EUR';
+            $payIn->DebitedFunds->Amount = 12 * 100;
+            $payIn->Fees = new Money();
+            $payIn->Fees->Amount = 0;
+            $payIn->Fees->Currency = 'EUR';
+            $payIn->ExecutionDetails = new PayInExecutionDetailsDirect();
+            $payIn->ExecutionDetails->SecureModeNeeded = true;
+            $payIn->ExecutionDetails->SecureMode = 'NO_CHOICE';
+            $payIn->ExecutionDetails->SecureModeReturnURL = "http://127.0.0.1:8000/";
+            $payIn->PaymentDetails = new PayInPaymentDetailsCard();
+            $payIn->PaymentDetails->CardId = $cardId;
+            $payIn->PaymentDetails->IpAddress = $ip;
+            $payIn->PaymentDetails->BrowserInfo = new BrowserInfo();
+            $payIn->PaymentDetails->BrowserInfo->AcceptHeader = $_SERVER['HTTP_ACCEPT'];
+            $payIn->PaymentDetails->BrowserInfo->JavaEnabled = false;
+            $payIn->PaymentDetails->BrowserInfo->Language = 'FR';
+            $payIn->PaymentDetails->BrowserInfo->ColorDepth = 24;
+            $payIn->PaymentDetails->BrowserInfo->ScreenHeight = 1080;
+            $payIn->PaymentDetails->BrowserInfo->ScreenWidth = 1920;
+            $payIn->PaymentDetails->BrowserInfo->TimeZoneOffset = -120;
+            $payIn->PaymentDetails->BrowserInfo->UserAgent = $_SERVER['HTTP_USER_AGENT'];
+            $payIn->PaymentDetails->BrowserInfo->JavascriptEnabled = true;
+            $result = $this->mangoPayApi->PayIns->Create($payIn);
+
+            if ($result->Status == "FAILED") {
+                dump("failed");
+            } elseif ($result->ExecutionDetails->SecureModeNeeded) {
+                header("Location: " . $result->ExecutionDetails->SecureModeRedirectURL);
+                die();
+            } elseif ($result->Status == "SUCCEEDED") {
+                dump('ok');
+            } else {
+                dump('something weird happened');
+            }
+
+            return $result;
+        } catch (MangoPay\Libraries\Exception $e) {
+            dump($e);
+        }
+        
     }
+
+
 }
