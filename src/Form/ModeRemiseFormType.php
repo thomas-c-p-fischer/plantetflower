@@ -14,9 +14,7 @@ class ModeRemiseFormType extends AbstractType
     {
         $builder
             ->setAction('annonce_paiement')
-            ->add('mainPropre', CheckboxType::class,
-                [ 'data' => true]
-            )
+            ->add('mainPropre', CheckboxType::class)
             ->add('mondialRelay', CheckboxType::class)
             ->add('payer', SubmitType::class,
             [

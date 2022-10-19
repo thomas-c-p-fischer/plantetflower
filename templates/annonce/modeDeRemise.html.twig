@@ -18,20 +18,31 @@
             <p>{{ annonce.priceTotal }}€</p>
         </div>
         <h3>Mode de remise</h3>
+
         {{ form_start(form) }}
-        {% if annonceHandDelivery == true %}
-            <div id="checkboxHandDelivery">
+        {% if annonceHandDelivery %}
             {{ form_row(form.mainPropre, {
                 'label': 'Remise en main propre',
+                'id': 'checkboxHandDelivery'
             }) }}
-            </div>
+        {% else %}
+            {{ form_row(form.mainPropre, {
+                'label': 'Remise en main propre',
+                'disabled': 'true'
+            }) }}
         {% endif %}
-        {% if annonceShipment == true %}
-            <div id="checkboxShipment">
-           {{ form_row(form.mondialRelay, {
-               'label': 'Mondial relay',
-           }) }}
-            </div>
+        {% if annonceShipment %}
+            {{ form_row(form.mondialRelay, {
+                'label': 'Mondial relay',
+                'id': 'checkboxShipment'
+            }) }}
+        {% else %}
+            {{ form_row(form.mondialRelay, {
+                'label': 'Mondial relay',
+                'disabled': 'true'
+            }) }}
+        {% endif %}
+        {% if annonceShipment %}
             <div id="priceShipment">
                 <p>
                     {% if  annoncePoids  == "0g - 500g" %}
