@@ -12,6 +12,8 @@ if (checkboxHandDelivery) {
     // Si le vendeur propose également la livraison.
     if (checkboxShipment) {
         checkboxHandDelivery.checked = true;
+        // Le prix de la livraison est caché.
+        document.getElementById('priceShipment').style.display = 'none';
     }
     checkboxHandDelivery.addEventListener('click', handDeliveryCheck);
 } else {

@@ -225,13 +225,9 @@ class MangoPayService
             } else {
                 dump('something weird happened');
             }
-
             return $result;
         } catch (MangoPay\Libraries\Exception $e) {
             dump($e);
         }
-        
     }
-
-
 }
