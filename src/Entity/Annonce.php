@@ -99,6 +99,9 @@ class Annonce
     #[ORM\ManyToOne(inversedBy: 'annonces')]
     private ?Favori $favori = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $buyerDelivery = false;
+
     public function __construct()
     {
         $this->images = new ArrayCollection();
@@ -435,6 +438,18 @@ class Annonce
     public function setFavori(?Favori $favori): self
     {
         $this->favori = $favori;
+
+        return $this;
+    }
+
+    public function isBuyerDelivery(): ?bool
+    {
+        return $this->buyerDelivery;
+    }
+
+    public function setBuyerDelivery(?bool $buyerDelivery): self
+    {
+        $this->buyerDelivery = $buyerDelivery;
 
         return $this;
     }

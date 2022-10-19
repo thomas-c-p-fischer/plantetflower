@@ -10,7 +10,7 @@
     <h3>Votre récapitulatif</h3>
     <p>Montant de l'achat </p><p>{{ annoncePriceOrigin }}€</p>
     <p>Frais Plant&Flower </p><p>{{ annoncePriceTotal - annoncePriceOrigin }}€</p>
-    {% if annonceShipment == true %}
+    {% if buyerDelivery == true %}
         <p>Coûts de livraison Mondial Relay</p>
         <p>
             {% if  annoncePoids  == "0g - 500g" %}

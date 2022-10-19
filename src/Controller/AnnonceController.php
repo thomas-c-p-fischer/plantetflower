@@ -404,7 +404,7 @@ class AnnonceController extends AbstractController
         $annoncePriceOrigin = $annonce->getPriceOrigin();
         $annoncePriceTotal = $annonce->getPriceTotal();
         $annoncePoids = $annonce->getPoids();
-        $annonceShipment = $annonce->isShipement();
+        $buyerDelivery = $annonce->isBuyerDelivery();
         //Variable qui va changer le prix total si mondial relay est choisi par rapport au poids
         $prixPoids = 0;
         if ($annoncePoids == "0g - 500g") {
@@ -437,7 +437,7 @@ class AnnonceController extends AbstractController
                 'annoncePriceTotal',
                 'annoncePoids',
                 'prixPoids',
-                'annonceShipment'
+                'buyerDelivery'
             ));
     }
 }
