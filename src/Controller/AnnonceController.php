@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Annonce;
 use App\Form\AnnonceForm;
 use App\Entity\Image;
+use App\Form\ModeRemiseFormType;
 use App\Repository\AnnonceRepository;
 use App\Repository\ImageRepository;
 use App\Service\UploadService;
@@ -202,7 +203,7 @@ class AnnonceController extends AbstractController
         $userConnect = $userRepository->findOneBy(['email' => $mail]);
 
         // Redirection vers le profil de l'utilisateur
-        return $this->redirectToRoute("user_profil",['id' => $userConnect->getId()]);
+        return $this->redirectToRoute("user_profil", ['id' => $userConnect->getId()]);
     }
 
     // Fonction permettant d'enregistrer un formulaire d'annonce en base de données
@@ -346,11 +347,15 @@ class AnnonceController extends AbstractController
     #[Route('/modeDeRemise/{id}', '_modeDeRemise')]
     public function modeDeRemise(
         AnnonceRepository $annonceRepository,
+        Request           $request,
                           $id
     ): Response
     {
         //Récupération de l'annonce par son Id
         $annonce = $annonceRepository->findOneBy(["id" => $id]);
+        //Création de la form
+        $form = $this->createForm(ModeRemiseFormType::class);
+        $form->handleRequest($request);
         //Déclaration des variables avec les données nécessaires
         $annonceTitle = $annonce->getTitle();
         $annoncePriceOrigin = $annonce->getPriceOrigin();
@@ -358,23 +363,34 @@ class AnnonceController extends AbstractController
         $annoncePoids = $annonce->getPoids();
         $annonceShipment = $annonce->isShipement();
         $annonceHandDelivery = $annonce->isHandDelivery();
+
         //Variable qui va changer le prix total si mondial relay est choisi par rapport au poids
         $prixPoids = 0;
-        if ($annoncePoids == "0g - 500g")
-        {
+        if ($annoncePoids == "0g - 500g") {
             $prixPoids = 5;
-        } elseif ($annoncePoids  == "501g - 1kg")
-        {
+        } elseif ($annoncePoids == "501g - 1kg") {
             $prixPoids = 5.5;
-        }elseif ($annoncePoids == "1.1kg - 2kg")
-        {
+        } elseif ($annoncePoids == "1.1kg - 2kg") {
             $prixPoids = 7.5;
-        }elseif ($annoncePoids == "2.1kg - 3kg")
-        {
+        } elseif ($annoncePoids == "2.1kg - 3kg") {
             $prixPoids = 7.5;
         }
+        $mondialRelay = null;
+        // Si le formulaire est envoyé et valide à la fois
+        if ($form->isSubmitted() && $form->isValid())
+        {
+            if ($mondialRelay == false)
+            {
+                $annonce->setBuyerDelivery(false);
+            }
+            elseif($mondialRelay == true)
+            {
+                $annonce->setBuyerDelivery(true);
+            }
+            dump($annonce->isBuyerDelivery());
+        }
 
-        return $this->render("annonce/modeDeRemise.html.twig",
+        return $this->renderForm("annonce/modeDeRemise.html.twig",
             compact(
                 'annonce',
                 'annonceTitle',
@@ -383,7 +399,9 @@ class AnnonceController extends AbstractController
                 'annoncePoids',
                 'annonceShipment',
                 'prixPoids',
-                'annonceHandDelivery'
+                'annonceHandDelivery',
+                'mondialRelay',
+                'form'
             ));
     }
 

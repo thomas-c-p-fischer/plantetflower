@@ -82,9 +82,16 @@
                                 <div class="container-btn_sold_editor">
                                     <a id="annonce-delete_btn" class="btn-sold_editor">Retirer l'annonce</a>
                                 </div>
+                            {% elseif not app.user %}
+                                <div class="container-btn_sold_editor">
+                                    <a class="btn-sold_editor" href={{ path('registration_register') }}>
+                                        Acheter
+                                    </a>
+                                </div>
                             {% else %}
                                 <div class="container-btn_sold_editor">
-                                    <a class="btn-sold_editor" href={{ path('annonce_modeDeRemise', {'id': annonce.id}) }}>
+                                    <a class="btn-sold_editor"
+                                       href={{ path('annonce_modeDeRemise', {'id': annonce.id}) }}>
                                         Acheter
                                     </a>
                                 </div>
