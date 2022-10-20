@@ -14,16 +14,20 @@
             <img class="image mini-image"
                  src="{{ asset('/uploads/' ~ annonce.images[0].name) }}"
                  alt="Image miniature"/>
+
             <h4>{{ annonce.title }}</h4>
-            <p>{{ annonce.priceTotal }}€</p>
+            <p>{{ annonce.PriceTotal }}€</p>
+
         </div>
         <h3>Mode de remise</h3>
 
         {{ form_start(form) }}
-        {% if annonceHandDelivery %}
+
+        {% if annonce.handDelivery %}
             {{ form_row(form.mainPropre, {
                 'label': 'Remise en main propre',
                 'id': 'checkboxHandDelivery'
+
             }) }}
         {% else %}
             {{ form_row(form.mainPropre, {
@@ -31,10 +35,11 @@
                 'disabled': 'true'
             }) }}
         {% endif %}
-        {% if annonceShipment %}
+        {% if annonce.shipement %}
             {{ form_row(form.mondialRelay, {
                 'label': 'Mondial relay',
                 'id': 'checkboxShipment'
+
             }) }}
         {% else %}
             {{ form_row(form.mondialRelay, {
@@ -42,19 +47,19 @@
                 'disabled': 'true'
             }) }}
         {% endif %}
-        {% if annonceShipment %}
+        {% if annonce.shipement %}
             <div id="priceShipment">
                 <p>
-                    {% if  annoncePoids  == "0g - 500g" %}
+                    {% if  annonce.poids  == "0g - 500g" %}
                         <span class="priceLivraison">5€</span>
                         <input type="hidden" value="{{ prixPoids == 5 }}">
-                    {% elseif  annoncePoids  == "501g - 1kg" %}
+                    {% elseif  annonce.poids  == "501g - 1kg" %}
                         <span class="priceLivraison">5.5€</span>
                         <input type="hidden" value="{{ prixPoids == 5.5 }}">
-                    {% elseif   annoncePoids  == "1.1kg - 2kg" %}
+                    {% elseif   annonce.poids  == "1.1kg - 2kg" %}
                         <span class="priceLivraison">7.5€</span>
                         <input type="hidden" value="{{ prixPoids == 7.5 }}">
-                    {% elseif annoncePoids  == "2.1kg - 3kg" %}
+                    {% elseif annonce.poids  == "2.1kg - 3kg" %}
                         <span class="priceLivraison">7.5€</span>
                         <input type="hidden" value="{{ prixPoids == 7.5 }}">
                     {% endif %}
@@ -62,16 +67,22 @@
                 <img src="{{ asset('media/img/logo_mondial_relay.svg') }}"
                      alt="Mondial Relay">
                 <h3>Total</h3>
-                <p>{{ annoncePriceTotal + prixPoids }}€</p>
+                <p>{{ annonce.priceTotal + prixPoids }}€</p>
             </div>
         {% endif %}
-        {% if annonceHandDelivery == true %}
+
+
+        {% if annonce.handDelivery == true %}
             <div id="priceHandDelivery">
                 <h3>Total</h3>
-                <p>{{ annoncePriceTotal }}€</p>
+                <p>{{ annonce.priceTotal }}€</p>
             </div>
         {% endif %}
+
         {{ form_row(form.payer) }}
+
         {{ form_end(form) }}
+
     </div>
+
 {% endblock %}
