@@ -16,15 +16,16 @@
             </div>
             <div class="form_cea">
                 <div class="form_cea_left">
-                    <p>Ajouter jusqu'à 3 photos. (1 photo minimum est obligatoire pour vendre votre végétal)</p>
+                    <div class="cea-item">
+                        <p>Ajouter jusqu'à 3 photos. (1 photo minimum est obligatoire pour vendre votre végétal)</p>
+                    </div>
                     <div class="cea-item container-img_annonce">
-                        <div class="container-img_preview" id="editAnnonce-actualImage_0">
-                            <img class="img_preview"
-                                 src="{{ asset('/uploads/' ~ actualImages[0].name) }}"/>
+                        <div class="container-img" id="editAnnonce-actualImage_0">
+                            <img src="{{ asset('/uploads/' ~ actualImages[0].name) }}"/>
                         </div>
-                        <div class="container-img_preview container-confirm_del_img" id="editAnnonce-conf_del_img_0">
+                        <div class="container-img container-confirm_del_img" id="editAnnonce-conf_del_img_0">
                             {% if actualImages|length == 1 %}
-                                <p>Vous devez garder au minimum 1 image</p>
+                                <p>1 image au minimum</p>
                                 <div class="container-confirm_answer">
                                     <a class="restore_img" id="editAnnonce-restore_img_0">Rétablir</a>
                                 </div>
@@ -40,11 +41,10 @@
                             {% endif %}
                         </div>
                         {% if actualImages|length > 1 %}
-                            <div class="container-img_preview" id="editAnnonce-actualImage_1">
-                                <img class="img_preview"
-                                     src="{{ asset('/uploads/' ~ actualImages[1].name) }}"/>
+                            <div class="container-img" id="editAnnonce-actualImage_1">
+                                <img src="{{ asset('/uploads/' ~ actualImages[1].name) }}"/>
                             </div>
-                            <div class="container-img_preview container-confirm_del_img"
+                            <div class="container-img container-confirm_del_img"
                                  id="editAnnonce-conf_del_img_1">
                                 <p>Supprimer l'image ?</p>
                                 <div class="container-confirm_answer">
@@ -56,7 +56,7 @@
                             </div>
                         {% endif %}
                         {% if actualImages|length <= 1 %}
-                            <div class="container-img_preview" id="editAnnonce-uploader_1">
+                            <div class="container-img" id="editAnnonce-uploader_1">
                                 {{ form_row(annonceForm.image_1, {
                                     'label': '+',
                                     'attr': {
@@ -66,15 +66,14 @@
                                 }) }}
                             </div>
                         {% endif %}
-                        <div class="container-img_preview new_img">
-                            <img class="img_preview" id="editAnnonce-new_img_1" src="#">
+                        <div class="container-img new_img" id="editAnnonce-container-new_img_1">
+                            <img id="editAnnonce-new_img_1" src="#">
                         </div>
                         {% if actualImages|length > 2 %}
-                            <div class="container-img_preview" id="editAnnonce-actualImage_2">
-                                <img class="img_preview"
-                                     src="{{ asset('/uploads/' ~ actualImages[2].name) }}"/>
+                            <div class="container-img" id="editAnnonce-actualImage_2">
+                                <img src="{{ asset('/uploads/' ~ actualImages[2].name) }}"/>
                             </div>
-                            <div class="container-img_preview container-confirm_del_img"
+                            <div class="container-img container-confirm_del_img"
                                  id="editAnnonce-conf_del_img_2">
                                 <p>Supprimer l'image ?</p>
                                 <div class="container-confirm_answer">
@@ -86,7 +85,7 @@
                             </div>
                         {% endif %}
                         {% if actualImages|length <= 2 %}
-                            <div class="container-img_preview" id="editAnnonce-uploader_2">
+                            <div class="container-img" id="editAnnonce-uploader_2">
                                 {{ form_row(annonceForm.image_2, {
                                     'label': '+',
                                     'attr': {
@@ -96,8 +95,8 @@
                                 }) }}
                             </div>
                         {% endif %}
-                        <div class="container-img_preview new_img">
-                            <img class="img_preview" id="editAnnonce-new_img_2" src="#">
+                        <div class="container-img new_img" id="editAnnonce-container-new_img_2">
+                            <img id="editAnnonce-new_img_2" src="#">
                         </div>
                         {% if not annonceForm.vars.valid %}
                             <div>
@@ -110,7 +109,6 @@
                         {{ form_row(annonceForm.title, {
                             'label': false,
                             'attr': {
-                                'class': 'input',
                                 'placeholder': 'ex: Orchidée',
                             }
                         }) }}
@@ -119,18 +117,17 @@
                         <h3>Catégorie</h3>
                         {{ form_row(annonceForm.category, {
                             'label': false,
-                            'placeholder': 'Choisissez votre catégorie',
                             'attr': {
-                                'class': 'input',
+                                'class': 'cea-choiceType',
+                                'placeholder': 'ex: cactus en bonne état',
                             }
                         }) }}
                     </div>
                     <div class="cea-item">
-                        <h3>Décrivez votre végétal (facultatif)</h3>
+                        <h3>Description (facultatif)</h3>
                         {{ form_row(annonceForm.description, {
                             'label': false,
                             'attr': {
-                                'class': 'input',
                                 'placeholder': 'ex: cactus en bonne état',
                             }
                         }) }}
@@ -140,7 +137,7 @@
                         {{ form_row(annonceForm.poids, {
                             'label': false,
                             'attr': {
-                                'class': 'input',
+                                'class': 'cea-choiceType',
                             }
                         }) }}
                     </div>
@@ -154,9 +151,6 @@
                         <h3>Date d'expiration</h3>
                         {{ form_row(annonceForm.dateExpiration, {
                             'label': false,
-                            'attr': {
-                                'class': 'input',
-                            }
                         }) }}
                     </div>
                     <div class="cea-item cea-container-all_price">
@@ -168,7 +162,6 @@
                                         'label': false,
                                         'id': 'editAnnonce_origin_price',
                                         'attr': {
-                                            'class': 'input',
                                             'placeholder': 'ex: 2.50',
                                         }
                                     }) }}
@@ -183,9 +176,12 @@
                             </div>
                         </div>
                         <div id="editAnnonce_price_message"></div>
+                    </div>
+                    <div class="cea-item">
                         <p class="cea-taxes_txt">
                             Pour que le site reste gratuit, nous appliquons des frais de commission
-                            qui servent à financer la maintenance du service (hébergement, domaines, équipes, matériel...).
+                            qui servent à financer la maintenance du service (hébergement, domaines, équipes,
+                            matériel...).
                         </p>
                     </div>
                     <div class="cea-item cea-container-delivery_mod">
@@ -219,7 +215,6 @@
                                 {{ form_row(annonceForm.expAdress, {
                                     'label': false,
                                     'attr': {
-                                        'class': 'input',
                                         'placeholder': 'Adresse',
                                     }
                                 }) }}
@@ -229,7 +224,6 @@
                                     {{ form_row(annonceForm.ville, {
                                         'label': false,
                                         'attr': {
-                                            'class': 'input',
                                             'placeholder': 'Ville',
                                         }
                                     }) }}
@@ -238,7 +232,6 @@
                                     {{ form_row(annonceForm.expZipCode, {
                                         'label': false,
                                         'attr': {
-                                            'class': 'input',
                                             'placeholder': 'Code Postal',
                                         }
                                     }) }}
@@ -259,7 +252,7 @@
                         </div>
                     </div>
                     <div id="editAnnonce-confirm_delete">
-                        <p>Êtes-vous sûr de vouloir supprimer l'annonce ?</p>
+                        <p>Supprimer l'annonce ?</p>
                         <div class="container-confirm_answer">
                             <a class="answer-delete_yes"
                                href="{{ path('annonce_supprimer', {'annonceId': annonce.id}) }}">Oui</a>
