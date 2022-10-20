@@ -59,8 +59,8 @@ class AnnonceForm extends AbstractType
                 'choices' => [
                     '0g - 500g' => '0g - 500g',
                     '501g - 1kg' => '501g - 1kg',
-                    '1.1kg - 2kg' => '1.1kg - 2kg',
-                    '2.1kg - 3kg' => '2.1kg - 3kg',
+                    '1.001kg - 2kg' => '1.001kg - 2kg',
+                    '2.001kg - 3kg' => '2.001kg - 3kg',
                 ],
                 'required' => true,
             ])

@@ -13,7 +13,7 @@
     {% if buyerDelivery == true %}
         <p>Coûts de livraison Mondial Relay</p>
         <p>
-            {% if  annoncePoids  == "0g - 500g" %}
+            {% if  annonce.poids  == "0g - 500g" %}
                 <span class="priceLivraison">4.40€</span>
                 <input type="hidden" value="{{ prixPoids == 4.40 }}">
             {% elseif  annonce.poids  == "501g - 1kg" %}
