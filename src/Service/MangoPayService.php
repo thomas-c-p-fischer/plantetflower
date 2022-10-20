@@ -230,4 +230,29 @@ class MangoPayService
             dump($e);
         }
     }
+
+    public function createTransfer(User $user, $prixAnnonce, $fees, $sellerWalletId)
+    {
+        $buyerId = $user->getIdMangopay();
+        $buyerWalletId = $user->getidWallet();
+
+        try {
+            $transfer = new \MangoPay\Transfer();
+            $transfer->AuthorId = $buyerId;
+            $transfer->CreditedUserId = $buyerId;
+            $transfer->DebitedFunds = new \MangoPay\Money();
+            $transfer->DebitedFunds->Currency = "EUR";
+            $transfer->DebitedFunds->Amount = $prixAnnonce * 100;
+            $transfer->Fees = new \MangoPay\Money();
+            $transfer->Fees->Currency = "EUR";
+            $transfer->Fees->Amount = $fees * 100;
+            $transfer->DebitedWalletId = $buyerWalletId;
+            $transfer->CreditedWalletId = $sellerWalletId;
+            $result = $this->mangoPayApi->Transfers->Create($transfer);
+
+        } catch (MangoPay\Libraries\Exception $e) {
+            dump($e);
+        }
+        return $result;
+    }
 }
