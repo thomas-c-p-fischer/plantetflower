@@ -192,9 +192,9 @@ class MangoPayService
             $payIn->ExecutionType = 'DIRECT';
             $payIn->DebitedFunds = new Money();
             $payIn->DebitedFunds->Currency = 'EUR';
-            $payIn->DebitedFunds->Amount = $prixAnnonce;
+            $payIn->DebitedFunds->Amount = $prixAnnonce * 100;
             $payIn->Fees = new Money();
-            $payIn->Fees->Amount = $fees;
+            $payIn->Fees->Amount = $fees * 100;
             $payIn->Fees->Currency = 'EUR';
             $payIn->ExecutionDetails = new PayInExecutionDetailsDirect();
             $payIn->ExecutionDetails->SecureModeNeeded = true;
