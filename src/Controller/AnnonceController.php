@@ -354,6 +354,7 @@ class AnnonceController extends AbstractController
     {
         //Récupération de l'annonce par son Id
         $annonce = $annonceRepository->find($id);
+        $_SESSION['annonce'] = $annonce;
         //Création de la form
         $form = $this->createForm(ModeRemiseFormType::class);
         $form->handleRequest($request);
@@ -371,17 +372,16 @@ class AnnonceController extends AbstractController
         } elseif ($annoncePoids == "2.1kg - 3kg") {
             $prixPoids = 7.5;
         }
+
 //         Si le formulaire est envoyé et valide à la fois
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($mondialRelay = false) {
+            if ($form->get('mondialRelay')->getData() != 'checked') {
                 $annonce->setBuyerDelivery(false);
-                $em->persist($annonce);
-                $em->flush($annonce);
-            } elseif ($mondialRelay = true) {
+            } else {
                 $annonce->setBuyerDelivery(true);
-                $em->persist($annonce);
-                $em->flush($annonce);
             }
+            $em->persist($annonce);
+            $em->flush($annonce);
             return $this->redirectToRoute('annonce_paiement', compact('id', 'buyerDelivery'));
         }
 
@@ -409,7 +409,7 @@ class AnnonceController extends AbstractController
         $returnURL = $this->generateUrl('paiement_updateRegistrationCard', [], UrlGeneratorInterface::ABSOLUTE_URL);
         //Récupération de l'annonce par son Id
         $annonce = $annonceRepository->findOneBy(["id" => $id]);
-        dump($annonce->getTitle());
+
         $annonceTitle = $annonce->getTitle();
         //Stockage en variable des données utiles pour le récapitulatif de la somme à payer
         $annoncePriceOrigin = $annonce->getPriceOrigin();

@@ -171,7 +171,7 @@ class MangoPayService
     }
 // Une fois la carte créée le payin se fait : l'utilisateur se fait débiter de la somme de l'annonce voit son wallet créditer de cette somme, si la carte est valide(date expiration,bonne carte...)
 // Les méthodes createCardRegistration, updateCardRegistration et createPayin se font les unes à la suite de l'autre et sont instanées si aucune d'elle ne rencontre d'erreur(s).
-    public function createPayin(User $user, $cardId)
+    public function createPayin(User $user, $cardId, $prixAnnonce, $fees)
     {
 
         if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
@@ -192,9 +192,9 @@ class MangoPayService
             $payIn->ExecutionType = 'DIRECT';
             $payIn->DebitedFunds = new Money();
             $payIn->DebitedFunds->Currency = 'EUR';
-            $payIn->DebitedFunds->Amount = 12 * 100;
+            $payIn->DebitedFunds->Amount = $prixAnnonce;
             $payIn->Fees = new Money();
-            $payIn->Fees->Amount = 0;
+            $payIn->Fees->Amount = $fees;
             $payIn->Fees->Currency = 'EUR';
             $payIn->ExecutionDetails = new PayInExecutionDetailsDirect();
             $payIn->ExecutionDetails->SecureModeNeeded = true;
