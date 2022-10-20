@@ -348,22 +348,16 @@ class AnnonceController extends AbstractController
     public function modeDeRemise(
         AnnonceRepository $annonceRepository,
         Request           $request,
-                          $id
+                          $id,
     ): Response
     {
         //Récupération de l'annonce par son Id
-        $annonce = $annonceRepository->findOneBy(["id" => $id]);
+        $annonce = $annonceRepository->find($id);
         //Création de la form
         $form = $this->createForm(ModeRemiseFormType::class);
         $form->handleRequest($request);
         //Déclaration des variables avec les données nécessaires
-        $annonceTitle = $annonce->getTitle();
-        $annoncePriceOrigin = $annonce->getPriceOrigin();
-        $annoncePriceTotal = $annonce->getPriceTotal();
         $annoncePoids = $annonce->getPoids();
-        $annonceShipment = $annonce->isShipement();
-        $annonceHandDelivery = $annonce->isHandDelivery();
-
         //Variable qui va changer le prix total si mondial relay est choisi par rapport au poids
         $prixPoids = 0;
         if ($annoncePoids == "0g - 500g") {
@@ -376,33 +370,24 @@ class AnnonceController extends AbstractController
             $prixPoids = 7.5;
         }
         $mondialRelay = null;
-        // Si le formulaire est envoyé et valide à la fois
-        if ($form->isSubmitted() && $form->isValid())
-        {
-            if ($mondialRelay == false)
-            {
+//         Si le formulaire est envoyé et valide à la fois
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ($mondialRelay == false) {
                 $annonce->setBuyerDelivery(false);
-            }
-            elseif($mondialRelay == true)
-            {
+            } elseif ($mondialRelay == true) {
                 $annonce->setBuyerDelivery(true);
             }
-            dump($annonce->isBuyerDelivery());
+            return $this->redirectToRoute('annonce_paiement', compact('id'));
         }
 
         return $this->renderForm("annonce/modeDeRemise.html.twig",
             compact(
                 'annonce',
-                'annonceTitle',
-                'annoncePriceOrigin',
-                'annoncePriceTotal',
-                'annoncePoids',
-                'annonceShipment',
                 'prixPoids',
-                'annonceHandDelivery',
-                'mondialRelay',
-                'form'
+                'form',
+                'id'
             ));
+
     }
 
     #[Route('/paiement/{id}', '_paiement')]
@@ -418,6 +403,8 @@ class AnnonceController extends AbstractController
         $returnURL = $this->generateUrl('paiement_updateRegistrationCard', [], UrlGeneratorInterface::ABSOLUTE_URL);
         //Récupération de l'annonce par son Id
         $annonce = $annonceRepository->findOneBy(["id" => $id]);
+        dump($annonce->getTitle());
+        $annonceTitle = $annonce->getTitle();
         //Stockage en variable des données utiles pour le récapitulatif de la somme à payer
         $annoncePriceOrigin = $annonce->getPriceOrigin();
         $annoncePriceTotal = $annonce->getPriceTotal();
@@ -455,7 +442,8 @@ class AnnonceController extends AbstractController
                 'annoncePriceTotal',
                 'annoncePoids',
                 'prixPoids',
-                'buyerDelivery'
+                'buyerDelivery',
+                'annonceTitle'
             ));
     }
 }

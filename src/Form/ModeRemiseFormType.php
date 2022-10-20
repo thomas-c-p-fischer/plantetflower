@@ -13,15 +13,15 @@ class ModeRemiseFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->setAction('annonce_paiement')
-            ->add('mainPropre', CheckboxType::class)
-            ->add('mondialRelay', CheckboxType::class)
+//            ->setAction('annonce_paiement')
+            ->add('mainPropre', CheckboxType::class, ['required' => false, 'attr' => ['multiple' => false]])
+            ->add('mondialRelay', CheckboxType::class, ['required' => false, 'attr' => ['multiple' => false]])
             ->add('payer', SubmitType::class,
-            [
-                'attr' => [
-                    'value' => 'Payer'
-                ]
-            ]);
+                [
+                    'attr' => [
+                        'value' => 'Payer'
+                    ]
+                ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
