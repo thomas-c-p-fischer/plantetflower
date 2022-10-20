@@ -80,12 +80,10 @@ class AnnonceForm extends AbstractType
             ->add('handDelivery', CheckboxType::class, [
                 'label' => false,
                 'required' => false,
-                'data' => true,
             ])
             ->add('shipement', CheckboxType::class, [
                 'label' => false,
                 'required' => false,
-                'data' => true,
             ])
             ->add('expAdress', null, [
                 'required' => true,

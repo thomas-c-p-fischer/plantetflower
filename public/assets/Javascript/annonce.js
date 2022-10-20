@@ -1,10 +1,7 @@
-
-
 // Script permettant de d'afficher la demande de confirmation de suppression d'annonce
 // dans les pages annonce.html.twig et editAnnonce.html.twig.
 // Recuperation des elements par Id qu'on initialise dans une variable.
 let aDeleteBtn = document.getElementById('annonce-delete_btn');
-let cADeleteBtn = document.getElementById('createAnnonce-delete_btn');
 let eADeleteBtn = document.getElementById('editAnnonce-delete_btn');
 let deleteBtn;
 let confirmDelete;
@@ -24,26 +21,27 @@ if (eADeleteBtn) {
     confirmDelete = document.getElementById('editAnnonce-confirm_delete');
     cancelBtn = document.getElementById('editAnnonce-answer-delete_no');
 }
-
-// Event de type clic pour afficher et cacher la confirmation.
-deleteBtn.addEventListener("click", () => {
-    if (confirmDelete.style.display === 'none') {
-        confirmDelete.style.display = 'block';
-        if (eADeleteBtn) {
-            containerReturnDeleteBtn.style.display = 'none';
+if (aDeleteBtn || eADeleteBtn) {
+    // Event de type clic pour afficher et cacher la confirmation.
+    deleteBtn.addEventListener("click", () => {
+        if (confirmDelete.style.display === 'none') {
+            confirmDelete.style.display = 'block';
+            if (eADeleteBtn) {
+                containerReturnDeleteBtn.style.display = 'none';
+            }
+        } else {
+            confirmDelete.style.display = 'none';
         }
-    } else {
-        confirmDelete.style.display = 'none';
-    }
-});
+    });
 
 // Event de type clic pour disparaitre la confirmation.
-cancelBtn.addEventListener("click", () => {
-    confirmDelete.style.display = 'none';
-    if (eADeleteBtn) {
-        containerReturnDeleteBtn.style.display = 'flex';
-    }
-});
+    cancelBtn.addEventListener("click", () => {
+        confirmDelete.style.display = 'none';
+        if (eADeleteBtn) {
+            containerReturnDeleteBtn.style.display = 'flex';
+        }
+    });
+}
 
 // Script permettant d'effectuer un carrousel sur les différentes annonces.
 // Déclaration puis initialisation de l'index à 0 (1ère annonce) et appel à la fonction de visibilité du slide.
@@ -190,6 +188,12 @@ if (eA_actualImage_2) {
     });
 }
 
+// Script permettant de revenir sur la page précédente de createAnnonce.html.twig.
+// Recuperation de l'element par son Id où l'on change son lien hypertexte.
+if (document.getElementById("cea-return_back_page")) {
+    document.getElementById("cea-return_back_page").href ="javascript:history.back()";
+}
+
 // Scripts destiner aux pages createAnnonce.html.twig et editAnnonce.html.twig.
 // Script permettant de faire apparaitre et disparaitre les images upload et
 // les images importer avant qu'elles ne soient envoyées en BDD.
@@ -205,20 +209,29 @@ let uploader;
 let uploader0;
 let uploader1;
 let uploader2;
+let containerNewImg0;
+let containerNewImg1;
+let containerNewImg2;
+let containerNewImg;
 let newImg;
 
 // On fait disparaitre les emplacements des images non encore upload et on met les Id des uploader dans les variables.
 // Si eA_actualImage_0 est faux autrement-dit si nous ne sommes pas dans la page editAnnonce.html.twig.
 if (!eA_actualImage_0) {
-    cANewImg0.style.display = 'none';
-    cANewImg1.style.display = 'none';
-    cANewImg2.style.display = 'none';
+    containerNewImg0 = document.getElementById("createAnnonce-container-new_img_0")
+    containerNewImg1 = document.getElementById("createAnnonce-container-new_img_1")
+    containerNewImg2 = document.getElementById("createAnnonce-container-new_img_2")
+    containerNewImg0.style.display = 'none';
+    containerNewImg1.style.display = 'none';
+    containerNewImg2.style.display = 'none';
     uploader0 = document.getElementById("createAnnonce-uploader_0")
     uploader1 = document.getElementById("createAnnonce-uploader_1")
     uploader2 = document.getElementById("createAnnonce-uploader_2")
 } else {
-    eANewImg1.style.display = 'none';
-    eANewImg2.style.display = 'none';
+    containerNewImg1 = document.getElementById("editAnnonce-container-new_img_1")
+    containerNewImg2 = document.getElementById("editAnnonce-container-new_img_2")
+    containerNewImg1.style.display = 'none';
+    containerNewImg2.style.display = 'none';
     uploader1 = document.getElementById("editAnnonce-uploader_1")
     uploader2 = document.getElementById("editAnnonce-uploader_2")
 }
@@ -226,30 +239,35 @@ if (!eA_actualImage_0) {
 // Suite de fonctions appelant une seule et unique fonction permettant pour
 // chaque image upload d'apparaitre et de faire disparaitre son uploader.
 let createAnnoncePreviewNewImg0 = function (e) {
+    containerNewImg = containerNewImg0;
     newImg = cANewImg0;
     uploader = uploader0;
     previewPicture(e);
 }
 
 let createAnnoncePreviewNewImg1 = function (e) {
+    containerNewImg = containerNewImg1;
     newImg = cANewImg1;
     uploader = uploader1;
     previewPicture(e);
 }
 
 let createAnnoncePreviewNewImg2 = function (e) {
+    containerNewImg = containerNewImg2;
     newImg = cANewImg2;
     uploader = uploader2;
     previewPicture(e);
 }
 
 let editAnnoncePreviewNewImg1 = function (e) {
+    containerNewImg = containerNewImg1;
     newImg = eANewImg1;
     uploader = uploader1;
     previewPicture(e);
 }
 
 let editAnnoncePreviewNewImg2 = function (e) {
+    containerNewImg = containerNewImg2;
     newImg = eANewImg2;
     uploader = uploader2;
     previewPicture(e);
@@ -264,7 +282,7 @@ function previewPicture(e) {
         // On change l'URL de l'image.
         newImg.src = URL.createObjectURL(picture)
         // On fait apparaitre l'image upload et disparaitre son uploader.
-        newImg.style.display = 'block';
+        containerNewImg.style.display = 'block';
         uploader.style.display = 'none';
     }
 }
@@ -274,29 +292,29 @@ function previewPicture(e) {
 // Si eA_actualImage_0 est faux autrement-dit si nous ne sommes pas dans la page editAnnonce.html.twig.
 if (!eA_actualImage_0) {
     cANewImg0.addEventListener("click", () => {
-        a(cANewImg0, uploader0)
+        a(containerNewImg0, uploader0)
     });
 
     cANewImg1.addEventListener("click", () => {
-        a(cANewImg1, uploader1)
+        a(containerNewImg1, uploader1)
     });
 
     cANewImg2.addEventListener("click", () => {
-        a(cANewImg2, uploader2)
+        a(containerNewImg2, uploader2)
     });
 } else {
     eANewImg1.addEventListener("click", () => {
-        a(eANewImg1, uploader1)
+        a(containerNewImg1, uploader1)
     });
 
     eANewImg2.addEventListener("click", () => {
-        a(eANewImg2, uploader2)
+        a(containerNewImg2, uploader2)
     });
 }
 
 // Fonction qui fait disparaitre l'image upload lorsque l'on "click" dessus et fait réapparaitre son uploader.
-function a(NewImg, uploader) {
-    NewImg.style.display = 'none';
+function a(containerNewImg, uploader) {
+    containerNewImg.style.display = 'none';
     uploader.style.display = 'block';
 }
 
@@ -427,6 +445,8 @@ if (cA_hand_delivery) {
 
     hand_delivery = document.getElementById("createAnnonce-hand_delivery");
     shipement = document.getElementById("createAnnonce_shipement");
+    hand_delivery.checked = true;
+    shipement.checked = true;
     hand_delivery.addEventListener('click', hand_delivery_check);
     shipement.addEventListener('click', shipement_check);
 

@@ -19,19 +19,19 @@
 }
 
 .form_cea {
-    height: auto;
     display: flex;
+    justify-content: space-around;
     flex-direction: row;
     margin-bottom: 80px;
     font-size: 12px;
     border: 2px solid #79c990;
     border-radius: 18px;
     background-color: rgba(255, 255, 255, 0.5);
-    width: 60%;
+    width: 50%;
 }
 
-.form_cea_left {
-    margin: 42px 0 0 20px;
+.form_cea_left, .form_cea_right {
+    width: 40%;
 }
 
 .form_cea p {
@@ -41,24 +41,30 @@
     font-size: 15px;
     font-weight: bold;
     color: #48945d;
-    margin: 20px;
 }
 
 .container-img_annonce {
     flex-direction: row;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
 }
 
-.container-img_preview {
-    margin: 0 5px;
+.container-img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 100px;
+    height: 100px;
+    background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='18' ry='18' stroke='darkseagreen' stroke-width='4' stroke-dasharray='20%2c 30' stroke-dashoffset='47' stroke-linecap='square'/%3e%3c/svg%3e");
+    border-radius: 18px;
 }
 
-.img_preview {
+.container-img img {
     border-radius: 15px;
-    width: 120px;
-    height: 130px;
+    width: 100%;
+    height: 100%;
     cursor: pointer;
 }
 
@@ -66,9 +72,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 120px;
-    height: 130px;
-    background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='18' ry='18' stroke='darkseagreen' stroke-width='4' stroke-dasharray='20%2c 30' stroke-dashoffset='47' stroke-linecap='square'/%3e%3c/svg%3e");
     border-radius: 18px;
     color: #48945d;
 }
@@ -86,29 +89,28 @@
     cursor: pointer;
 }
 
-.container-img_preview p {
+.container-img p {
     text-align: center;
     flex-wrap: wrap;
     margin: 10px 0 10px 0;
 }
 
-.container-img_preview a {
-    width: 50px;
+.container-img a {
+    width: 35px;
 }
 
-.container-img_preview label {
-
-    background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='18' ry='18' stroke='darkseagreen' stroke-width='4' stroke-dasharray='20%2c 30' stroke-dashoffset='47' stroke-linecap='square'/%3e%3c/svg%3e");
-    border-radius: 18px;
-    margin: 0;
-    padding: 15px;
+.container-img label {
+    padding: 0;
     cursor: pointer;
     font-family: 'Montserrat', sans-serif;
     font-weight: bold;
     font-size: 80px;
     color: #48945d;
-    width: 120px;
-    height: 130px;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 .add_img {
@@ -145,20 +147,15 @@ h3 {
     color: #2f2f2f;
 }
 
-.cea-item .input {
-    display: flex;
-    justify-content: start;
-}
-
 .cea-item ::placeholder {
     color: #c0c0c0;
 }
 
-.cea-choice_type .input {
+.cea-choiceType {
     background-color: rgba(255, 255, 255, 0.5);
     text-align: center;
     padding: 10px;
-    width: 101%;
+    width: 100%;
     border: 1px solid #c0c0c0;
     border-radius: 20px;
     font-family: 'Montserrat', sans-serif;
@@ -170,10 +167,10 @@ h3 {
 .cea-item textarea {
     background-color: rgba(255, 255, 255, 0.5);
     text-align: center;
-    padding: 10px 10px 50px 10px;
+    padding: 10px 0 50px;
     border: 1px solid #c0c0c0;
     border-radius: 20px;
-    width: 96%;
+    width: 100%;
     font-family: 'Montserrat', sans-serif;
     font-weight: bold;
     font-size: 15px;
@@ -195,11 +192,6 @@ h3 {
 
 .cea-check_plantPot input {
     width: 20px;
-}
-
-.form_cea_right {
-    margin: 42px 20px 0 0;
-    width: 80%;
 }
 
 .cea-container-all_price {
@@ -298,10 +290,21 @@ h3 {
     margin-left: 20px;
 }
 
+.container-ajouter_return {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
 .cea-container-button_submit {
     display: flex;
     justify-content: center;
     margin-bottom: 20px;
+}
+
+.container-ajouter_return .cea-container-button_submit {
+    margin: 0;
 }
 
 .form_cea button {
@@ -322,6 +325,12 @@ h3 {
     transition: background-color 0.2s;
     color: #48945d;
     border: 2px solid #48945d;
+}
+
+#createAnnonce_submit,
+.container-ajouter_return .cea-return {
+    padding: 10px 30px;
+    font-size: 18px;
 }
 
 .container-return_delete_btn {
@@ -383,25 +392,33 @@ h3 {
 #editAnnonce-confirm_delete p {
     display: flex;
     justify-content: center;
+    margin-bottom: 15px;
 }
 
 #editAnnonce-confirm_delete a {
-    margin: 0;
+    margin: 0 0 15px;
 }
 
-@media screen and (max-width: 1502px) {
-    .form_cea_left {
-        width: 50%;
+@media screen and (max-width: 1603px) {
+    .form_cea {
+        width: 55%;
     }
 }
 
-@media screen and (max-width: 1435px) {
-    .form_cea label {
-        font-size: 16px;
+@media screen and (max-width: 1437px) {
+    .form_cea {
+        width: 60%;
+    }
+}
+
+@media screen and (max-width: 1317px) {
+    .container-img_cea {
+        width: 25%;
     }
 
-    .cea-item textarea {
-        width: 90%;
+    .form_cea {
+        width: 70%;
+        margin-right: 5%;
     }
 }
 
@@ -410,13 +427,13 @@ h3 {
         font-size: 30px;
     }
 
-    .form_cea h3, .form_cea button {
+    .form_cea h3, .form_cea button,
+    .container-ajouter_return .cea-return{
         font-size: 15px;
     }
 
     .form_cea input,
     .form_cea .input,
-    .form_cea label,
     .form_cea p,
     .cea-container-check_annonce h3 {
         font-size: 12px;
@@ -428,12 +445,8 @@ h3 {
 }
 
 @media screen and (max-width: 1115px) {
-    .cea-item, .container-add_img label {
-        margin-bottom: 0;
-    }
-
-    .container-add_img label {
-        padding: 35px 0;
+    .form_cea_left, .form_cea_right {
+       width: 45%;
     }
 
     .cea-item textarea {
@@ -445,6 +458,11 @@ h3 {
     .form_cea button {
         flex-direction: column;
         margin: 0 0 20px;
+    }
+
+    .container-ajouter_return .cea-return,
+    .container-ajouter_return button {
+        margin: 50px 0 0;
     }
 
     .cea-shipp_add-address_item, .cea-shipp_add-zipcode_item {
@@ -469,38 +487,32 @@ h3 {
     }
 }
 
-@media screen and (max-width: 860px) {
-    .form_cea {
-        width: 90%;
-    }
-
+@media screen and (max-width: 1024px) {
     .annonceForm h2 {
         justify-content: center;
-        margin-top: 10px;
-    }
-
-    .container-img_cea {
-        margin-bottom: 10px;
-
+        margin: 10px 0 0;
     }
 
     .container-form_cea-img_cea {
         flex-direction: column;
         align-items: center;
     }
-}
 
-@media screen and (max-width: 830px) {
-    .form_cea_left {
-        width: 40%;
-        margin-bottom: 20px;
+    .container-img_cea {
+        margin: 0 0 10px;
+
+    }
+
+    .form_cea {
+        margin: 0 0 50px;
+        width: 90%;
     }
 }
 
 @media screen and (max-width: 768px) {
     .form_cea_left, .form_cea_right {
         justify-content: center;
-        margin: 20px;
+        margin: 0 20px;
         width: auto;
     }
 
@@ -508,8 +520,17 @@ h3 {
         flex-direction: column;
     }
 
+    .cea-container-delivery_mod, .cea-check_plantPot {
+        margin-left: 30%;
+    }
+
     .cea-item textarea {
         padding-bottom: 0;
         width: 96%;
+    }
+
+    .container-ajouter_return .cea-return,
+    .container-ajouter_return button {
+        margin: 0;
     }
 }
