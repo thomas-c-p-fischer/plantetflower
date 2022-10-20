@@ -354,7 +354,6 @@ class AnnonceController extends AbstractController
     {
         //Récupération de l'annonce par son Id
         $annonce = $annonceRepository->find($id);
-        $_SESSION['annonce'] = $annonce;
         //Création de la form
         $form = $this->createForm(ModeRemiseFormType::class);
         $form->handleRequest($request);
@@ -403,12 +402,13 @@ class AnnonceController extends AbstractController
         AnnonceRepository $annonceRepository,
                           $id,
     ): Response
-    {
 
-        //Création de l'URL de retour sur lequel la data est renvoyée
-        $returnURL = $this->generateUrl('paiement_updateRegistrationCard', [], UrlGeneratorInterface::ABSOLUTE_URL);
+    {
         //Récupération de l'annonce par son Id
         $annonce = $annonceRepository->findOneBy(["id" => $id]);
+        //Création de l'URL de retour sur lequel la data est renvoyée
+        $returnURL = $this->generateUrl('paiement_updateRegistrationCard', ['id' => $annonce->getId()], UrlGeneratorInterface::ABSOLUTE_URL);
+
 
         $annonceTitle = $annonce->getTitle();
         //Stockage en variable des données utiles pour le récapitulatif de la somme à payer
@@ -427,6 +427,7 @@ class AnnonceController extends AbstractController
         } elseif ($annoncePoids == "2.1kg - 3kg") {
             $prixPoids = 7.5;
         }
+
         //Récupération de l'utilisateur connecté.
         $mail = $this->getUser()->getUserIdentifier();
         $userConnect = $userRepository->findOneBy(['email' => $mail]);
