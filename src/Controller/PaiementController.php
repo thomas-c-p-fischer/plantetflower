@@ -5,15 +5,10 @@ namespace App\Controller;
 use App\Repository\AnnonceRepository;
 use App\Repository\UserRepository;
 use App\Service\MangoPayService;
-use JetBrains\PhpStorm\NoReturn;
-use Symfony\Bridge\Twig\TokenParser\DumpTokenParser;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
 use MangoPay;
-use MangoPay\Libraries\ResponseException;
 
 #[Route('/annonce/{id}', name: 'paiement')]
 class PaiementController extends AbstractController
@@ -24,7 +19,6 @@ class PaiementController extends AbstractController
         MangoPayService   $service,
         UserRepository    $userRepository,
         AnnonceRepository $annonceRepository,
-        Request           $request,
                           $id
     ): Response
     {
@@ -32,21 +26,19 @@ class PaiementController extends AbstractController
         $userConnect = $userRepository->findOneBy(['email' => $mail]);
         $annonce = $annonceRepository->findOneBy(['id' => $id]);
         $prixAnnonce = $annonce->getPriceTotal();
-        $fees = $annonce->getPriceTotal() - $annonce->getPriceOrigin();
         $annoncePoids = $annonce->getPoids();
-
         if ($annonce->isBuyerDelivery()) {
             if ($annoncePoids == "0g - 500g") {
-                $prixPoids = 5;
+                $prixPoids = 4.40;
             } elseif ($annoncePoids == "501g - 1kg") {
-                $prixPoids = 5.5;
-            } elseif ($annoncePoids == "1.1kg - 2kg") {
-                $prixPoids = 7.5;
-            } elseif ($annoncePoids == "2.1kg - 3kg") {
-                $prixPoids = 7.5;
+                $prixPoids = 4.90;
+            } elseif ($annoncePoids == "1.001kg - 2kg") {
+                $prixPoids = 6.40;
+            } elseif ($annoncePoids == "2.001kg - 3kg") {
+                $prixPoids = 6.60;
             }
             $prixAnnonce = $prixAnnonce + $prixPoids;
-            
+            $fees = ($annonce->getPriceTotal() - $annonce->getPriceOrigin()) + $prixPoids;
         }
         //Instance de l'api avec la même config que le service
         $mangoPayApi = new MangoPay\MangoPayApi();
@@ -61,10 +53,44 @@ class PaiementController extends AbstractController
         //Méthode du service permettant de update la carte avec la data récupérer afin de finaliser l'enregistrement de la carte
         $card = $service->updateCardRegistration($cardRegister);
         $cardId = $card->CardId;
-        $payIn = $service->createPayin($userConnect, $cardId, $prixAnnonce, $fees);
+        dump($id);
+        $payIn = $service->createPayin($userConnect, $cardId, $prixAnnonce, $fees, $id);
 
         //Puis on redirige vers l'endroit où l'on veut.
         return $this->redirectToRoute('annonce_ajouter');
     }
 
+    //controller de redirection
+    #[Route('/redirection', name: '_redirection')]
+    public function redirection(
+        MangoPayService   $service,
+        UserRepository    $userRepository,
+        AnnonceRepository $annonceRepository,
+                          $id
+    ): Response
+    {
+        $mail = $this->getUser()->getUserIdentifier();
+        $userConnect = $userRepository->findOneBy(['email' => $mail]);
+        $annonce = $annonceRepository->find($id);
+        $prixAnnonce = $annonce->getPriceTotal();
+        $sellerWalletId = $annonce->getUser()->getidWallet();
+        $annoncePoids = $annonce->getPoids();
+        if ($annonce->isBuyerDelivery()) {
+            if ($annoncePoids == "0g - 500g") {
+                $prixPoids = 4.40;
+            } elseif ($annoncePoids == "501g - 1kg") {
+                $prixPoids = 4.90;
+            } elseif ($annoncePoids == "1.001kg - 2kg") {
+                $prixPoids = 6.40;
+            } elseif ($annoncePoids == "2.001kg - 3kg") {
+                $prixPoids = 6.60;
+            }
+            $prixAnnonce = $prixAnnonce + $prixPoids;
+            $fees = ($annonce->getPriceTotal() - $annonce->getPriceOrigin()) + $prixPoids;
+        }
+        $transfer = $service->createTransfer($userConnect, $prixAnnonce, $fees, $sellerWalletId);
+
+        //Puis on redirige vers l'endroit où l'on veut.
+        return $this->redirectToRoute('annonce_ajouter');
+    }
 }

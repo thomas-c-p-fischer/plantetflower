@@ -171,7 +171,7 @@ class MangoPayService
     }
 // Une fois la carte créée le payin se fait : l'utilisateur se fait débiter de la somme de l'annonce voit son wallet créditer de cette somme, si la carte est valide(date expiration,bonne carte...)
 // Les méthodes createCardRegistration, updateCardRegistration et createPayin se font les unes à la suite de l'autre et sont instanées si aucune d'elle ne rencontre d'erreur(s).
-    public function createPayin(User $user, $cardId, $prixAnnonce, $fees)
+    public function createPayin(User $user, $cardId, $prixAnnonce, $fees, $id)
     {
 
         if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
@@ -199,7 +199,7 @@ class MangoPayService
             $payIn->ExecutionDetails = new PayInExecutionDetailsDirect();
             $payIn->ExecutionDetails->SecureModeNeeded = true;
             $payIn->ExecutionDetails->SecureMode = 'NO_CHOICE';
-            $payIn->ExecutionDetails->SecureModeReturnURL = "http://127.0.0.1:8000/";
+            $payIn->ExecutionDetails->SecureModeReturnURL = "http://127.0.0.1:8000/annonce/".$id."/redirection";
             $payIn->PaymentDetails = new PayInPaymentDetailsCard();
             $payIn->PaymentDetails->CardId = $cardId;
             $payIn->PaymentDetails->IpAddress = $ip;
@@ -235,7 +235,6 @@ class MangoPayService
     {
         $buyerId = $user->getIdMangopay();
         $buyerWalletId = $user->getidWallet();
-
         try {
             $transfer = new \MangoPay\Transfer();
             $transfer->AuthorId = $buyerId;
@@ -249,7 +248,6 @@ class MangoPayService
             $transfer->DebitedWalletId = $buyerWalletId;
             $transfer->CreditedWalletId = $sellerWalletId;
             $result = $this->mangoPayApi->Transfers->Create($transfer);
-
         } catch (MangoPay\Libraries\Exception $e) {
             dump($e);
         }

@@ -8,7 +8,6 @@ use App\Entity\Image;
 use App\Form\ModeRemiseFormType;
 use App\Repository\AnnonceRepository;
 use App\Repository\ImageRepository;
-use App\Service\UploadService;
 use App\Repository\UserRepository;
 use App\Service\MangoPayService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -363,13 +362,13 @@ class AnnonceController extends AbstractController
         //Variable qui va changer le prix total si mondial relay est choisi par rapport au poids
         $prixPoids = 0;
         if ($annoncePoids == "0g - 500g") {
-            $prixPoids = 5;
+            $prixPoids = 4.40;
         } elseif ($annoncePoids == "501g - 1kg") {
-            $prixPoids = 5.5;
-        } elseif ($annoncePoids == "1.1kg - 2kg") {
-            $prixPoids = 7.5;
-        } elseif ($annoncePoids == "2.1kg - 3kg") {
-            $prixPoids = 7.5;
+            $prixPoids = 4.90;
+        } elseif ($annoncePoids == "1.001kg - 2kg") {
+            $prixPoids = 6.40;
+        } elseif ($annoncePoids == "2.001kg - 3kg") {
+            $prixPoids = 6.60;
         }
 
 //         Si le formulaire est envoyé et valide à la fois
@@ -419,13 +418,13 @@ class AnnonceController extends AbstractController
         //Variable qui va changer le prix total si mondial relay est choisi par rapport au poids
         $prixPoids = 0;
         if ($annoncePoids == "0g - 500g") {
-            $prixPoids = 5;
+            $prixPoids = 4.40;
         } elseif ($annoncePoids == "501g - 1kg") {
-            $prixPoids = 5.5;
-        } elseif ($annoncePoids == "1.1kg - 2kg") {
-            $prixPoids = 7.5;
-        } elseif ($annoncePoids == "2.1kg - 3kg") {
-            $prixPoids = 7.5;
+            $prixPoids = 4.90;
+        } elseif ($annoncePoids == "1.001kg - 2kg") {
+            $prixPoids = 6.40;
+        } elseif ($annoncePoids == "2.001kg - 3kg") {
+            $prixPoids = 6.60;
         }
 
         //Récupération de l'utilisateur connecté.
