@@ -346,9 +346,10 @@ class AnnonceController extends AbstractController
 
     #[Route('/modeDeRemise/{id}', '_modeDeRemise')]
     public function modeDeRemise(
-        AnnonceRepository $annonceRepository,
-        Request           $request,
-                          $id,
+        AnnonceRepository      $annonceRepository,
+        Request                $request,
+        EntityManagerInterface $em,
+                               $id,
     ): Response
     {
         //Récupération de l'annonce par son Id
@@ -358,6 +359,7 @@ class AnnonceController extends AbstractController
         $form->handleRequest($request);
         //Déclaration des variables avec les données nécessaires
         $annoncePoids = $annonce->getPoids();
+        $buyerDelivery = $annonce->isBuyerDelivery();
         //Variable qui va changer le prix total si mondial relay est choisi par rapport au poids
         $prixPoids = 0;
         if ($annoncePoids == "0g - 500g") {
@@ -369,15 +371,18 @@ class AnnonceController extends AbstractController
         } elseif ($annoncePoids == "2.1kg - 3kg") {
             $prixPoids = 7.5;
         }
-        $mondialRelay = null;
 //         Si le formulaire est envoyé et valide à la fois
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($mondialRelay == false) {
+            if ($mondialRelay = false) {
                 $annonce->setBuyerDelivery(false);
-            } elseif ($mondialRelay == true) {
+                $em->persist($annonce);
+                $em->flush($annonce);
+            } elseif ($mondialRelay = true) {
                 $annonce->setBuyerDelivery(true);
+                $em->persist($annonce);
+                $em->flush($annonce);
             }
-            return $this->redirectToRoute('annonce_paiement', compact('id'));
+            return $this->redirectToRoute('annonce_paiement', compact('id', 'buyerDelivery'));
         }
 
         return $this->renderForm("annonce/modeDeRemise.html.twig",
@@ -385,7 +390,8 @@ class AnnonceController extends AbstractController
                 'annonce',
                 'prixPoids',
                 'form',
-                'id'
+                'id',
+
             ));
 
     }
