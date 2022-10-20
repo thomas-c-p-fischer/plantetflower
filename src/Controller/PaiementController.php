@@ -26,6 +26,7 @@ class PaiementController extends AbstractController
         $userConnect = $userRepository->findOneBy(['email' => $mail]);
         $annonce = $annonceRepository->findOneBy(['id' => $id]);
         $prixAnnonce = $annonce->getPriceTotal();
+        $fees = $annonce->getPriceTotal() - $annonce->getPriceOrigin();
         $annoncePoids = $annonce->getPoids();
         if ($annonce->isBuyerDelivery()) {
             if ($annoncePoids == "0g - 500g") {
@@ -38,7 +39,7 @@ class PaiementController extends AbstractController
                 $prixPoids = 6.60;
             }
             $prixAnnonce = $prixAnnonce + $prixPoids;
-            $fees = ($annonce->getPriceTotal() - $annonce->getPriceOrigin()) + $prixPoids;
+            $fees = $fees + $prixPoids;
         }
         //Instance de l'api avec la même config que le service
         $mangoPayApi = new MangoPay\MangoPayApi();
@@ -73,6 +74,7 @@ class PaiementController extends AbstractController
         $userConnect = $userRepository->findOneBy(['email' => $mail]);
         $annonce = $annonceRepository->find($id);
         $prixAnnonce = $annonce->getPriceTotal();
+        $fees = $annonce->getPriceTotal() - $annonce->getPriceOrigin();
         $sellerWalletId = $annonce->getUser()->getidWallet();
         $annoncePoids = $annonce->getPoids();
         if ($annonce->isBuyerDelivery()) {
@@ -86,7 +88,7 @@ class PaiementController extends AbstractController
                 $prixPoids = 6.60;
             }
             $prixAnnonce = $prixAnnonce + $prixPoids;
-            $fees = ($annonce->getPriceTotal() - $annonce->getPriceOrigin()) + $prixPoids;
+            $fees = $fees + $prixPoids;
         }
         $transfer = $service->createTransfer($userConnect, $prixAnnonce, $fees, $sellerWalletId);
 
