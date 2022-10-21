@@ -232,7 +232,8 @@ class MangoPayService
         }
         return $result;
     }
-
+    //Une fois le payIn exécuté on transfère l'argent du wallet de l'acheteur
+    // vers celui du vendeur en créant un Transfer
     public function createTransfer(User $user, $prixAnnonce, $sellerWalletId)
     {
         $buyerId = $user->getIdMangopay();
@@ -255,7 +256,7 @@ class MangoPayService
         }
         return $result;
     }
-
+    //Dans cette méthode, on récupère l'id du compte bancaire du vendeur
     public function getBankAccountId($sellerId)
     {
         try {
@@ -266,7 +267,8 @@ class MangoPayService
         }
 
     }
-
+    //Après avoir récupéré l'id du compte bancaire du vendeur, on lui transfère l'argent depuis son wallet vers
+    //son compte bancaire en virant l'argent dessus.
     public function createPayOut($sellerWalletId, $idBankAccount, $sellerId, $prixAnnonce)
     {
         try {
@@ -287,6 +289,5 @@ class MangoPayService
         } catch (MangoPay\Libraries\Exception $e) {
             dump($e);
         }
-
     }
 }
