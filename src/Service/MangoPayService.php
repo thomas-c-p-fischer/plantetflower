@@ -255,9 +255,24 @@ class MangoPayService
         return $result;
     }
 
-    public function createPayOut(User $user, $idBankAccount, $sellerId, $prixAnnonce)
+    public function getBankAccountId($sellerId)
     {
-        $buyerWalletId = $user->getidWallet();
+        try {
+            $userId = $sellerId;
+            $page = 1;
+            $perPage = 25;
+            $sort = "CreationDate:ASC";
+            $active = true;
+            $bankAccount = $this->mangoPayApi->Users->GetBankAccounts($sellerId, $page, $sort, $active);
+
+        } catch(MangoPay\Libraries\Exception $e) {
+            dump($e);
+        }
+        return $bankAccount;
+    }
+
+    public function createPayOut($sellerWalletId, $idBankAccount, $sellerId, $prixAnnonce)
+    {
         try {
             $payOut = new MangoPay\PayOut();
             $payOut->AuthorId = $sellerId;
@@ -271,7 +286,7 @@ class MangoPayService
             $payOut->MeanOfPaymentDetails = new MangoPay\PayOutPaymentDetailsBankWire();
             $payOut->MeanOfPaymentDetails->BankAccountId = $idBankAccount;
             $payOut->MeanOfPaymentDetails->PayoutModeRequested = "INSTANT_PAYMENT";
-            $payOut->DebitedWalletId = $buyerWalletId;
+            $payOut->DebitedWalletId = $sellerWalletId;
             $result = $this->mangoPayApi->PayOuts->Create($payOut);
 
         } catch (MangoPay\Libraries\Exception $e) {

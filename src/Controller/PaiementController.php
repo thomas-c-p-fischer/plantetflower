@@ -75,10 +75,10 @@ class PaiementController extends AbstractController
         $annonce = $annonceRepository->find($id);
         $prixAnnonce = $annonce->getPriceOrigin();
         $sellerWalletId = $annonce->getUser()->getidWallet();
-
-
+        $sellerId = $annonce->getUser()->getIdMangopay();
         $transfer = $service->createTransfer($userConnect, $prixAnnonce, $sellerWalletId);
-
+        $bankAccount = $service->getBankAccountId($sellerId);
+        $payOut = $service->createPayOut($sellerWalletId, $bankAccount,$sellerId, $prixAnnonce);
         //Puis on redirige vers l'endroit où l'on veut.
         return $this->redirectToRoute('annonce_ajouter');
     }
