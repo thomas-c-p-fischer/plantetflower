@@ -21,6 +21,7 @@
     <link rel="stylesheet" href="{{ asset("/assets/register.css") }}">
     <link rel="stylesheet" href="{{ asset("/assets/login.css") }}">
     <link rel="stylesheet" href="{{ asset("/assets/userProfil.css") }}">
+    <link rel="stylesheet" href="{{ asset("/assets/redirectionPaiement.css") }}">
 
     <!--On charge Jquery depuis le CDN de Google-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -81,7 +82,8 @@
                     </li>
                     <li class="list-item2">
                         <a href={{ path('security_logout') }}>
-                            <img class="userIcons" src="{{ asset('media/img/person-exit-solid.png') }}" alt="user-disconnect">
+                            <img class="userIcons" src="{{ asset('media/img/person-exit-solid.png') }}"
+                                 alt="user-disconnect">
                         </a>
                     </li>
 
@@ -96,7 +98,8 @@
                     <li class="list-item2">
                         {# <div class="btn-inscription"> #}
                         <a href={{ path('registration_register') }}>
-                            <img class="userIcons" src="{{ asset('media/img/user-plus-solid.png') }}" alt="user-register">
+                            <img class="userIcons" src="{{ asset('media/img/user-plus-solid.png') }}"
+                                 alt="user-register">
                         </a>
                         {# </div> #}
                     </li>

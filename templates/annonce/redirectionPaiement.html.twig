@@ -1,9 +1,24 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    Redirection paiement
+    Confirmation d'achat
 {% endblock %}
 
 {% block body %}
+    <div class="recapLivraison">
+        <div class="textRecap">
+            <h2>Votre Paiement a bien été accepté et le vendeur a été avertis de votre achat.</h2>
+            <p class="notification">Le vendeur ne recevra l'argent qu'une fois la livraison validée par vos soins.</p>
+        </div>
+        <div class="divImgRecap">
+            <div class="globalImgMerci">
+                <img src="{{ asset('media/img/livraison.png') }}" alt="image livraison fleur plante"
+                     class="img_livraison">
+                <p>Merci pour votre confiance !</p>
+            </div>
+        </div>
+    </div>
+
+
 
 {% endblock %}

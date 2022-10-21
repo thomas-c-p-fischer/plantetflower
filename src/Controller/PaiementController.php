@@ -80,6 +80,6 @@ class PaiementController extends AbstractController
         $bankAccount = $service->getBankAccountId($sellerId);
         $service->createPayOut($sellerWalletId, $bankAccount, $sellerId, $prixAnnonce);
         //Puis on redirige vers l'endroit où l'on veut.
-        return $this->redirectToRoute('annonce_ajouter');
+        return $this->render('annonce/redirectionPaiement.html.twig');
     }
 }

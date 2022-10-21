@@ -1,0 +1,39 @@
+.img_livraison {
+    box-shadow: 0px 0px 15px 1px #000000;
+    border: 2px solid #6e6e6e;
+    border-radius: 5em;
+    margin-left: 1em;
+    margin-top: 5em;
+    margin-bottom: 1em;
+}
+
+.globalImgMerci {
+    text-align: center;
+    margin-bottom: 5em;
+}
+
+.divImgRecap {
+    margin-bottom: 5em;
+}
+
+.recapLivraison {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.textRecap {
+    width: 50%;
+    text-align: justify;
+}
+
+h2 {
+    color: #4a975f;
+    font-size: 2em;
+}
+
+.notification {
+    color: #4a975f;
+    margin-top: 2.5em;
+
+}
