@@ -38,9 +38,10 @@ class PaiementController extends AbstractController
             } elseif ($annoncePoids == "2.001kg - 3kg") {
                 $prixPoids = 6.60;
             }
-            $prixAnnonce = $prixAnnonce + $fees + $prixPoids;
+
             $fees = $fees + $prixPoids;
         }
+        $prixAnnonce = $prixAnnonce + $fees;
         //Instance de l'api avec la même config que le service
         $mangoPayApi = new MangoPay\MangoPayApi();
         $mangoPayApi->Config->ClientId = $_ENV['CLIENT_ID'];
@@ -54,8 +55,7 @@ class PaiementController extends AbstractController
         //Méthode du service permettant de update la carte avec la data récupérer afin de finaliser l'enregistrement de la carte
         $card = $service->updateCardRegistration($cardRegister);
         $cardId = $card->CardId;
-        dump($id);
-        $payIn = $service->createPayin($userConnect, $cardId, $prixAnnonce, $fees, $id);
+        $service->createPayin($userConnect, $cardId, $prixAnnonce, $fees, $id);
 
         //Puis on redirige vers l'endroit où l'on veut.
         return $this->redirectToRoute('paiement_redirection', compact('id'));
@@ -76,9 +76,9 @@ class PaiementController extends AbstractController
         $prixAnnonce = $annonce->getPriceOrigin();
         $sellerWalletId = $annonce->getUser()->getidWallet();
         $sellerId = $annonce->getUser()->getIdMangopay();
-        $transfer = $service->createTransfer($userConnect, $prixAnnonce, $sellerWalletId);
+        $service->createTransfer($userConnect, $prixAnnonce, $sellerWalletId);
         $bankAccount = $service->getBankAccountId($sellerId);
-        $payOut = $service->createPayOut($sellerWalletId, $bankAccount,$sellerId, $prixAnnonce);
+        $service->createPayOut($sellerWalletId, $bankAccount, $sellerId, $prixAnnonce);
         //Puis on redirige vers l'endroit où l'on veut.
         return $this->redirectToRoute('annonce_ajouter');
     }
