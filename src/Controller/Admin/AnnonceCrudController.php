@@ -44,9 +44,9 @@ class AnnonceCrudController extends AbstractCrudController
         return $filters
             ->add('sold')
             ->add('category')
-            ->add('priceOrigin')
-            ->add('priceTotal')
-            ->add('expNumber');
+            ->add('price_origin')
+            ->add('price_total')
+            ->add('exp_number');
     }
 
     public function configureActions(Actions $actions): Actions
