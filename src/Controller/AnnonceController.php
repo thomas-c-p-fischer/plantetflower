@@ -362,13 +362,13 @@ class AnnonceController extends AbstractController
         //Variable qui va changer le prix total si mondial relay est choisi par rapport au poids
         $prixPoids = 0;
         if ($annoncePoids == "0g - 500g") {
-            $prixPoids = 4.40;
+            $prixPoids = 5.50;
         } elseif ($annoncePoids == "501g - 1kg") {
-            $prixPoids = 4.90;
+            $prixPoids = 6;
         } elseif ($annoncePoids == "1.001kg - 2kg") {
-            $prixPoids = 6.40;
+            $prixPoids = 7.50;
         } elseif ($annoncePoids == "2.001kg - 3kg") {
-            $prixPoids = 6.60;
+            $prixPoids = 8;
         }
 
 //         Si le formulaire est envoyé et valide à la fois
@@ -418,13 +418,13 @@ class AnnonceController extends AbstractController
         //Variable qui va changer le prix total si mondial relay est choisi par rapport au poids
         $prixPoids = 0;
         if ($annoncePoids == "0g - 500g") {
-            $prixPoids = 4.40;
+            $prixPoids = 5.50;
         } elseif ($annoncePoids == "501g - 1kg") {
-            $prixPoids = 4.90;
+            $prixPoids = 6;
         } elseif ($annoncePoids == "1.001kg - 2kg") {
-            $prixPoids = 6.40;
+            $prixPoids = 7.50;
         } elseif ($annoncePoids == "2.001kg - 3kg") {
-            $prixPoids = 6.60;
+            $prixPoids = 8;
         }
 
         //Récupération de l'utilisateur connecté.

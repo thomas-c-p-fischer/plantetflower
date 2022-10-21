@@ -52,17 +52,17 @@
             <div id="priceShipment">
                 <p>
                     {% if  annonce.poids  == "0g - 500g" %}
-                        <span class="priceLivraison">4.40€</span>
-                        <input type="hidden" value="{{ prixPoids == 4.40 }}">
+                        <span class="priceLivraison">5.50€</span>
+                        <input type="hidden" value="{{ prixPoids == 5.50 }}">
                     {% elseif  annonce.poids  == "501g - 1kg" %}
-                        <span class="priceLivraison">4.90€</span>
-                        <input type="hidden" value="{{ prixPoids == 4.90 }}">
+                        <span class="priceLivraison">6€</span>
+                        <input type="hidden" value="{{ prixPoids == 6 }}">
                     {% elseif   annonce.poids  == "1.001kg - 2kg" %}
-                        <span class="priceLivraison">6.40€</span>
-                        <input type="hidden" value="{{ prixPoids == 6.40 }}">
+                        <span class="priceLivraison">7.50€</span>
+                        <input type="hidden" value="{{ prixPoids == 7.50 }}">
                     {% elseif annonce.poids  == "2.001kg - 3kg" %}
-                        <span class="priceLivraison">6.60€</span>
-                        <input type="hidden" value="{{ prixPoids == 6.60 }}">
+                        <span class="priceLivraison">8€</span>
+                        <input type="hidden" value="{{ prixPoids == 8 }}">
                     {% endif %}
                 </p>
                 <img src="{{ asset('media/img/logo_mondial_relay.svg') }}"

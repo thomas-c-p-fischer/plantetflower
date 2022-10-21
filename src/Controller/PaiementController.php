@@ -30,13 +30,13 @@ class PaiementController extends AbstractController
         $annoncePoids = $annonce->getPoids();
         if ($annonce->isBuyerDelivery()) {
             if ($annoncePoids == "0g - 500g") {
-                $prixPoids = 4.40;
+                $prixPoids = 5.50;
             } elseif ($annoncePoids == "501g - 1kg") {
-                $prixPoids = 4.90;
+                $prixPoids = 6;
             } elseif ($annoncePoids == "1.001kg - 2kg") {
-                $prixPoids = 6.40;
+                $prixPoids = 7.50;
             } elseif ($annoncePoids == "2.001kg - 3kg") {
-                $prixPoids = 6.60;
+                $prixPoids = 8;
             }
 
             $fees = $fees + $prixPoids;
