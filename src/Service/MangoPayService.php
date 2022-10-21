@@ -254,4 +254,29 @@ class MangoPayService
         }
         return $result;
     }
+
+    public function createPayOut(User $user, $idBankAccount, $sellerId, $prixAnnonce)
+    {
+        $buyerWalletId = $user->getidWallet();
+        try {
+            $payOut = new MangoPay\PayOut();
+            $payOut->AuthorId = $sellerId;
+            $payOut->DebitedFunds = new Money();
+            $payOut->DebitedFunds->Currency = "EUR";
+            $payOut->DebitedFunds->Amount = $prixAnnonce;
+            $payOut->Fees = new Money();
+            $payOut->Fees->Currency = "EUR";
+            $payOut->Fees->Amount = 0;
+            $payOut->PaymentType = "BANK_WIRE";
+            $payOut->MeanOfPaymentDetails = new MangoPay\PayOutPaymentDetailsBankWire();
+            $payOut->MeanOfPaymentDetails->BankAccountId = $idBankAccount;
+            $payOut->MeanOfPaymentDetails->PayoutModeRequested = "INSTANT_PAYMENT";
+            $payOut->DebitedWalletId = $buyerWalletId;
+            $result = $this->mangoPayApi->PayOuts->Create($payOut);
+
+        } catch (MangoPay\Libraries\Exception $e) {
+            dump($e);
+        }
+        return $result;
+    }
 }
