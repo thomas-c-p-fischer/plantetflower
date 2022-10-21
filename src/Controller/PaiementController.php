@@ -22,12 +22,18 @@ class PaiementController extends AbstractController
                           $id
     ): Response
     {
+        //Récupération de l'utilisateur connecté par son email
         $mail = $this->getUser()->getUserIdentifier();
         $userConnect = $userRepository->findOneBy(['email' => $mail]);
+        //Récupération de l'annonce achetée par son ID
         $annonce = $annonceRepository->findOneBy(['id' => $id]);
+        //Récupération du prix d'origine de l'annonce
         $prixAnnonce = $annonce->getPriceOrigin();
+        //Calcul des frais
         $fees = $annonce->getPriceTotal() - $annonce->getPriceOrigin();
+        //Récupération du poids de l'article vendu
         $annoncePoids = $annonce->getPoids();
+        //Si l'acheteur a choisi la livraison alors le prix et les frais varie selon le poids
         if ($annonce->isBuyerDelivery()) {
             if ($annoncePoids == "0g - 500g") {
                 $prixPoids = 5.50;
@@ -38,7 +44,7 @@ class PaiementController extends AbstractController
             } elseif ($annoncePoids == "2.001kg - 3kg") {
                 $prixPoids = 8;
             }
-
+            //Evolution des frais selon le prix au poids pour la livraison
             $fees = $fees + $prixPoids;
         }
         $prixAnnonce = $prixAnnonce + $fees;
@@ -48,13 +54,16 @@ class PaiementController extends AbstractController
         $mangoPayApi->Config->ClientPassword = $_ENV['API_KEY'];
         $mangoPayApi->Config->BaseUrl = 'https://api.sandbox.mangopay.com';
         $mangoPayApi->Config->TemporaryFolder = $_ENV['TMP_PATH'];
-        //Récuperation de la carte créée lors du paiement placée en session
+        //Récupération de la carte créée lors du paiement placée en session
         $cardRegister = $mangoPayApi->CardRegistrations->Get($_SESSION['idCard']);
-        //Recuperation du param "data=" de l'url de retour si ell est set sinon erreur.
+        //Recuperation du param "data=" de l'URL de retour si elle est SET sinon erreur.
         $cardRegister->RegistrationData = isset($_GET['data']) ? 'data=' . $_GET['data'] : 'errorCode=' . $_GET['errorCode'];
-        //Méthode du service permettant de update la carte avec la data récupérer afin de finaliser l'enregistrement de la carte
+        //Méthode du service permettant de mettre à jour la carte avec la data récupérée
+        // afin de finaliser l'enregistrement de la carte
         $card = $service->updateCardRegistration($cardRegister);
+        //On récupère l'id de la carte crée
         $cardId = $card->CardId;
+        //Méthode du service permettant de créer un payIn
         $service->createPayin($userConnect, $cardId, $prixAnnonce, $fees, $id);
 
         //Puis on redirige vers l'endroit où l'on veut.
@@ -70,15 +79,24 @@ class PaiementController extends AbstractController
                           $id
     ): Response
     {
+        //Récupération de l'utilisateur connecté par son email
         $mail = $this->getUser()->getUserIdentifier();
         $userConnect = $userRepository->findOneBy(['email' => $mail]);
+        //Récupération de l'annonce par son Id
         $annonce = $annonceRepository->find($id);
+        //Récupération du prix d'origine de l'annonce
         $prixAnnonce = $annonce->getPriceOrigin();
+        //Récupération de l'ID du wallet du vendeur
         $sellerWalletId = $annonce->getUser()->getidWallet();
+        //Récupération de l'ID mangopay du vendeur
         $sellerId = $annonce->getUser()->getIdMangopay();
+        //Méthode du service pour exécuter le transfert
         $service->createTransfer($userConnect, $prixAnnonce, $sellerWalletId);
+        //On récupère l'ID du compte bancaire du vendeur pour l'injecter en paramètre de la méthode de payOut
         $bankAccount = $service->getBankAccountId($sellerId);
+        //Méthode du service pour exécuter le PayOut
         $service->createPayOut($sellerWalletId, $bankAccount, $sellerId, $prixAnnonce);
+
         //Puis on redirige vers l'endroit où l'on veut.
         return $this->render('annonce/redirectionPaiement.html.twig');
     }
