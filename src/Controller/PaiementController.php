@@ -25,7 +25,7 @@ class PaiementController extends AbstractController
         $mail = $this->getUser()->getUserIdentifier();
         $userConnect = $userRepository->findOneBy(['email' => $mail]);
         $annonce = $annonceRepository->findOneBy(['id' => $id]);
-        $prixAnnonce = $annonce->getPriceTotal();
+        $prixAnnonce = $annonce->getPriceOrigin();
         $fees = $annonce->getPriceTotal() - $annonce->getPriceOrigin();
         $annoncePoids = $annonce->getPoids();
         if ($annonce->isBuyerDelivery()) {
@@ -38,7 +38,7 @@ class PaiementController extends AbstractController
             } elseif ($annoncePoids == "2.001kg - 3kg") {
                 $prixPoids = 6.60;
             }
-            $prixAnnonce = $prixAnnonce + $prixPoids;
+            $prixAnnonce = $prixAnnonce + $fees + $prixPoids;
             $fees = $fees + $prixPoids;
         }
         //Instance de l'api avec la même config que le service
@@ -58,7 +58,7 @@ class PaiementController extends AbstractController
         $payIn = $service->createPayin($userConnect, $cardId, $prixAnnonce, $fees, $id);
 
         //Puis on redirige vers l'endroit où l'on veut.
-        return $this->redirectToRoute('annonce_ajouter');
+        return $this->redirectToRoute('paiement_redirection', compact('id'));
     }
 
     //controller de redirection
@@ -73,24 +73,11 @@ class PaiementController extends AbstractController
         $mail = $this->getUser()->getUserIdentifier();
         $userConnect = $userRepository->findOneBy(['email' => $mail]);
         $annonce = $annonceRepository->find($id);
-        $prixAnnonce = $annonce->getPriceTotal();
-        $fees = $annonce->getPriceTotal() - $annonce->getPriceOrigin();
+        $prixAnnonce = $annonce->getPriceOrigin();
         $sellerWalletId = $annonce->getUser()->getidWallet();
-        $annoncePoids = $annonce->getPoids();
-        if ($annonce->isBuyerDelivery()) {
-            if ($annoncePoids == "0g - 500g") {
-                $prixPoids = 4.40;
-            } elseif ($annoncePoids == "501g - 1kg") {
-                $prixPoids = 4.90;
-            } elseif ($annoncePoids == "1.001kg - 2kg") {
-                $prixPoids = 6.40;
-            } elseif ($annoncePoids == "2.001kg - 3kg") {
-                $prixPoids = 6.60;
-            }
-            $prixAnnonce = $prixAnnonce + $prixPoids;
-            $fees = $fees + $prixPoids;
-        }
-        $transfer = $service->createTransfer($userConnect, $prixAnnonce, $fees, $sellerWalletId);
+
+
+        $transfer = $service->createTransfer($userConnect, $prixAnnonce, $sellerWalletId);
 
         //Puis on redirige vers l'endroit où l'on veut.
         return $this->redirectToRoute('annonce_ajouter');

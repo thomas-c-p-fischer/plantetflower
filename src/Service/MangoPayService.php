@@ -199,7 +199,7 @@ class MangoPayService
             $payIn->ExecutionDetails = new PayInExecutionDetailsDirect();
             $payIn->ExecutionDetails->SecureModeNeeded = true;
             $payIn->ExecutionDetails->SecureMode = 'NO_CHOICE';
-            $payIn->ExecutionDetails->SecureModeReturnURL = "http://127.0.0.1:8000/annonce/".$id."/redirection";
+            $payIn->ExecutionDetails->SecureModeReturnURL = "http://127.0.0.1:8000/annonce/" . $id . "/redirection";
             $payIn->PaymentDetails = new PayInPaymentDetailsCard();
             $payIn->PaymentDetails->CardId = $cardId;
             $payIn->PaymentDetails->IpAddress = $ip;
@@ -229,9 +229,10 @@ class MangoPayService
         } catch (MangoPay\Libraries\Exception $e) {
             dump($e);
         }
+        return $result;
     }
 
-    public function createTransfer(User $user, $prixAnnonce, $fees, $sellerWalletId)
+    public function createTransfer(User $user, $prixAnnonce, $sellerWalletId)
     {
         $buyerId = $user->getIdMangopay();
         $buyerWalletId = $user->getidWallet();
@@ -244,7 +245,7 @@ class MangoPayService
             $transfer->DebitedFunds->Amount = $prixAnnonce * 100;
             $transfer->Fees = new \MangoPay\Money();
             $transfer->Fees->Currency = "EUR";
-            $transfer->Fees->Amount = $fees * 100;
+            $transfer->Fees->Amount = 0;
             $transfer->DebitedWalletId = $buyerWalletId;
             $transfer->CreditedWalletId = $sellerWalletId;
             $result = $this->mangoPayApi->Transfers->Create($transfer);
