@@ -135,6 +135,7 @@ class MangoPayService
         $KYCDocument->Id = $KYCDocId;
         $KYCDocument->Status = \MangoPay\KycDocumentStatus::ValidationAsked; // VALIDATION_ASKED
         return $this->mangoPayApi->Users->UpdateKycDocument($userId, $KYCDocument);
+
     }
 
     //Methode permettant de créer les paramètres requis pour la creation d'une carte bancaire lors du click sur achat de l'annonce.
@@ -225,7 +226,7 @@ class MangoPayService
             } else {
                 dump('something weird happened');
             }
-            return $result;
+
         } catch (MangoPay\Libraries\Exception $e) {
             dump($e);
         }
@@ -258,17 +259,12 @@ class MangoPayService
     public function getBankAccountId($sellerId)
     {
         try {
-            $userId = $sellerId;
-            $page = 1;
-            $perPage = 25;
-            $sort = "CreationDate:ASC";
-            $active = true;
-            $bankAccount = $this->mangoPayApi->Users->GetBankAccounts($sellerId, $page, $sort, $active);
-
-        } catch(MangoPay\Libraries\Exception $e) {
+            $bankAccount = $this->mangoPayApi->Users->GetBankAccounts($sellerId);
+            return $bankAccount[0]->Id;
+        } catch (MangoPay\Libraries\Exception $e) {
             dump($e);
         }
-        return $bankAccount;
+
     }
 
     public function createPayOut($sellerWalletId, $idBankAccount, $sellerId, $prixAnnonce)
@@ -276,22 +272,21 @@ class MangoPayService
         try {
             $payOut = new MangoPay\PayOut();
             $payOut->AuthorId = $sellerId;
+            $payOut->DebitedWalletId = $sellerWalletId;
             $payOut->DebitedFunds = new Money();
             $payOut->DebitedFunds->Currency = "EUR";
-            $payOut->DebitedFunds->Amount = $prixAnnonce;
+            $payOut->DebitedFunds->Amount = $prixAnnonce * 100;
             $payOut->Fees = new Money();
             $payOut->Fees->Currency = "EUR";
             $payOut->Fees->Amount = 0;
             $payOut->PaymentType = "BANK_WIRE";
             $payOut->MeanOfPaymentDetails = new MangoPay\PayOutPaymentDetailsBankWire();
             $payOut->MeanOfPaymentDetails->BankAccountId = $idBankAccount;
-            $payOut->MeanOfPaymentDetails->PayoutModeRequested = "INSTANT_PAYMENT";
-            $payOut->DebitedWalletId = $sellerWalletId;
-            $result = $this->mangoPayApi->PayOuts->Create($payOut);
-
+            $payOut->MeanOfPaymentDetails->ModeRequested = 'INSTANT_PAYMENT';
+            return $this->mangoPayApi->PayOuts->Create($payOut);
         } catch (MangoPay\Libraries\Exception $e) {
             dump($e);
         }
-        return $result;
+
     }
 }
