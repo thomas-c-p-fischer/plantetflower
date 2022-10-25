@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Confirmation d'achat
+{% endblock %}
+
+{% block body %}
+    <div class="recapLivraison">
+        <div class="textRecap">
+            <h2>Votre Paiement a bien été accepté et le vendeur a été avertis de votre achat.</h2>
+            <p class="notification">Le vendeur ne recevra le paiement qu'une fois la réception du végétal validée par vos soins.</p>
+        </div>
+        {% if annonce.buyerDelivery == true %}
+            <p>Votre colis va vous être envoyé au point de relais sélectionné, un numéro de suivis va vous être envoyé.</p>
+        {% else %}
+            <p>Vous avez optez pour la remise en main propre, d'un commun accord avec le vendeur vous devrez convenir
+                d'un lieu et d'une date pour la rencontre.</p>
+        {% endif %}
+        <div class="divImgRecap">
+            <div class="globalImgMerci">
+                <img src="{{ asset('media/img/livraison.png') }}" alt="image livraison fleur plante"
+                     class="img_livraison">
+                <p>Merci pour votre confiance !</p>
+            </div>
+        </div>
+    </div>
+
+
+
+{% endblock %}

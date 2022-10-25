@@ -65,39 +65,50 @@
                                 {% endif %}
                             </div>
                         </div>
-                        <h1 class='priceTotal'>{{ annonce.priceTotal }}€</h1>
-                        <div class="headInfo">
-                            <p>Date d'expiration : {{ annonce.dateExpiration | date('d/m/Y') }}</p>
-                            <div class="container-all_btn_sold_editor">
-                                {% if annonce.sold %}
-                                    <div class="container-btn_sold_editor">
-                                        <a class="btn-sold_editor" disabled>Déjà vendu</a>
-                                    </div>
-                                {% elseif (app.user) and (app.user.id == annonce.user.id) %}
-                                    <div class="container-btn_sold_editor">
-                                        <a class="btn-sold_editor"
-                                           href={{ path('annonce_editer', {'annonceId': annonce.id}) }}>
-                                            Modifié l'annonce
-                                        </a>
-                                    </div>
-                                    <div class="container-btn_sold_editor">
-                                        <a id="annonce-delete_btn" class="btn-sold_editor">Retirer l'annonce</a>
-                                    </div>
-                                {% elseif not app.user %}
-                                    <div class="container-btn_sold_editor">
-                                        <a class="btn-sold_editor" href={{ path('registration_register') }}>
-                                            Acheter
-                                        </a>
-                                    </div>
-                                {% else %}
-                                    <div class="container-btn_sold_editor">
-                                        <a class="btn-sold_editor"
-                                           href={{ path('annonce_modeDeRemise', {'id': annonce.id}) }}>
-                                            Acheter
-                                        </a>
-                                    </div>
-                                {% endif %}
-                            </div>
+                    <h1 class='priceTotal'>{{ annonce.priceTotal }}€</h1>
+                    <div class="headInfo">
+                        <p>Date d'expiration : {{ annonce.dateExpiration | date('d/m/Y') }}</p>
+                        <div class="container-all_btn_sold_editor">
+                            {% if annonce.sold and app.user.email != annonce.acheteur %}
+                                <div class="container-btn_sold_editor">
+                                    <a class="btn-sold_editor" disabled>Déjà vendu</a>
+                                </div>
+                            {% elseif app.user.email == annonce.acheteur
+                                and annonce.sold == true
+                                and annonce.confirm == false %}
+                                <div class="container-btn_sold_editor">
+                                    <a class="btn-sold_editor"
+                                       href={{ path('annonce_modeDeRemise', {'id': annonce.id}) }}>
+                                        Confirmer la réception
+                                    </a>
+                                </div>
+                            {% elseif app.user
+                            and app.user.id == annonce.user.id
+                            and annonce.sold == false
+                            and annonce.confirm == false %}
+                                <div class="container-btn_sold_editor">
+                                    <a class="btn-sold_editor"
+                                       href={{ path('annonce_editer', {'annonceId': annonce.id}) }}>
+                                        Modifié l'annonce
+                                    </a>
+                                </div>
+                                <div class="container-btn_sold_editor">
+                                    <a id="annonce-delete_btn" class="btn-sold_editor">Retirer l'annonce</a>
+                                </div>
+                            {% elseif not app.user %}
+                                <div class="container-btn_sold_editor">
+                                    <a class="btn-sold_editor" href={{ path('registration_register') }}>
+                                        Acheter
+                                    </a>
+                                </div>
+                            {% else %}
+                                <div class="container-btn_sold_editor">
+                                    <a class="btn-sold_editor"
+                                       href={{ path('annonce_modeDeRemise', {'id': annonce.id}) }}>
+                                        Acheter
+                                    </a>
+                                </div>
+                            {% endif %}
                         </div>
                         <div id="annonce-confirm_delete">
                             <p>Êtes-vous sûr de vouloir supprimer l'annonce ?</p>

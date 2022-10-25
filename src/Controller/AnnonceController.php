@@ -8,14 +8,17 @@ use App\Entity\Image;
 use App\Form\ModeRemiseFormType;
 use App\Repository\AnnonceRepository;
 use App\Repository\ImageRepository;
-use App\Service\UploadService;
 use App\Repository\UserRepository;
 use App\Service\MangoPayService;
+use App\Service\MondialRelayService;
+use Doctrine\Migrations\Configuration\Migration\FormattedFile;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -57,14 +60,11 @@ class AnnonceController extends AbstractController
         $monImage = new Image();
         // création du formulaire de la création d'une annonce
         $annonceForm->handleRequest($request);
-
         $images = $annonce->getImages();
-
         // Si le formulaire est envoyé et valide à la fois
         if ($annonceForm->isSubmitted() && $annonceForm->isValid()) {
             // Envoi de l'annonce et du formulaire à une fonction permettant d'enregistrer en base de données
             $this->dataSave($annonce, $entityManager, $annonceForm);
-
             // Redirection sur l'affichage de cette annonce
             return $this->redirectToRoute("annonce_afficher", ['annonceId' => $annonce->getId()]);
         }
@@ -95,19 +95,15 @@ class AnnonceController extends AbstractController
         // Création d'un formulaire d'annonce
         $annonceForm = $this->createForm(AnnonceForm::class, $annonce);
         $annonceForm->handleRequest($request);
-
         $actualImages = $annonce->getImages();
-
         // Si le formulaire est envoyé et valide à la fois
         if ($annonceForm->isSubmitted() && $annonceForm->isValid()) {
-
             // On récupère les nouvelles images transmises
             $newImages = array(
                 $annonceForm->get('image_0')->getData(),
                 $annonceForm->get('image_1')->getData(),
                 $annonceForm->get('image_2')->getData()
             );
-
             $nbNewImages = 0;
             // On boucle sur les nouvelles images
             foreach ($newImages as $image) {
@@ -117,11 +113,8 @@ class AnnonceController extends AbstractController
                     $nbNewImages++;
                 }
             }
-
             $nbActualImages = count($actualImages);
-
             $nbTotalImages = $nbActualImages + $nbNewImages;
-
             // Si aucune image
             if ($nbTotalImages < 1) {
                 $annonceForm->addError(new FormError("Vous devez importer au minimum 1 image"));
@@ -137,6 +130,7 @@ class AnnonceController extends AbstractController
                 ]);
             }
         }
+
         // Redirection vers la page d'édition de l'annonce
         return $this->renderForm('annonce/editAnnonce.html.twig', compact('annonce', 'annonceForm', 'actualImages'));
     }
@@ -171,7 +165,6 @@ class AnnonceController extends AbstractController
         return $this->redirectToRoute("annonce_editer", ['annonceId' => $annonce->getId()]);
     }
 
-
     //Fonction pour supprimer une annonce manuellement.
     #[Route('/supprimer/{annonceId}', '_supprimer', requirements: ['annonceId' => '\d+'])]
     public function deleteAnnonce(
@@ -198,7 +191,6 @@ class AnnonceController extends AbstractController
         } else {
             $this->addFlash('error', 'Vous ne pouvez pas supprimer les annonces des autres utilisateurs');
         }
-
         $mail = $this->getUser()->getUserIdentifier();
         $userConnect = $userRepository->findOneBy(['email' => $mail]);
 
@@ -219,7 +211,6 @@ class AnnonceController extends AbstractController
             $form->get('image_1')->getData(),
             $form->get('image_2')->getData()
         );
-
         // On boucle sur les nouvelles images
         foreach ($newImages as $image) {
             // Si l'image existe
@@ -295,32 +286,24 @@ class AnnonceController extends AbstractController
         $annonce->setStatutLivraison(false);
         // Statut initialisé à "non vendu"
         $annonce->setStatus("not sold");
-
         // Calcul du prix total:
         // Récupération du prix initial (celui de l'utilisateur)
         $originPrice = $annonce->getPriceOrigin();
-
         // Déclaration des valeurs ajoutées:
         // Frais fixes
         $fixedFee = 0.7;
-
         // Pourcentage de marge
         $marginPercentage = 0.12;
-
         // Calcul de la marge
         $margin = $originPrice * $marginPercentage;
-
         // Calcul du prix taxé arrondi au 3e chiffre après la virgule
         $taxedPrice = round($originPrice + $fixedFee + $margin, 3);
-
         // Arrondissement à la demi-unité supérieure
-
+        //????????????????????????????????????
         // Récupération du modulo du prix taxé
         $moduloTaxedPrice = fmod($taxedPrice, 1);
-
         // Initialisation de la variable du prix total
         $totalPrice = "";
-
         // Si le modulo du prix taxé est entre 0 et 0,5
         if ($moduloTaxedPrice > 0 && $moduloTaxedPrice < 0.5) {
             // Arrondissement du prix total à l'entier supérieur ajouté à 0,5
@@ -330,25 +313,23 @@ class AnnonceController extends AbstractController
             // Arrondissement du prix total à l'entier supérieur
             $totalPrice = round($taxedPrice, 0);
         }
-
 //        $totalFees = $totalPrice - $taxedPrice + $fixedFee + $marginPercentage;
 //        $commissionSite = $totalFees - (0.018 * $totalPrice + 0.18);
 //        $a = array($totalPrice, $taxedPrice, $totalFees, $commissionSite);
-
         // Assignation du prix total à l'annonce
         $annonce->setPriceTotal($totalPrice);
-
         // Envoie des informations en base de donnée
         $entityManager->persist($annonce);
         $entityManager->flush();
-
     }
 
+    //Controller dans lequel on choisit le mode de remise (main propre ou mondialRelay), (étape 1/2)
     #[Route('/modeDeRemise/{id}', '_modeDeRemise')]
     public function modeDeRemise(
-        AnnonceRepository $annonceRepository,
-        Request           $request,
-                          $id,
+        AnnonceRepository      $annonceRepository,
+        Request                $request,
+        EntityManagerInterface $em,
+                               $id,
     ): Response
     {
         //Récupération de l'annonce par son Id
@@ -358,26 +339,40 @@ class AnnonceController extends AbstractController
         $form->handleRequest($request);
         //Déclaration des variables avec les données nécessaires
         $annoncePoids = $annonce->getPoids();
+        $buyerDelivery = $annonce->isBuyerDelivery();
         //Variable qui va changer le prix total si mondial relay est choisi par rapport au poids
         $prixPoids = 0;
         if ($annoncePoids == "0g - 500g") {
-            $prixPoids = 5;
+            $prixPoids = 5.50;
         } elseif ($annoncePoids == "501g - 1kg") {
-            $prixPoids = 5.5;
-        } elseif ($annoncePoids == "1.1kg - 2kg") {
-            $prixPoids = 7.5;
-        } elseif ($annoncePoids == "2.1kg - 3kg") {
-            $prixPoids = 7.5;
+            $prixPoids = 6;
+        } elseif ($annoncePoids == "1.001kg - 2kg") {
+            $prixPoids = 7.50;
+        } elseif ($annoncePoids == "2.001kg - 3kg") {
+            $prixPoids = 8;
         }
-        $mondialRelay = null;
-//         Si le formulaire est envoyé et valide à la fois
+
+        //Si le formulaire est envoyé et valide à la fois
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($mondialRelay == false) {
+            //Si la checkBox mondial relay n'est pas cochée alors :
+            if ($form->get('mondialRelay')->getData() != 'checked') {
+                //le paramètre de l'entité annonce buyer_delivery sera false
                 $annonce->setBuyerDelivery(false);
-            } elseif ($mondialRelay == true) {
+                //sinon si la checkbox mondial relay est cochée
+            } else {
+                //alors le paramètre de l'entité Annonce buyer_delivery sera true
                 $annonce->setBuyerDelivery(true);
+                //Recuperation de l'ID de point de relais choisi afin de créer l'étiquette lorsque le paiement est accepté
+                $idRelais = $form->get('relais')->getData();
+                //Cette id est placé en session afin de la récupérée dans le controller de callBack "PaiementController" dans la methode de redirection.
+                $_SESSION['idRelais'] = $idRelais;
             }
-            return $this->redirectToRoute('annonce_paiement', compact('id'));
+            //Comme buyer_delivery est un paramètre de l'entité Annonce, il nous faut persist et flush pour implémenter
+            //les changements en BDD
+            $em->persist($annonce);
+            $em->flush($annonce);
+            //Et après on redirige vers le controller de l'étape 2/2 du paiement
+            return $this->redirectToRoute('annonce_paiement', compact('id', 'buyerDelivery'));
         }
 
         return $this->renderForm("annonce/modeDeRemise.html.twig",
@@ -385,11 +380,11 @@ class AnnonceController extends AbstractController
                 'annonce',
                 'prixPoids',
                 'form',
-                'id'
+                'id',
             ));
-
     }
 
+    //Controller pour le paiement d'une annonce (étape2/2)
     #[Route('/paiement/{id}', '_paiement')]
     public function paiement(
         MangoPayService   $service,
@@ -398,12 +393,15 @@ class AnnonceController extends AbstractController
                           $id,
     ): Response
     {
-
-        //Création de l'URL de retour sur lequel la data est renvoyée
-        $returnURL = $this->generateUrl('paiement_updateRegistrationCard', [], UrlGeneratorInterface::ABSOLUTE_URL);
         //Récupération de l'annonce par son Id
         $annonce = $annonceRepository->findOneBy(["id" => $id]);
-        dump($annonce->getTitle());
+        //Création de l'URL de retour sur lequel la data est renvoyée
+        $returnURL = $this->generateUrl(
+            'paiement_updateRegistrationCard',
+            ['id' => $annonce->getId()],
+            UrlGeneratorInterface::ABSOLUTE_URL
+        );
+        //Récupération du titre de l'annonce pour affichage sur la page
         $annonceTitle = $annonce->getTitle();
         //Stockage en variable des données utiles pour le récapitulatif de la somme à payer
         $annoncePriceOrigin = $annonce->getPriceOrigin();
@@ -413,22 +411,24 @@ class AnnonceController extends AbstractController
         //Variable qui va changer le prix total si mondial relay est choisi par rapport au poids
         $prixPoids = 0;
         if ($annoncePoids == "0g - 500g") {
-            $prixPoids = 5;
+            $prixPoids = 5.50;
         } elseif ($annoncePoids == "501g - 1kg") {
-            $prixPoids = 5.5;
-        } elseif ($annoncePoids == "1.1kg - 2kg") {
-            $prixPoids = 7.5;
-        } elseif ($annoncePoids == "2.1kg - 3kg") {
-            $prixPoids = 7.5;
+            $prixPoids = 6;
+        } elseif ($annoncePoids == "1.001kg - 2kg") {
+            $prixPoids = 7.50;
+        } elseif ($annoncePoids == "2.001kg - 3kg") {
+            $prixPoids = 8;
         }
-        //Récupération de l'utilisateur connecté.
+        //Récupération de l'utilisateur connecté
         $mail = $this->getUser()->getUserIdentifier();
         $userConnect = $userRepository->findOneBy(['email' => $mail]);
         //Utilisation de la méthode du service pour créer une nouvelle carte et insertion des données pré-requises
         //dans le formulaire sans les afficher
         $cardRegistration = $service->createCardRegistration($userConnect);
         $accessKey = $cardRegistration->AccessKey;
+        //On définit une variable dans laquelle on stock la PreregistrationData
         $preregistrationData = $cardRegistration->PreregistrationData;
+        //On définit une variable dans laquelle on stock la CardRegistrationURL
         $cardRegistrationUrl = $cardRegistration->CardRegistrationURL;
 
         return $this->render("annonce/annoncePaiement.html.twig",
@@ -443,7 +443,7 @@ class AnnonceController extends AbstractController
                 'annoncePoids',
                 'prixPoids',
                 'buyerDelivery',
-                'annonceTitle'
+                'annonceTitle',
             ));
     }
 }

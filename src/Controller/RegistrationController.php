@@ -45,12 +45,9 @@ class RegistrationController extends AbstractController
     {
         //initialisation de la date du jour.
         $today = new DateTimeImmutable();
-
-
         //Creation d'un utilisateur vide pour le set dans le form avec le handle request
         if (!$user) {
             $user = new User();
-
         }
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
@@ -75,14 +72,11 @@ class RegistrationController extends AbstractController
             $creationUserMangopay = $service->createNaturalUser($user);
             //création du wallet sur mangopay
             $service->createWalletForNaturalUser($creationUserMangopay, $user);
-
-
-            // On utilise la methode generateToken() pour creer un jeton unique dans le mail de confirmation
+            // On utilise la methode generateToken() pour créer un jeton unique dans le mail de confirmation
             // puis on insère en BDD.
             $user->setToken($this->generateToken());
             $entityManager->persist($user);
             $entityManager->flush();
-
             // création d'une signature personnalisée pour un envoi de mail de verification
             $signatureComponents = $verifyEmailHelper->generateSignature(
                 'verify_mail',
@@ -90,24 +84,20 @@ class RegistrationController extends AbstractController
                 $user->getEmail(),
                 array('token' => $user->getToken(), 'id' => $user->getId(), 'mail' => $user->getEmail())
             );
-
-            $url = $signatureComponents->getSignedUrl();
-
-            // creation du mail
+            //Création du mail
             $email = (new TemplatedEmail())
                 ->from('plantetflower@gmail.com')
                 ->to($user->getEmail())
                 ->subject('Valider votre inscription!')
-                // path of the Twig template to render
+                //Route du twig qui sert de modèle au mail
                 ->htmlTemplate('registration/confirmation_email.html.twig')
                 // pass variables (name => value) to the template
                 ->context([
                     'expiration_date' => new \DateTime('+7 days'),
-                    'username' => $user->getFirstName(),
                     'message' => $signatureComponents->getSignedUrl(),
-                    'url' => $url,
                 ]);
-            //la methode send() de la class MailerInterface permet d'envoyer un mail a l'utilisateur afin de confirmer son compte et access a la connexion.
+            //la methode send() de la class MailerInterface permet d'envoyer un mail a l'utilisateur afin de confirmer
+            // son compte et access à la connexion.
             $mailer->send($email);
             return $this->redirectToRoute('security_logout');
         }

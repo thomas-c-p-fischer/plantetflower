@@ -22,9 +22,7 @@
     <link rel="stylesheet" href="{{ asset("/assets/login.css") }}">
     <link rel="stylesheet" href="{{ asset("/assets/userProfil.css") }}">
     <link rel="stylesheet" href="{{ asset("/assets/redirectionPaiement.css") }}">
-
     <script defer src={{ asset('assets/Javascript/app.js') }}></script>
-
     <!--On charge Jquery depuis le CDN de Google-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <!-- Charger Leaflet pour l'affichage de la map-->
@@ -105,6 +103,19 @@
                             <img class="nav-icons" src="{{ asset('media/img/user-pen-solid.png') }}" alt="user-profil">
                         </a>
                     </li>
+                    <li class="list-item2">
+                        <a href={{ path('security_logout') }}>
+                            <img class="userIcons" src="{{ asset('media/img/person-exit-solid.png') }}"
+                                 alt="user-disconnect">
+                        </a>
+                    </li>
+
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <li class="list-item2">
+                            <a href="{{ path('admin') }}">Admin</a>
+                        </li>
+                    {% endif %}
+
                 </ul>
             {% else %}
                 <ul class="list-users_pages">
@@ -112,6 +123,11 @@
                         <a href={{ path('registration_register') }}>
                             <img class="nav-icons" src="{{ asset('media/img/user-plus-solid.png') }}"
                                  alt="user-register">
+                        </a>
+                    </li>
+                    <li class="list-item2">
+                        <a href={{ path('security_login') }}>
+                            <img class="userIcons" src="{{ asset('media/img/user-solid.png') }}" alt="user-connect">
                         </a>
                     </li>
                 </ul>

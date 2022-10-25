@@ -13,18 +13,18 @@
     {% if buyerDelivery == true %}
         <p>Coûts de livraison Mondial Relay</p>
         <p>
-            {% if  annoncePoids  == "0g - 500g" %}
-                <span class="priceLivraison">5€</span>
-                <input type="hidden" value="{{ prixPoids == 5 }}">
-            {% elseif  annoncePoids  == "501g - 1kg" %}
-                <span class="priceLivraison">5.5€</span>
-                <input type="hidden" value="{{ prixPoids == 5.5 }}">
-            {% elseif   annoncePoids  == "1.1kg - 2kg" %}
-                <span class="priceLivraison">7.5€</span>
-                <input type="hidden" value="{{ prixPoids == 7.5 }}">
-            {% elseif annoncePoids  == "2.1kg - 3kg" %}
-                <span class="priceLivraison">7.5€</span>
-                <input type="hidden" value="{{ prixPoids == 7.5 }}">
+            {% if  annonce.poids  == "0g - 500g" %}
+                <span class="priceLivraison">5.50€</span>
+                <input type="hidden" value="{{ prixPoids == 5.50 }}">
+            {% elseif  annonce.poids  == "501g - 1kg" %}
+                <span class="priceLivraison">6€</span>
+                <input type="hidden" value="{{ prixPoids == 6 }}">
+            {% elseif   annonce.poids  == "1.001kg - 2kg" %}
+                <span class="priceLivraison">7.50€</span>
+                <input type="hidden" value="{{ prixPoids == 7.50 }}">
+            {% elseif annonce.poids  == "2.001kg - 3kg" %}
+                <span class="priceLivraison">8€</span>
+                <input type="hidden" value="{{ prixPoids == 8 }}">
             {% endif %}
         </p>
         <h3>Total à payer </h3><h3>{{ annoncePriceTotal + prixPoids }}€</h3>

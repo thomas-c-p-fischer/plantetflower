@@ -35,7 +35,7 @@ class AnnonceCrudController extends AbstractCrudController
             TextField::new('expNumber', 'Numéro expédition'),
             NumberField::new('price_origin', 'Prix d\'origine'),
             NumberField::new('price_total', 'Prix total'),
-            DateTimeField::new('createdAt', 'Crée le'),
+            DateTimeField::new('created_at', 'Crée le'),
         ];
     }
 
@@ -43,10 +43,7 @@ class AnnonceCrudController extends AbstractCrudController
     {
         return $filters
             ->add('sold')
-            ->add('category')
-            ->add('priceOrigin')
-            ->add('priceTotal')
-            ->add('expNumber');
+            ->add('created_at');
     }
 
     public function configureActions(Actions $actions): Actions

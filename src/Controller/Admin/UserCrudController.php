@@ -40,7 +40,7 @@ class UserCrudController extends AbstractCrudController
                 'Administrateur' => 'ROLE_ADMIN',
                 'Utilisateur' => 'ROLE_USER'
             ]),
-            TextField::new('status', 'Statut'),
+//            TextField::new('status', 'Statut'),
             DateTimeField::new('createdAt', 'Crée le'),
         ];
     }
