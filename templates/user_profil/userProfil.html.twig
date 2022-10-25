@@ -42,104 +42,104 @@
         {#                </div> #}
         {#            </div> #}
         {% if app.user.owner == "vendeur" %}
-        <div class="box3">
-            <div class="message">
-                <p class="message_text">Pour accéder à la création d'annonce, il est impératif de renseigner vos
-                    coordonnées bancaires. L'argent généré par la vente sera directement transmis sur le compte
-                    renseigné. Ces informations resteront bien évidement confidentielles sur le site. <a
-                            class="lien-mango" href="https://www.mangopay.com/fr/">MangoPay</a></p>
-                {{ form_start(informationForm) }}
-                <div class="container_iban_bic">
-                    <div>
-                        {{ form_label(informationForm.IBAN) }}
-                        <div class="input_iban">
-                            {{ form_widget(informationForm.IBAN, {
-                                'attr': {
-                                    'class': 'iban',
-                                    'placeholder' : 'IBAN',
-                                },
-                            }) }}
+            <div class="box3">
+                <div class="message">
+                    <p class="message_text">Pour accéder à la création d'annonce, il est impératif de renseigner vos
+                        coordonnées bancaires. L'argent généré par la vente sera directement transmis sur le compte
+                        renseigné. Ces informations resteront bien évidement confidentielles sur le site. <a
+                                class="lien-mango" href="https://www.mangopay.com/fr/">MangoPay</a></p>
+                    {{ form_start(informationForm) }}
+                    <div class="container_iban_bic">
+                        <div>
+                            {{ form_label(informationForm.IBAN) }}
+                            <div class="input_iban">
+                                {{ form_widget(informationForm.IBAN, {
+                                    'attr': {
+                                        'class': 'iban',
+                                        'placeholder' : 'IBAN',
+                                    },
+                                }) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input_file">
+                        <p class="identity_text">Merci de joindre un justificatif d'identité comme votre carte
+                            d'identité, passeport ou permis de conduire<a
+                                    href='https://docs.mangopay.com/guide/guidelines-for-identity-documents'
+                                    target='_BLANK'>(voir MangoPay)</a>.</p>
+                        <p class="identity_text">La pièce d'identité doit être celle du propriétaire du compte
+                            bancaire.</p>
+                        <div class="container_KYC">
+                            <div class="img-upload identityUpload">
+                                {{ form_row(informationForm.KYCrecto, {
+                                    "label_attr": {
+                                        'class': "btn-upload"
+                                    },
+
+                                }) }}
+
+                                {{ form_row(informationForm.KYCverso, {
+                                    "label_attr": {
+                                        'class': "btn-upload"
+                                    },
+                                    'id': "get-file1"
+                                }) }}
+
+                            </div>
+                            {#                                {% if KycStatus == "TO_ASK" %} #}
+                            {#                                    <p class="identity-text">Vous n'avez pas encore validé votre profil.</p> #}
+                            {#                                {% elseif  KycStatus == "VALIDATION_ASKED" %} #}
+                            {#                                    <p class="identity-text">Veuillez patienter pour la validation de votre profil.</p> #}
+                            {#                                {% elseif KycStatus == "VALIDATED" %} #}
+                            {#                                    <p class="identity-text">Votre profil a été créé sur MangoPay, #}
+                            {#                                        vous pouvez maintenant créer des annonces en toutes sécurités sur notre #}
+                            {#                                        site.</p> #}
+                            {#                                {% elseif KycStatus == "REFUSED_DOCUMENT_NOT_ACCEPTED" %} #}
+                            {#                                    <p class="identity-text">Votre profil n'est pas validé. Le document reçu n'a pas été #}
+                            {#                                        accepté.</p> #}
+                            {#                                {% elseif KycStatus == "REFUSED_DOCUMENT_HAS_EXPIRED" %} #}
+                            {#                                    <p class="identity-text">Votre profil n'est pas validé. Le document reçu est #}
+                            {#                                        expiré.</p> #}
+                            {#                                {% elseif KycStatus == "REFUSED_DOCUMENT_INCOMPLETE" %} #}
+                            {#                                    <p class="identity-text">Votre profil n'est pas validé. Le document reçu est #}
+                            {#                                        incomplet.</p> #}
+                            {#                                {% elseif KycStatus == "REFUSED_DOCUMENT_MISSING" %} #}
+                            {#                                    <p class="identity-text">Votre profil n'est pas validé. Il vous manque un #}
+                            {#                                        document.</p> #}
+                            {#                                {% elseif KycStatus == "REFUSED_DOCUMENT_DOES_NOT_MATCH_USER_DATA" %} #}
+                            {#                                    <p class="identity-text">Votre profil n'est pas validé. Le document ne corresponde #}
+                            {#                                        pas aux données de votre profil.</p> #}
+                            {#                                {% elseif KycStatus == "REFUSED_SPECIFIC_CASE" %} #}
+                            {#                                    <p class="identity-text">Votre profil n'est pas validé. Le document reçu a été #}
+                            {#                                        refusé pour une cause spécifique.</p> #}
+                            {#                                {% elseif KycStatus == "REFUSED_DOCUMENT_FALSIFIED" %} #}
+                            {#                                    <p class="identity-text">Votre profil n'est pas validé. Le document reçu est #}
+                            {#                                        falsifié.</p> #}
+                            {#                                {% elseif KycStatus == "REFUSED_UNDERAGE_PERSON" %} #}
+                            {#                                    <p class="identity-text">Votre profil n'est pas validé. Le document reçu est d'une #}
+                            {#                                        personne mineure.</p> #}
+                            {#                                {% elseif KycStatus == "REFUSED_DOCUMENT_UNREADABLE" %} #}
+                            {#                                    <p class="identity-text">Votre profil n'est pas validé. Le document reçu est #}
+                            {#                                        illisible.</p> #}
+                            {#                                {% endif %} #}
+                            {#                                <div class="mango">{{ errorMessages }}</div> #}
+                            {#                                <div class="mango">{{ message }}</div> #}
+                            {#                                {{ form_row(informationForm.send, { #}
+                            {#                                    'attr': { #}
+                            {#                                        'class': "btnIdentity validate" #}
+                            {#                                    }, #}
+                            {#                                    "attr_label": { #}
+                            {#                                        'class': "btn" #}
+                            {#                                    } #}
+                            {#                                }) }} #}
+                            {#                            </div> #}
+                            {#                        </div> #}
+                            {{ form_end(informationForm) }}
                         </div>
                     </div>
                 </div>
-                <div class="input_file">
-                    <p class="identity_text">Merci de joindre un justificatif d'identité comme votre carte
-                        d'identité, passeport ou permis de conduire<a
-                                href='https://docs.mangopay.com/guide/guidelines-for-identity-documents'
-                                target='_BLANK'>(voir MangoPay)</a>.</p>
-                    <p class="identity_text">La pièce d'identité doit être celle du propriétaire du compte
-                        bancaire.</p>
-                    <div class="container_KYC">
-                        <div class="img-upload identityUpload">
-                            {{ form_row(informationForm.KYCrecto, {
-                                "label_attr": {
-                                    'class': "btn-upload"
-                                },
-
-                            }) }}
-
-                            {{ form_row(informationForm.KYCverso, {
-                                "label_attr": {
-                                    'class': "btn-upload"
-                                },
-                                'id': "get-file1"
-                            }) }}
-
-                        </div>
-                        {#                                {% if KycStatus == "TO_ASK" %} #}
-                        {#                                    <p class="identity-text">Vous n'avez pas encore validé votre profil.</p> #}
-                        {#                                {% elseif  KycStatus == "VALIDATION_ASKED" %} #}
-                        {#                                    <p class="identity-text">Veuillez patienter pour la validation de votre profil.</p> #}
-                        {#                                {% elseif KycStatus == "VALIDATED" %} #}
-                        {#                                    <p class="identity-text">Votre profil a été créé sur MangoPay, #}
-                        {#                                        vous pouvez maintenant créer des annonces en toutes sécurités sur notre #}
-                        {#                                        site.</p> #}
-                        {#                                {% elseif KycStatus == "REFUSED_DOCUMENT_NOT_ACCEPTED" %} #}
-                        {#                                    <p class="identity-text">Votre profil n'est pas validé. Le document reçu n'a pas été #}
-                        {#                                        accepté.</p> #}
-                        {#                                {% elseif KycStatus == "REFUSED_DOCUMENT_HAS_EXPIRED" %} #}
-                        {#                                    <p class="identity-text">Votre profil n'est pas validé. Le document reçu est #}
-                        {#                                        expiré.</p> #}
-                        {#                                {% elseif KycStatus == "REFUSED_DOCUMENT_INCOMPLETE" %} #}
-                        {#                                    <p class="identity-text">Votre profil n'est pas validé. Le document reçu est #}
-                        {#                                        incomplet.</p> #}
-                        {#                                {% elseif KycStatus == "REFUSED_DOCUMENT_MISSING" %} #}
-                        {#                                    <p class="identity-text">Votre profil n'est pas validé. Il vous manque un #}
-                        {#                                        document.</p> #}
-                        {#                                {% elseif KycStatus == "REFUSED_DOCUMENT_DOES_NOT_MATCH_USER_DATA" %} #}
-                        {#                                    <p class="identity-text">Votre profil n'est pas validé. Le document ne corresponde #}
-                        {#                                        pas aux données de votre profil.</p> #}
-                        {#                                {% elseif KycStatus == "REFUSED_SPECIFIC_CASE" %} #}
-                        {#                                    <p class="identity-text">Votre profil n'est pas validé. Le document reçu a été #}
-                        {#                                        refusé pour une cause spécifique.</p> #}
-                        {#                                {% elseif KycStatus == "REFUSED_DOCUMENT_FALSIFIED" %} #}
-                        {#                                    <p class="identity-text">Votre profil n'est pas validé. Le document reçu est #}
-                        {#                                        falsifié.</p> #}
-                        {#                                {% elseif KycStatus == "REFUSED_UNDERAGE_PERSON" %} #}
-                        {#                                    <p class="identity-text">Votre profil n'est pas validé. Le document reçu est d'une #}
-                        {#                                        personne mineure.</p> #}
-                        {#                                {% elseif KycStatus == "REFUSED_DOCUMENT_UNREADABLE" %} #}
-                        {#                                    <p class="identity-text">Votre profil n'est pas validé. Le document reçu est #}
-                        {#                                        illisible.</p> #}
-                        {#                                {% endif %} #}
-                        {#                                <div class="mango">{{ errorMessages }}</div> #}
-                        {#                                <div class="mango">{{ message }}</div> #}
-                        {#                                {{ form_row(informationForm.send, { #}
-                        {#                                    'attr': { #}
-                        {#                                        'class': "btnIdentity validate" #}
-                        {#                                    }, #}
-                        {#                                    "attr_label": { #}
-                        {#                                        'class': "btn" #}
-                        {#                                    } #}
-                        {#                                }) }} #}
-                        {#                            </div> #}
-                        {#                        </div> #}
-                        {{ form_end(informationForm) }}
-                    </div>
-                </div>
-                {% endif %}
             </div>
-        </div>
+        {% endif %}
         <div class="container_onglets_profil">
             <div class="container-btn_create_annonce">
                 <a class="btn-create_annonce"
