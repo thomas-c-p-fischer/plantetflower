@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Repository\AnnonceRepository;
 use App\Repository\UserRepository;
 use App\Service\MangoPayService;
+use App\Service\MondialRelayService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,10 +20,11 @@ class PaiementController extends AbstractController
 // Controller de callback.
     #[Route('/paiement', name: '_updateRegistrationCard')]
     public function updateRegistrationCard(
-        MangoPayService   $service,
-        UserRepository    $userRepository,
-        AnnonceRepository $annonceRepository,
-                          $id
+        MangoPayService     $service,
+        MondialRelayService $mondialRelayService,
+        UserRepository      $userRepository,
+        AnnonceRepository   $annonceRepository,
+                            $id
     ): Response
     {
         //Récupération de l'utilisateur connecté par son email
@@ -76,8 +78,10 @@ class PaiementController extends AbstractController
     //controller de redirection
     #[Route('/redirection', name: '_redirection')]
     public function redirection(
+        MangoPayService        $service,
         UserRepository         $userRepository,
         AnnonceRepository      $annonceRepository,
+        MondialRelayService    $mondialRelayService,
         MailerInterface        $mailer,
         EntityManagerInterface $em,
                                $id
@@ -88,14 +92,65 @@ class PaiementController extends AbstractController
         $userConnect = $userRepository->findOneBy(['email' => $mail]);
         //Récupération de l'annonce par son Id
         $annonce = $annonceRepository->find($id);
-        $annonce->setSold(true);
-        $annonce->setStatus("sold");
-        $userConnect->setMyPurchases(array($annonce->getId()));
-        $annonce->setAcheteur($userConnect->getEmail());
-        $em->persist($annonce);
-        $em->persist($userConnect);
-        $em->flush($annonce);
-        $em->flush($userConnect);
+        if ($annonce->isBuyerDelivery()) {
+            //Envoie de la feuille de livraison par mail au vendeur au format PDF
+            $etiquetteLivraison = $mondialRelayService->createEtiquette($userConnect, $annonce, $_SESSION['idRelais']);
+            //Création du mail contenant le PDF au vendeur.
+            $email = (new TemplatedEmail())
+                ->from('plantetflower@gmail.com')
+                ->to($annonce->getUser()->getEmail())
+                ->subject('Votre etiquette de livraison.')
+                // path of the Twig template to render
+                ->htmlTemplate('annonce/etiquetteEmail.html.twig')
+                // pass variables (name => value) to the template
+                ->context([
+                    'expiration_date' => new \DateTime('+10 days'),
+                    'username' => $annonce->getUser()->getFirstName(),
+                    'message' => $etiquetteLivraison
+                ]);
+            $mailer->send($email);
+         } else {
+            //Si c'est une transaction main à la main, 2 mails sont envoyés. 1 au vendeur 1 a l'acheteur.
+            //afin de confirmer la reception et finalisation le paiement.
+            $emailAcheteur = (new TemplatedEmail())
+                ->from('plantetflower@gmail.com')
+                ->to($userConnect->getEmail())
+                ->subject('Confirmation de l\'achat.')
+                // path of the Twig template to render
+                ->htmlTemplate('annonce/handDeliveryAcheteur.html.twig')
+                // pass variables (name => value) to the template
+                ->context([
+                    'mailVendeur' => $annonce->getUser()->getEmail(),
+                    'nomVendeur' => $annonce->getUser()->getLastName(),
+                    'prenomVendeur' => $annonce->getUser()->getFirstName(),
+                    'phoneVendeur' => $annonce->getUser()->getPhoneNumber(),
+                    'url' => 'http://127.0.0.1:8000/annonce/' . $id
+                ]);
+            $emailVendeur = (new TemplatedEmail())
+                ->from('plantetflower@gmail.com')
+                ->to($annonce->getUser()->getEmail())
+                ->subject('Confirmation de l\'achat.')
+                // path of the Twig template to render
+                ->htmlTemplate('annonce/handDeliveryVendeur.html.twig')
+                // pass variables (name => value) to the template
+                ->context([
+                    'mailAcheteur' => $userConnect->getEmail(),
+                    'nomAcheteur' => $userConnect->getLastName(),
+                    'prenomAcheteur' => $userConnect->getFirstName(),
+                    'phoneAcheteur' => $userConnect->getPhoneNumber(),
+                    'url' => 'http://127.0.0.1:8000/annonce/' . $id
+                ]);
+            $annonce->setSold(true);
+            $annonce->setStatus("sold");
+            $userConnect->setMyPurchases(array($annonce->getId()));
+            $annonce->setAcheteur($userConnect->getEmail());
+            $em->persist($annonce);
+            $em->persist($userConnect);
+            $em->flush($annonce);
+            $em->flush($userConnect);
+            $mailer->send($emailAcheteur);
+            $mailer->send($emailVendeur);
+        }
 //        //Récupération du prix d'origine de l'annonce
 //        $prixAnnonce = $annonce->getPriceOrigin();
 //        //Récupération de l'ID du wallet du vendeur
@@ -114,9 +169,8 @@ class PaiementController extends AbstractController
             compact('annonce'));
     }
 
-//Controller pour la confirmation de la réception du végétal
-    #[
-        Route('/confirmation', name: '_confirmation')]
+    //Controller pour la confirmation de la réception du végétal
+    #[Route('/confirmation', name: '_confirmation')]
     public function confirmation(
         MangoPayService   $service,
         UserRepository    $userRepository,

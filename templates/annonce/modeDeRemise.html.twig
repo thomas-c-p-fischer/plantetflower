@@ -4,7 +4,15 @@
 
 {% block js %}
     <script defer src={{ asset('assets/Javascript/modeDeRemise.js') }}></script>
-{% endblock js %}
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="//unpkg.com/leaflet/dist/leaflet.js"></script>
+    <link rel="stylesheet" type="text/css" href="//unpkg.com/leaflet/dist/leaflet.css"/>
+    <!-- Widget MR -->
+    <script src="//widget.mondialrelay.com/parcelshop-picker/jquery.plugin.mondialrelay.parcelshoppicker.min.js"></script>
+    <script src="{{ asset('assets/Javascript/widgetMondialRelay.js') }}"></script>
+
+{% endblock %}
 
 {% block body %}
     <h1>Etape 1/2</h1>
@@ -36,12 +44,15 @@
             }) }}
         {% endif %}
         {% if annonce.shipement %}
-            {{ form_row(form.mondialRelay, {
-                'label': 'Mondial relay',
-                'id': 'checkboxShipment',
-                'name':'mondialRelay'
+            <div>
+                {{ form_row(form.mondialRelay, {
+                    'label': 'Mondial relay',
+                    'id': 'checkboxShipment',
+                    'name':'mondialRelay'
 
-            }) }}
+                }) }} <img src="{{ asset('media/img/logo_mondial_relay.svg') }}"
+                           alt="logo mondial relay livraison france">
+            </div>
         {% else %}
             {{ form_row(form.mondialRelay, {
                 'label': 'Mondial relay',
@@ -65,8 +76,11 @@
                         <input type="hidden" value="{{ prixPoids == 8 }}">
                     {% endif %}
                 </p>
-                <img src="{{ asset('media/img/logo_mondial_relay.svg') }}"
-                     alt="Mondial Relay">
+                <!-- Zone dans laquelle le Widget est chargé -->
+                <div id="Zone_Widget"></div>
+                <!-- Balise intégrant le point relais sélectionné -->
+                {{ form_row(form.relais,{'id':"Target_Widget",'name':'relais','value':''}) }}
+                
                 <h3>Total</h3>
                 <p>{{ annonce.priceTotal + prixPoids }}€</p>
             </div>
