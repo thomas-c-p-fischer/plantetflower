@@ -1,23 +1,18 @@
-/*
- * Welcome to your app's main JavaScript file!
- *
- * We recommend including the built version of this JavaScript file
- * (and its CSS file) in your base layout (base.html.twig).
- */
-// any CSS you import will output into a single css file (app.css in this case)
-import "./styles/app.css";
-import "./bootstrap";
-import "./burger";
-import "./slider";
-import "./annonce";
-import "./payment";
-import "./slidePrix";
-const $ = require('jquery');
-//create global $ and jQuery variables
-global.$ = global.jQuery = $;
+// Script permettant de d'afficher la liste de pages dans un menu déroulant
+// de la barre de navigation de base.html.twig.
+// Recuperation des elements par Id qu'on initialise dans une variable.
+let containerMenuBtn = document.getElementById("container-hamburger-menu");
+let menuBtn = document.getElementById("hamburger-menu");
+let pagesList = document.getElementById("list-mains_pages");
+let secondaryUserPage = document.getElementById("container-dropdown-secondary_user_page");
 
-import bsCustomFileInput from 'bs-custom-file-input';
-// start the Stimulus application
-//import "./bootstrap";
-bsCustomFileInput.init();
-//SELECT * FROM `annonce` ORDER BY created_at DESC LIMIT 7
+// Event de type clic pour afficher et cacher la listes des pages.
+menuBtn.addEventListener("click", () => {
+    if (pagesList.style.display !== 'flex') {
+        pagesList.style.display = 'flex';
+        secondaryUserPage.style.display = 'flex';
+    } else {
+        pagesList.style.display = 'none';
+        secondaryUserPage.style.display = 'none';
+    }
+})

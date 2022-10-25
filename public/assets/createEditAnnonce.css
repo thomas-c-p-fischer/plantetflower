@@ -18,6 +18,11 @@
     width: 25%;
 }
 
+.container-img_cea img {
+    width: 100%;
+    height: auto;
+}
+
 .form_cea {
     display: flex;
     justify-content: space-around;
@@ -245,9 +250,11 @@ h3 {
 }
 
 .cea-check_delivery_mod h3 {
+    text-align: start;
     align-items: center;
     margin: 0 0 3px 20px;
     font-size: 15px;
+    white-space: nowrap;
 }
 
 .cea-check_delivery_mod input {
@@ -259,12 +266,6 @@ h3 {
     height: 25px;
     margin: 5px 0 0 20px;
 }
-
-/*.container-mondial_relay_widget {*/
-/*  width: 90%;*/
-/*  display: none;*/
-/*  margin: 5px auto;*/
-/*}*/
 
 .cea-container-shipping_address {
     display: flex;
@@ -532,5 +533,35 @@ h3 {
     .container-ajouter_return .cea-return,
     .container-ajouter_return button {
         margin: 0;
+    }
+
+    #editAnnonce_submit {
+        margin: 0;
+    }
+
+    .container-return_delete_btn {
+        margin-top: 0;
+    }
+}
+
+@media screen and (max-width: 550px) {
+    .cea-container-delivery_mod, .cea-check_plantPot {
+        margin-left: 25%;
+    }
+}
+
+@media screen and (max-width: 460px) {
+    #shipement-title {
+        width: 45%;
+    }
+
+    .cea-container-delivery_mod, .cea-check_plantPot {
+        margin-left: 20%;
+    }
+
+    #createAnnonce_submit,
+    .container-ajouter_return .cea-return {
+        padding: 10px 20px;
+        font-size: 15px;
     }
 }

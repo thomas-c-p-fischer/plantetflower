@@ -7,205 +7,113 @@
 {% endblock js %}
 
 {% block body %}
-    <main>
-        <div class="containerGlobale">
-            {# Bannière #}
-            <div class="container_imgsearch">
-                <div class="txt_banniere">
-                    Donnez à vos végétaux une seconde
-                    vie et achetez-en de nouveaux
-                </div>
-                <div class="search">
-                    {{ form_start(form, {'attr': {'class': 'search-formulaire'}} ) }}
-                    <div class="titre-search">
-                        {{ form_row(form.title) }}
-                    </div>
-                    <div class="bouton-search">
-                        {{ form_row(form.Rechercher) }}
-                    </div>
-                    {{ form_end(form) }}
-                </div>
-                <div class="slideshow-container">
-                    {% for annonce in annoncesAll %}
-                        {% if annonce.sold == false %}
-                            <div class="mySlides item" data-ref={{ annonce.id }}>
-                                <a href={{ path('annonce_afficher', {'annonceId': annonce.id}) }}>
-                                    {% for image in annonce.images|slice(0,1) %}
-                                        <img src="{{ asset('/uploads//' ~ image.name) }}"
-                                             alt="{{ annonce.title }}"/>
-                                    {% endfor %}
-                                    <div class="card-content">
-                                        <div class="align-etoile">
-                                            <span class="nom-plante">{{ annonce.title }}</span>
-                                            <p class="etoile">☆</p>
-                                            <p class="prix">Prix : {{ annonce.priceTotal }}€</p>
-                                        </div>
-                                        <span class="ville">{{ annonce.ville | upper }}</span>
-                                        <div class="align-livraison">
-                                            {% if annonce.shipement == true %}
-                                                <p class="livraison">
-                                                    Livraison possible
-                                                </p>
-                                            {% else %}
-                                                <p class="not-livraison">
-                                                    Remise en main propre
-                                                </p>
-                                            {% endif %}
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        {% endif %}
-                    {% endfor %}
-                </div>
-                <div>
-                    <img class="img-exchange" src="{{ asset('media/img/exchange.png') }}" alt="banniere"/>
-                </div>
+    <div class="container-hp">
+        <div class="img-exchange">
+            <img src="{{ asset('media/img/exchange.png') }}" alt="banniere"/>
+        </div>
+        <h1>
+            Donnez à vos végétaux une seconde
+            vie et achetez-en de nouveaux
+        </h1>
+        <div class="container-search">
+            {{ form_start(form, {'attr': {'class': 'search-formulaire'}} ) }}
+            <div class="search_title">
+                {{ form_row(form.title) }}
             </div>
-
-            {# Fin bannière #}
-            <div class="contenu" id="annonce">
-                {% for annonce in annonces %}
-                    <div class="card">
-                        <a class="img-annonce-flex" href={{ path('home_annonces', {'id': annonce.id}) }}>
-                            <div class="image-annonce">
-                                {% for image in annonce.images %}
-                                    <img src="{{ asset('/uploads/' ~ image.name) }}" class="img-orchidee"
-                                         alt="Image annonce"/>
+            <div class="search_btn">
+                {{ form_row(form.Rechercher) }}
+            </div>
+            {{ form_end(form) }}
+        </div>
+        <div class="container-slideshow">
+            {% for annonce in annoncesAll %}
+                {% if annonce.sold == false %}
+                    <a class="mySlides"
+                       data-ref={{ annonce.id }} href={{ path('annonce_afficher', {'annonceId': annonce.id}) }}>
+                        <div class="container-card">
+                            <div class="container-img_city">
+                                {% for image in annonce.images|slice(0,1) %}
+                                    <img src="{{ asset('/uploads//' ~ image.name) }}"
+                                         alt="{{ annonce.title }}"/>
                                 {% endfor %}
-
+                                <span class="hP-city">{{ annonce.ville | upper | slice(0, 8) ~ '...' }}</span>
                             </div>
-                            <div class="card-content">
-                                <div class="align-etoile">
-                                    <span class="nom-plante">{{ annonce.title }}</span>
-                                    <p class="etoile">☆</p>
-                                    <p class="prix">
-                                        {{ annonce.priceTotal }}€</p>
+                            <div class="container-text_card">
+                                <div class="container-plant_name_star">
+                                    <span class="plant-name">{{ annonce.title|upper }}</span>
+                                    <p class="star">☆</p>
                                 </div>
-                                <div class="align-livraison">
-                                    {% if annonce.shipement == true %}
-                                        <p class="livraison">
-                                            Livraison possible
+                                <div class="container-hand_delivery_shipment">
+                                    {% if annonce.handDelivery == true %}
+                                        <p class="hand_delivery">
+                                            EN MAIN PROPRE
                                         </p>
-                                    {% else %}
-                                        <p class="not-livraison">
-                                            Remise en main propre
+                                    {% endif %}
+                                    {% if annonce.shipement == true %}
+                                        <p class="shipment">
+                                            LIVRAISON
                                         </p>
                                     {% endif %}
                                 </div>
-                                <p class="date-expiration">
-                                    Date d'expiration : {{ annonce.dateExpiration | date ('d/m/Y') }}
-                                </p>
+                                <div class="container-price">
+                                    <p class="price">{{ annonce.priceTotal }} €</p>
+                                </div>
                             </div>
-                        </a>
-                    </div>
-                {% endfor %}
-                {# <ul class="navigation">
-			{% for item in 1..((total / limit)|round(0, 'ceil')) %}
-			<li>
-				<a class="numeroPage" href="?page={{ item }}">{{ item }}</a>
-			</li>
-			{% endfor %}
-		</ul> #}
-                {# {{ knp_pagination_render(annonces) }} #}
-            </div>
-
-            {# Début rubrique dernières annonces #}
-            <div class="dernieres-annonces">
-                <div class="txt-dernieres-annonces">Nos dernières annonces</div>
-            </div>
-
-
-            {#            #}{# Début caroussel test #}
-
-            {#            <div id="slideshow"> #}
-            {#                <div id="slides"> #}
-            {#                    {% for lastannonce in lastAnnonces %} #}
-            {#                        #}{# Boucle pour afficher les images associées a son annonces #}
-            {#                        {% if lastannonce.sold == false %} #}
-            {#                            <div class="item" data-ref={{ lastannonce.id }}> #}
-            {#                                <a href={{ path('home_annonces', {'id': lastannonce.id}) }}> #}
-            {#                                    <div class="image-annonce"> #}
-            {#                                        {% for image in lastannonce.images %} #}
-            {#                                            <img src="{{ asset('/uploads//' ~ image.name) }}" #}
-            {#                                                 alt="{{ lastannonce.title }}"/> #}
-            {#                                        {% endfor %} #}
-            {#                                    </div> #}
-            {#                                    <div class="card-content"> #}
-            {#                                        <div class="align-etoile"> #}
-            {#                                            <span class="nom-plante">{{ lastannonce.title }}</span> #}
-            {#                                            <p class="etoile">☆</p> #}
-            {#                                            <p class="prix">Prix : {{ lastannonce.priceTotal }}€</p> #}
-            {#                                        </div> #}
-            {#                                        <div class="align-livraison"> #}
-            {#                                    <span class="ville"> #}
-            {#                                        {{ lastannonce.ville | upper }} #}
-            {#                                    </span> #}
-            {#                                            {% if lastannonce.shipement == true %} #}
-            {#                                                <p class="livraison"> #}
-            {#                                                    Livraison possible #}
-            {#                                                </p> #}
-            {#                                            {% else %} #}
-            {#                                                <p class="not-livraison"> #}
-            {#                                                    Remise en main propre #}
-            {#                                                </p> #}
-            {#                                            {% endif %} #}
-            {#                                        </div> #}
-
-            {#                                    </div> #}
-            {#                                </a> #}
-            {#                            </div> #}
-            {#                        {% endif %} #}
-            {#                    {% endfor %} #}
-            {#                </div> #}
-            {#            </div> #}
-
-            <div class="btn-vegetaux-mobile">
-                <button class="btn-vegetaux"><a class="lien-btn-vegetaux" href="{{ path('home_annonces') }}">Tous les
-                        végétaux</a></button>
-            </div>
-            {# Fin du carrousel #}
-
-            {# Début rubrique Comment ça fonctionne #}
-            <p class="title-fonctionnement">
-                Comment ça fonctionne ?</p>
-
-            <div class="container-fonctionnement">
-                <div class="decouvre">
-                    <div class="decouvre-img"><img src="{{ asset('media/img/decouvre.png') }}" alt=""></div>
-                    <div class="txt-decouvre">
-                        <h2 class="title-etape">DÉCOUVRE LES VÉGÉTAUX</h2>
-                        <p>Connecte-toi et trouve les végétaux à vendre entre particuliers dans toute la France. À des
-                            prix imbattables ! Tu peux aussi vendre tes végétaux. Inscription gratuite et sans aucun
-                            engagement !
-                            <br>Livraison possible via Mondial Relay !
-                        </p>
-                    </div>
+                        </div>
+                    </a>
+                {% endif %}
+            {% endfor %}
+        </div>
+        <div class="container-all_plants container-all_annonces">
+            <a id="all_annonces" href="{{ path('home_annonces') }}">Voir nos annonces</a>
+        </div>
+    </div>
+    <div class="container-functioning">
+        <div class="container-functioning_title">
+            <p>Comment ça fonctionne ?</p>
+        </div>
+        <div class="container-all_step">
+            <div class="container-step">
+                <div class="step-left">
+                    <img src="{{ asset('media/img/decouvre.png') }}" alt="">
                 </div>
-
-                <div class="reserve">
-                    <div class="reserve-img"><img src="{{ asset('media/img/reserve.png') }}" alt=""></div>
-                    <div class="txt-decouvre">
-                        <h2 class="title-etape">RÉSERVE TON VÉGÉTAL</h2>
-                        <p>En quelques clics, trouve et réserve le végétal de tes rêves ! Paie en toute sécurité via la
-                            solution de paiement sécurisé
-                            <a class="mango" href="https://www.mangopay.com/fr">MangoPay</a> ou avec ta
-                            propre carte bancaire! Une confirmation de commande ainsi que les coordonnées du vendeur
-                            vous seront envoyées après achat.
-                        </p>
-                    </div>
+                <div class="step-right">
+                    <h2>DÉCOUVRE LES VÉGÉTAUX</h2>
+                    <p>Connecte-toi et trouve les végétaux à vendre entre particuliers dans toute la France. À
+                        des prix imbattables ! Tu peux aussi vendre tes végétaux. Inscription gratuite et sans
+                        aucun engagement !
+                        <br>Livraison possible via Mondial Relay !
+                    </p>
                 </div>
-
-                <div class="receptionne">
-                    <div class="receptionne-img"><img src="{{ asset('media/img/receptionne.png') }}" alt=""></div>
-                    <div class="txt-decouvre">
-                        <h2 class="title-etape">RÉCEPTIONNE TON VÉGÉTAL</h2>
-                        <p>Pars à la rencontre du vendeur ou réceptionne directement chez toi le végétal grâce à notre
-                            collaboration avec Mondial Relay! Et voilà, ton végétal est chez toi, le sourire revient !
-                    </div>
+            </div>
+            <div class="container-step">
+                <div class="step-left">
+                    <img src="{{ asset('media/img/reserve.png') }}" alt="">
+                </div>
+                <div class="step-right">
+                    <h2>RÉSERVE TON VÉGÉTAL</h2>
+                    <p>En quelques clics, trouve et réserve le végétal de tes rêves ! Paie en toute sécurité via
+                        la solution de paiement sécurisé
+                        <a href="https://www.mangopay.com/fr" target="_blank">MangoPay</a>
+                        ou avec ta propre carte bancaire ! Une confirmation de commande ainsi que les coordonnées
+                        du vendeur vous seront envoyées après l'achat par mail.
+                    </p>
+                </div>
+            </div>
+            <div class="container-step">
+                <div class="step-left">
+                    <img src="{{ asset('media/img/receptionne.png') }}" alt="">
+                </div>
+                <div class="step-right">
+                    <h2>RÉCEPTIONNE TON VÉGÉTAL</h2>
+                    <p>Pars à la rencontre du vendeur ou réceptionne directement chez toi le végétal grâce à
+                        notre collaboration avec Mondial Relay ! Et voilà, ton végétal est chez toi, le sourire
+                        revient !
                 </div>
             </div>
         </div>
-    </main>
-
+        <div class="container-all_plants">
+            <a href="{{ path('home_annonces') }}">Tous les végétaux</a>
+        </div>
+    </div>
 {% endblock %}
