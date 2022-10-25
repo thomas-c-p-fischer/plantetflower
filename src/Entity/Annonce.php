@@ -102,6 +102,9 @@ class Annonce
     #[ORM\Column(nullable: true)]
     private ?bool $buyerDelivery = false;
 
+    #[ORM\Column]
+    private ?bool $confirm = false;
+
     public function __construct()
     {
         $this->images = new ArrayCollection();
@@ -450,6 +453,18 @@ class Annonce
     public function setBuyerDelivery(?bool $buyerDelivery): self
     {
         $this->buyerDelivery = $buyerDelivery;
+
+        return $this;
+    }
+
+    public function isConfirm(): ?bool
+    {
+        return $this->confirm;
+    }
+
+    public function setConfirm(bool $confirm): self
+    {
+        $this->confirm = $confirm;
 
         return $this;
     }

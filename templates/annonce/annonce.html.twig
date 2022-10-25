@@ -68,11 +68,23 @@
                     <div class="headInfo">
                         <p>Date d'expiration : {{ annonce.dateExpiration | date('d/m/Y') }}</p>
                         <div class="container-all_btn_sold_editor">
-                            {% if annonce.sold %}
+                            {% if annonce.sold and app.user.email != annonce.acheteur %}
                                 <div class="container-btn_sold_editor">
                                     <a class="btn-sold_editor" disabled>Déjà vendu</a>
                                 </div>
-                            {% elseif (app.user) and (app.user.id == annonce.user.id) %}
+                            {% elseif app.user.email == annonce.acheteur
+                                and annonce.sold == true
+                                and annonce.confirm == false %}
+                                <div class="container-btn_sold_editor">
+                                    <a class="btn-sold_editor"
+                                       href={{ path('annonce_modeDeRemise', {'id': annonce.id}) }}>
+                                        Confirmer la réception
+                                    </a>
+                                </div>
+                            {% elseif app.user
+                            and app.user.id == annonce.user.id
+                            and annonce.sold == false
+                            and annonce.confirm == false %}
                                 <div class="container-btn_sold_editor">
                                     <a class="btn-sold_editor"
                                        href={{ path('annonce_editer', {'annonceId': annonce.id}) }}>

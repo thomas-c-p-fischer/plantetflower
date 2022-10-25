@@ -5,8 +5,11 @@ namespace App\Controller;
 use App\Repository\AnnonceRepository;
 use App\Repository\UserRepository;
 use App\Service\MangoPayService;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use MangoPay;
 
@@ -73,6 +76,48 @@ class PaiementController extends AbstractController
     //controller de redirection
     #[Route('/redirection', name: '_redirection')]
     public function redirection(
+        UserRepository         $userRepository,
+        AnnonceRepository      $annonceRepository,
+        MailerInterface        $mailer,
+        EntityManagerInterface $em,
+                               $id
+    ): Response
+    {
+        //Récupération de l'utilisateur connecté par son email
+        $mail = $this->getUser()->getUserIdentifier();
+        $userConnect = $userRepository->findOneBy(['email' => $mail]);
+        //Récupération de l'annonce par son Id
+        $annonce = $annonceRepository->find($id);
+        $annonce->setSold(true);
+        $annonce->setStatus("sold");
+        $userConnect->setMyPurchases(array($annonce->getId()));
+        $annonce->setAcheteur($userConnect->getEmail());
+        $em->persist($annonce);
+        $em->persist($userConnect);
+        $em->flush($annonce);
+        $em->flush($userConnect);
+//        //Récupération du prix d'origine de l'annonce
+//        $prixAnnonce = $annonce->getPriceOrigin();
+//        //Récupération de l'ID du wallet du vendeur
+//        $sellerWalletId = $annonce->getUser()->getidWallet();
+//        //Récupération de l'ID mangopay du vendeur
+//        $sellerId = $annonce->getUser()->getIdMangopay();
+//        //Méthode du service pour exécuter le transfert
+//        $service->createTransfer($userConnect, $prixAnnonce, $sellerWalletId);
+//        //On récupère l'ID du compte bancaire du vendeur pour l'injecter en paramètre de la méthode de payOut
+//        $bankAccount = $service->getBankAccountId($sellerId);
+//        //Méthode du service pour exécuter le PayOut
+//        $service->createPayOut($sellerWalletId, $bankAccount, $sellerId, $prixAnnonce);
+
+        //Puis on redirige vers l'endroit où l'on veut.
+        return $this->render('annonce/redirectionPaiement.html.twig',
+            compact('annonce'));
+    }
+
+//Controller pour la confirmation de la réception du végétal
+    #[
+        Route('/confirmation', name: '_confirmation')]
+    public function confirmation(
         MangoPayService   $service,
         UserRepository    $userRepository,
         AnnonceRepository $annonceRepository,
@@ -97,7 +142,6 @@ class PaiementController extends AbstractController
         //Méthode du service pour exécuter le PayOut
         $service->createPayOut($sellerWalletId, $bankAccount, $sellerId, $prixAnnonce);
 
-        //Puis on redirige vers l'endroit où l'on veut.
-        return $this->render('annonce/redirectionPaiement.html.twig');
+        return $this->render('annonce/confirmationReception.html.twig');
     }
 }
