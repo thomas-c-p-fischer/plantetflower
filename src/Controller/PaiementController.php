@@ -92,13 +92,6 @@ class PaiementController extends AbstractController
         $userConnect = $userRepository->findOneBy(['email' => $mail]);
         //Récupération de l'annonce par son Id
         $annonce = $annonceRepository->find($id);
-        //Récupération du prix d'origine de l'annonce
-        $prixAnnonce = $annonce->getPriceOrigin();
-        //Récupération de l'ID du wallet du vendeur
-        $sellerWalletId = $annonce->getUser()->getidWallet();
-        //Récupération de l'ID mangopay du vendeur
-        $sellerId = $annonce->getUser()->getIdMangopay();
-
         if ($annonce->isBuyerDelivery()) {
             //Envoie de la feuille de livraison par mail au vendeur au format PDF
             $etiquetteLivraison = $mondialRelayService->createEtiquette($userConnect, $annonce, $_SESSION['idRelais']);
@@ -116,7 +109,7 @@ class PaiementController extends AbstractController
                     'message' => $etiquetteLivraison
                 ]);
             $mailer->send($email);
-        } else {
+         } else {
             //Si c'est une transaction main à la main, 2 mails sont envoyés. 1 au vendeur 1 a l'acheteur.
             //afin de confirmer la reception et finalisation le paiement.
             $emailAcheteur = (new TemplatedEmail())
@@ -158,6 +151,44 @@ class PaiementController extends AbstractController
             $mailer->send($emailAcheteur);
             $mailer->send($emailVendeur);
         }
+//        //Récupération du prix d'origine de l'annonce
+//        $prixAnnonce = $annonce->getPriceOrigin();
+//        //Récupération de l'ID du wallet du vendeur
+//        $sellerWalletId = $annonce->getUser()->getidWallet();
+//        //Récupération de l'ID mangopay du vendeur
+//        $sellerId = $annonce->getUser()->getIdMangopay();
+//        //Méthode du service pour exécuter le transfert
+//        $service->createTransfer($userConnect, $prixAnnonce, $sellerWalletId);
+//        //On récupère l'ID du compte bancaire du vendeur pour l'injecter en paramètre de la méthode de payOut
+//        $bankAccount = $service->getBankAccountId($sellerId);
+//        //Méthode du service pour exécuter le PayOut
+//        $service->createPayOut($sellerWalletId, $bankAccount, $sellerId, $prixAnnonce);
+
+        //Puis on redirige vers l'endroit où l'on veut.
+        return $this->render('annonce/redirectionPaiement.html.twig',
+            compact('annonce'));
+    }
+
+    //Controller pour la confirmation de la réception du végétal
+    #[Route('/confirmation', name: '_confirmation')]
+    public function confirmation(
+        MangoPayService   $service,
+        UserRepository    $userRepository,
+        AnnonceRepository $annonceRepository,
+                          $id
+    ): Response
+    {
+        //Récupération de l'utilisateur connecté par son email
+        $mail = $this->getUser()->getUserIdentifier();
+        $userConnect = $userRepository->findOneBy(['email' => $mail]);
+        //Récupération de l'annonce par son Id
+        $annonce = $annonceRepository->find($id);
+        //Récupération du prix d'origine de l'annonce
+        $prixAnnonce = $annonce->getPriceOrigin();
+        //Récupération de l'ID du wallet du vendeur
+        $sellerWalletId = $annonce->getUser()->getidWallet();
+        //Récupération de l'ID mangopay du vendeur
+        $sellerId = $annonce->getUser()->getIdMangopay();
         //Méthode du service pour exécuter le transfert
         $service->createTransfer($userConnect, $prixAnnonce, $sellerWalletId);
         //On récupère l'ID du compte bancaire du vendeur pour l'injecter en paramètre de la méthode de payOut
@@ -165,7 +196,6 @@ class PaiementController extends AbstractController
         //Méthode du service pour exécuter le PayOut
         $service->createPayOut($sellerWalletId, $bankAccount, $sellerId, $prixAnnonce);
 
-        //Puis on redirige vers l'endroit où l'on veut.
-        return $this->render('annonce/redirectionPaiement.html.twig');
+        return $this->render('annonce/confirmationReception.html.twig');
     }
 }
