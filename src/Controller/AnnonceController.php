@@ -10,11 +10,15 @@ use App\Repository\AnnonceRepository;
 use App\Repository\ImageRepository;
 use App\Repository\UserRepository;
 use App\Service\MangoPayService;
+use App\Service\MondialRelayService;
+use Doctrine\Migrations\Configuration\Migration\FormattedFile;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -347,6 +351,7 @@ class AnnonceController extends AbstractController
         } elseif ($annoncePoids == "2.001kg - 3kg") {
             $prixPoids = 8;
         }
+
         //Si le formulaire est envoyé et valide à la fois
         if ($form->isSubmitted() && $form->isValid()) {
             //Si la checkBox mondial relay n'est pas cochée alors :
@@ -357,6 +362,10 @@ class AnnonceController extends AbstractController
             } else {
                 //alors le paramètre de l'entité Annonce buyer_delivery sera true
                 $annonce->setBuyerDelivery(true);
+                //Recuperation de l'ID de point de relais choisi afin de créer l'étiquette lorsque le paiement est accepté
+                $idRelais = $form->get('relais')->getData();
+                //Cette id est placé en session afin de la récupérée dans le controller de callBack "PaiementController" dans la methode de redirection.
+                $_SESSION['idRelais'] = $idRelais;
             }
             //Comme buyer_delivery est un paramètre de l'entité Annonce, il nous faut persist et flush pour implémenter
             //les changements en BDD
@@ -434,7 +443,7 @@ class AnnonceController extends AbstractController
                 'annoncePoids',
                 'prixPoids',
                 'buyerDelivery',
-                'annonceTitle'
+                'annonceTitle',
             ));
     }
 }

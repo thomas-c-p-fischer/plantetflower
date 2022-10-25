@@ -199,7 +199,7 @@ class MangoPayService
             $payIn->Fees->Currency = 'EUR';
             $payIn->ExecutionDetails = new PayInExecutionDetailsDirect();
             $payIn->ExecutionDetails->SecureModeNeeded = true;
-            $payIn->ExecutionDetails->SecureMode = 'NO_CHOICE';
+            $payIn->ExecutionDetails->SecureMode = 'DEFAULT';
             $payIn->ExecutionDetails->SecureModeReturnURL = "http://127.0.0.1:8000/annonce/" . $id . "/redirection";
             $payIn->PaymentDetails = new PayInPaymentDetailsCard();
             $payIn->PaymentDetails->CardId = $cardId;
@@ -226,11 +226,11 @@ class MangoPayService
             } else {
                 dump('something weird happened');
             }
-
+            return $result;
         } catch (MangoPay\Libraries\Exception $e) {
             dump($e);
         }
-        return $result;
+
     }
     //Une fois le payIn exécuté on transfère l'argent du wallet de l'acheteur
     // vers celui du vendeur en créant un Transfer
@@ -256,6 +256,7 @@ class MangoPayService
         }
         return $result;
     }
+
     //Dans cette méthode, on récupère l'id du compte bancaire du vendeur
     public function getBankAccountId($sellerId)
     {
