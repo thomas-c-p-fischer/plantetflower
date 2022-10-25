@@ -44,6 +44,7 @@
         {# Fin bannière #}
         <div class="contenuProducts">
             {% for annonce in annonces %}
+                {% if annonce.confirm == false %}
                 <div class="card">
                     <a class="img-annonce-flex" href={{ path('annonce_afficher', {'annonceId': annonce.id}) }}>
                         <div class="image-annonce">
@@ -76,6 +77,7 @@
                         </div>
                     </a>
                 </div>
+                {% endif %}
             {% endfor %}
         </div>
     </div>

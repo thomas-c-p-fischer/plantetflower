@@ -73,12 +73,12 @@
                                 <div class="container-btn_sold_editor">
                                     <a class="btn-sold_editor" disabled>Déjà vendu</a>
                                 </div>
-                            {% elseif app.user.email == annonce.acheteur
-                                and annonce.sold == true
+                            {% elseif annonce.sold == true
+                                and app.user.email == annonce.acheteur
                                 and annonce.confirm == false %}
                                 <div class="container-btn_sold_editor">
                                     <a class="btn-sold_editor"
-                                       href={{ path('annonce_modeDeRemise', {'id': annonce.id}) }}>
+                                       href={{ path('paiement_confirmation', {'id': annonce.id}) }}>
                                         Confirmer la réception
                                     </a>
                                 </div>
