@@ -20,8 +20,8 @@ function showSlides() {
         slides[slideIndex - 1].style.display = "block";
         slides[slideIndex].style.display = "block";
         slides[slideIndex + 1].style.display = "block";
-        // Change d'annonce toutes les 2 secondes.
-        setTimeout(showSlides, 2000);
+        // Change d'annonce toutes les 3 secondes.
+        setTimeout(showSlides, 3000);
     } else {
         // Refait appel à la fonction pour retour à la 1ère annonce
         showSlides();

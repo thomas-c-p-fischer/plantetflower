@@ -92,8 +92,19 @@ class PaiementController extends AbstractController
         $userConnect = $userRepository->findOneBy(['email' => $mail]);
         //Récupération de l'annonce par son Id
         $annonce = $annonceRepository->find($id);
+        //Récupération du vendeur pour implémenter la vente dans sa BDD
+        //On change les différents champs des entités
+        $annonce->setSold(true);
+        $annonce->setStatus("sold");
+        $userConnect->setMyPurchases(array($annonce->getId()));
+        $annonce->setAcheteur($userConnect->getEmail());
+        $em->persist($annonce);
+        $em->persist($userConnect);
+        $em->flush($annonce);
+        $em->flush($userConnect);
+        //envoi de mail différent si livraison ou remise en main propre
         if ($annonce->isBuyerDelivery()) {
-            //Envoie de la feuille de livraison par mail au vendeur au format PDF
+            //Envoi de la feuille de livraison par mail au vendeur au format PDF
             $etiquetteLivraison = $mondialRelayService->createEtiquette($userConnect, $annonce, $_SESSION['idRelais']);
             //Création du mail contenant le PDF au vendeur.
             $email = (new TemplatedEmail())
@@ -111,6 +122,7 @@ class PaiementController extends AbstractController
                 ]);
             $mailer->send($email);
         } else if ($annonce->isHandDelivery()) {
+
             //Si c'est une transaction main à la main, 2 mails sont envoyés. 1 au vendeur 1 a l'acheteur.
             //afin de confirmer la reception et finalisation le paiement.
             $emailAcheteur = (new TemplatedEmail())
@@ -139,16 +151,7 @@ class PaiementController extends AbstractController
                     'nomAcheteur' => $userConnect->getLastName(),
                     'prenomAcheteur' => $userConnect->getFirstName(),
                     'phoneAcheteur' => $userConnect->getPhoneNumber(),
-                    'url' => 'http://127.0.0.1:8000/annonce/' . $id
                 ]);
-            $annonce->setSold(true);
-            $annonce->setStatus("sold");
-            $userConnect->setMyPurchases(array($annonce->getId()));
-            $annonce->setAcheteur($userConnect->getEmail());
-            $em->persist($annonce);
-            $em->persist($userConnect);
-            $em->flush($annonce);
-            $em->flush($userConnect);
             $mailer->send($emailAcheteur);
             $mailer->send($emailVendeur);
         }
@@ -173,10 +176,11 @@ class PaiementController extends AbstractController
     //Controller pour la confirmation de la réception du végétal
     #[Route('/confirmation', name: '_confirmation')]
     public function confirmation(
-        MangoPayService   $service,
-        UserRepository    $userRepository,
-        AnnonceRepository $annonceRepository,
-                          $id
+        MangoPayService        $service,
+        UserRepository         $userRepository,
+        AnnonceRepository      $annonceRepository,
+        EntityManagerInterface $em,
+                               $id
     ): Response
     {
         //Récupération de l'utilisateur connecté par son email
@@ -196,7 +200,15 @@ class PaiementController extends AbstractController
         $bankAccount = $service->getBankAccountId($sellerId);
         //Méthode du service pour exécuter le PayOut
         $service->createPayOut($sellerWalletId, $bankAccount, $sellerId, $prixAnnonce);
+        //Et enfin on va changer le champ 'confirm' de l'annonce de false à true
+        $confirm = $annonce->setConfirm(true);
+        //On set le my_sales du vendeur
+        $mySales = $annonce->getUser()->setMySales(array($annonce->getId()));
+        $em->persist($confirm);
+        $em->persist($mySales);
+        $em->flush($confirm);
+        $em->flush($mySales);
 
-        return $this->render('annonce/confirmationReception.html.twig');
+        return $this->render('annonce/confirmationReception.html.twig', compact('id'));
     }
 }

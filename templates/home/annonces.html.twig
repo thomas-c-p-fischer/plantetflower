@@ -5,85 +5,80 @@
 {% endblock %}
 
 {% block body %}
-    <main>
-        <div class="containerGlobaleProducts">
-            {# Bannière #}
-            <div class="container_imgsearchProducts">
-                <div class="txt_banniereProducts">
-                    Donnez à vos végétaux une seconde
-                    vie, et achetez-en de nouveaux
-                </div>
-                <div class="container-btn_create_annonce">
-                    {% if (app.user) %}
-                        <a class="btn-create_annonce"
-                           href="{{ path('annonce_ajouter') }}">Créer une annonce</a>
-                    {% else %}
-                        <a class="btn-create_annonce"
-                           href="{{ path('security_login') }}">Créer une annonce</a>
-                    {% endif %}
-                </div>
-                {#                filtre à installer #}
-                {#                {{ form_start(form, {'attr': {'class': 'filtre searchProducts'}} ) }} #}
-                <div class="bouton-searchProducts">
-                    {#                    {{ form_row(form.q) }} #}
-
-                    {#                    {{ form_row(form.categories) }} #}
-                    <div class='searchPrix'>
-                        {#                        {{ form_row(form.min) }} #}
-                        {#                        {{ form_row(form.max) }} #}
-                    </div>
-                    {#                    <div id="slidePrix" data-min="{{ min }}" data-max="{{ max }}"></div> #}
-                    {#                    {{ form_row(form.shipment) }} #}
-                    <button class="btn-searchProducts" type="submit">Filtrer</button>
-                </div>
-                {#                {{ form_end(form) }} #}
-
-                <div class="total-annonce">
-                    {#                    changer le premier total par le nombre total d'annonces affichées selon le filtre ou la pagination sélectionner #}
-                    {{ totalAnnonces }} annonces sur {{ totalAnnonces }}
-                </div>
-                <div class="navigation">
-                    {#                    pagination à installer avec kplabs #}
-                    {#                    {{ knp_pagination_render(annonces) }} #}
-                </div>
+    <div class="containerGlobaleProducts">
+        {# Bannière #}
+        <div class="container_imgsearchProducts">
+            <h1>
+                Donnez à vos végétaux une seconde
+                vie et achetez-en de nouveaux
+            </h1>
+            <div class="container-btn_create_annonce">
+                {% if (app.user) %}
+                    <a class="btn-create_annonce"
+                       href="{{ path('annonce_ajouter') }}">Créer une annonce</a>
+                {% else %}
+                    <a class="btn-create_annonce"
+                       href="{{ path('security_login') }}">Créer une annonce</a>
+                {% endif %}
             </div>
-            {# Fin bannière #}
-            <div class="contenuProducts">
-                {% for annonce in annonces %}
-                    <div class="card">
-                        <a class="img-annonce-flex" href={{ path('annonce_afficher', {'annonceId': annonce.id}) }}>
-                            <div class="image-annonce">
-                                {% for image in annonce.images|slice(0,1) %}
-                                    <img src="{{ asset('/uploads/'~ image.name) }}" alt="Image annonce"/>
-                                {% endfor %}
-                            </div>
-                            <div class="card-content">
-                                <div class="align-etoile">
-                                    <span class="nom-plante">{{ annonce.title }}</span>
-                                    <p class="etoile">☆</p>
-                                    <p class="prix">
-                                        {{ annonce.priceTotal }}€</p>
-                                </div>
-                                <div class="align-livraison">
-                                    {% if annonce.shipement == true %}
-                                        <p class="livraison">
-                                            Livraison possible
-                                        </p>
-                                    {% endif %}
-                                    {% if annonce.handDelivery == true %}
-                                        <p class="not-livraison">
-                                            Remise en main propre
-                                        </p>
-                                    {% endif %}
-                                </div>
-                                <p class="date-expiration">
-                                    Date d'expiration : {{ annonce.dateExpiration | date ('d/m/Y') }}
-                                </p>
-                            </div>
-                        </a>
-                    </div>
-                {% endfor %}
+            {#            <div class="container-search">#}
+            {#                {{ form_start(form, {'attr': {'class': 'search-formulaire'}} ) }}#}
+            {#                <div class="search_title">#}
+            {#                    {{ form_row(form.title) }}#}
+            {#                </div>#}
+            {#                <div class="search_btn">#}
+            {#                    {{ form_row(form.Rechercher) }}#}
+            {#                </div>#}
+            {#                {{ form_end(form) }}#}
+            {#            </div>#}
+
+            <div class="total-annonce">
+                {#                    changer le premier total par le nombre total d'annonces affichées selon le filtre ou la pagination sélectionner #}
+                {{ totalAnnonces }} annonces sur {{ totalAnnonces }}
+            </div>
+            <div class="navigation">
+                {#                    pagination à installer avec kplabs #}
+                {#                    {{ knp_pagination_render(annonces) }} #}
             </div>
         </div>
-    </main>
+        {# Fin bannière #}
+        <div class="contenuProducts">
+            {% for annonce in annonces %}
+                {% if annonce.confirm == false %}
+                <div class="card">
+                    <a class="img-annonce-flex" href={{ path('annonce_afficher', {'annonceId': annonce.id}) }}>
+                        <div class="image-annonce">
+                            {% for image in annonce.images|slice(0,1) %}
+                                <img src="{{ asset('/uploads/'~ image.name) }}" alt="Image annonce"/>
+                            {% endfor %}
+                        </div>
+                        <div class="card-content">
+                            <div class="align-etoile">
+                                <span class="nom-plante">{{ annonce.title }}</span>
+                                <p class="etoile">☆</p>
+                                <p class="prix">
+                                    {{ annonce.priceTotal }}€</p>
+                            </div>
+                            <div class="align-livraison">
+                                {% if annonce.shipement == true %}
+                                    <p class="livraison">
+                                        Livraison possible
+                                    </p>
+                                {% endif %}
+                                {% if annonce.handDelivery == true %}
+                                    <p class="not-livraison">
+                                        Remise en main propre
+                                    </p>
+                                {% endif %}
+                            </div>
+                            <p class="date-expiration">
+                                Date d'expiration : {{ annonce.dateExpiration | date ('d/m/Y') }}
+                            </p>
+                        </div>
+                    </a>
+                </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
 {% endblock %}

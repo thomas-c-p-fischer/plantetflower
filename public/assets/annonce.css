@@ -1,3 +1,120 @@
+/*annonces.html.twig*/
+.containerGlobaleProducts h1 {
+    color: #48945D;
+    font-size: 2vw;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    grid-row: 1;
+    width: 90%;
+    margin: 0 auto;
+}
+
+.card {
+    background-color: #C6FFD0;
+    border-radius: 10px;
+    box-shadow: 2px 2px 5px 2px grey;
+    width: 200px;
+    height: 320px;
+    margin: 15px;
+}
+
+.card-content {
+    margin-left: 3%;
+    width: 95%;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+a {
+    text-decoration: none;
+}
+
+.prix {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1rem;
+    float: left;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-weight: 500;
+    overflow: hidden;
+    border-radius: 15px;
+    width: 60%;
+    background-color: white;
+    color: green;
+    margin-left: 35px;
+    text-align: center;
+    margin-top: 8px;
+}
+
+.etoile {
+    float: right;
+    font-family: 'AbeeZee', sans-serif;
+    font-size: 1.25vw;
+    transition: color .4s;
+}
+
+.etoile:hover {
+    color: #FFF56E;
+}
+
+.card-content .align-etoile {
+    display: inline-block;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 5px;
+}
+
+.not-livraison {
+    display: flex;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 0.8rem;
+    background-color: white;
+    border-radius: 5px;
+    padding: 2px 5px;
+    align-items: center;
+    margin-bottom: 10px;
+    width: 80%;
+}
+
+
+
+.date-expiration {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 13px;
+    text-decoration: none;
+}
+
+/* Fin rubrique "Nos dernières annonces" */
+
+/* Début rubrique "Comment ça fonctionne ?" */
+
+
+/*.content-fonctionnement {*/
+/*    display: grid;*/
+/*    grid-template-columns: repeat(3, 1fr);*/
+/*    height: 430px;*/
+/*    background: no-repeat center/100% url("/public/media/img/background-yellow-green.png");*/
+
+/*}*/
+
+
+
+
+
+
+
+.total-annonce {
+    width: 70%;
+    margin-top: 7%;
+}
+
+
+
+
+
+
+
 /*home/annonces.html.twig*/
 
 .container_imgsearchProducts {
@@ -24,7 +141,7 @@
 /*annonce/annonce.html.twig*/
 
 .container-return {
-    margin: 15px;
+    margin: 0 15px 15px;
 }
 
 .return {
@@ -198,7 +315,7 @@
 }
 
 .star {
-    width: 20px
+    /*width: 20px*/
 }
 
 .priceTotal {
@@ -440,28 +557,7 @@ h2 {
     width: 20px
 }
 
-.inactive {
-    display: none;
-}
 
-.img-annonce-list {
-    width: 150px;
-    height: 100px;
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.info-annonce-list {
-    width: calc(100% - 150px - 40px);
-    margin-left: 20px;
-    margin-right: 20px;
-}
-
-.description1 {
-    display: none;
-}
 
 
 
@@ -587,12 +683,12 @@ h2 {
     align-items: center;
 }
 
-.titre-search {
+.search_title {
     grid-area: titre-search;
     margin: 5px;
 }
 
-.bouton-search {
+.search_btn {
     grid-area: bouton-search;
 }
 

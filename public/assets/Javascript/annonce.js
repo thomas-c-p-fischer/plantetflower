@@ -24,7 +24,7 @@ if (eADeleteBtn) {
 if (aDeleteBtn || eADeleteBtn) {
     // Event de type clic pour afficher et cacher la confirmation.
     deleteBtn.addEventListener("click", () => {
-        if (confirmDelete.style.display === 'none') {
+        if (confirmDelete.style.display !== 'block') {
             confirmDelete.style.display = 'block';
             if (eADeleteBtn) {
                 containerReturnDeleteBtn.style.display = 'none';

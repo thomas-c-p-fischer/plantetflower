@@ -65,10 +65,15 @@ class HomeController extends AbstractController
     //route de la page annonces
     #[Route('/annonces', name: '_annonces')]
     public function annonces(
-        AnnonceRepository $annonceRepository,
+        AnnonceRepository      $annonceRepository,
+        Request                $request,
         EntityManagerInterface $entityManager,
     ): Response
     {
+        $form = $this->createForm(SearchAnnonceType::class);
+        $form->handleRequest($request);
+
+
         // récupération de toutes les annonces
         $annonces = $annonceRepository->findAll();
 
@@ -84,8 +89,8 @@ class HomeController extends AbstractController
                 // boolean vrai si différence de temps entre l'expiration de l'annonce et maintenant
                 $diff = $annonce->getDateExpiration()->diff($now);
 
-                // retire l'annonce si elle est antérieure à maintenant
-                if ($diff->invert == 0) {
+                // retire l'annonce si elle est antérieure à maintenant et si l'annonce n'est pas vendu
+                if ($diff->invert == 0 && $annonce->getStatus() == "not sold") {
                     $annonceRepository->remove($annonce);
                     $entityManager->flush();
                 }
@@ -97,7 +102,7 @@ class HomeController extends AbstractController
 
         // total de toutes les annonces
         $totalAnnonces = count($annonces);
-        return $this->render('home/annonces.html.twig', compact('annonces', 'totalAnnonces'));
+        return $this->render('home/annonces.html.twig', compact('annonces', 'totalAnnonces', 'form'));
     }
 
     //route de la page À propos
