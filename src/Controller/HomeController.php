@@ -2,12 +2,9 @@
 
 namespace App\Controller;
 
-use App\Entity\Annonce;
-use App\Entity\Image;
 use App\Form\SearchAnnonceType;
 use App\Repository\AnnonceRepository;
 use App\Repository\ImageRepository;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;

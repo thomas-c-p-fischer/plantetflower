@@ -21,7 +21,6 @@ class PaiementController extends AbstractController
     #[Route('/paiement', name: '_updateRegistrationCard')]
     public function updateRegistrationCard(
         MangoPayService     $service,
-        MondialRelayService $mondialRelayService,
         UserRepository      $userRepository,
         AnnonceRepository   $annonceRepository,
                             $id
@@ -155,18 +154,6 @@ class PaiementController extends AbstractController
             $mailer->send($emailAcheteur);
             $mailer->send($emailVendeur);
         }
-//        //Récupération du prix d'origine de l'annonce
-//        $prixAnnonce = $annonce->getPriceOrigin();
-//        //Récupération de l'ID du wallet du vendeur
-//        $sellerWalletId = $annonce->getUser()->getidWallet();
-//        //Récupération de l'ID mangopay du vendeur
-//        $sellerId = $annonce->getUser()->getIdMangopay();
-//        //Méthode du service pour exécuter le transfert
-//        $service->createTransfer($userConnect, $prixAnnonce, $sellerWalletId);
-//        //On récupère l'ID du compte bancaire du vendeur pour l'injecter en paramètre de la méthode de payOut
-//        $bankAccount = $service->getBankAccountId($sellerId);
-//        //Méthode du service pour exécuter le PayOut
-//        $service->createPayOut($sellerWalletId, $bankAccount, $sellerId, $prixAnnonce);
 
         //Puis on redirige vers l'endroit où l'on veut.
         return $this->render('annonce/redirectionPaiement.html.twig',

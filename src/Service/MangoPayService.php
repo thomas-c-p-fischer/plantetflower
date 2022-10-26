@@ -2,7 +2,6 @@
 
 namespace App\Service;
 
-
 use App\Entity\User;
 use Exception;
 use MangoPay;
@@ -15,11 +14,9 @@ use MangoPay\PayInExecutionDetailsDirect;
 use MangoPay\PayInPaymentDetailsCard;
 use MangoPay\Wallet;
 
-
 class MangoPayService
 {
     private MangoPay\MangoPayApi $mangoPayApi;
-
     //Constructeur qui sert à l'initialisation de l'api.
     // Les "$_ENV" sont les éléments à compléter dans le .env.local.
     public function __construct()

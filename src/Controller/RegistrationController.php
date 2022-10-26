@@ -6,7 +6,6 @@ use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Repository\UserRepository;
 use App\Service\MangoPayService;
-use AppVentus\MangopayBundle\Entity\UserInterface;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -20,8 +19,6 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 use SymfonyCasts\Bundle\VerifyEmail\VerifyEmailHelperInterface;
-use MangoPay;
-
 
 class RegistrationController extends AbstractController
 {
@@ -108,10 +105,6 @@ class RegistrationController extends AbstractController
         ]);
     }
 
-
-    /**
-     * @throws MangoPay\Libraries\Exception
-     */
     #[Route("/verify/{id}", name: "verify_mail")]
     // verification de la signature mail
     public function verifyUserEmail(
@@ -146,8 +139,6 @@ class RegistrationController extends AbstractController
         return $this->redirectToRoute('security_login');
 
     }
-
-
 
     /**
      * @throws Exception

@@ -10,15 +10,11 @@ use App\Repository\AnnonceRepository;
 use App\Repository\ImageRepository;
 use App\Repository\UserRepository;
 use App\Service\MangoPayService;
-use App\Service\MondialRelayService;
-use Doctrine\Migrations\Configuration\Migration\FormattedFile;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 

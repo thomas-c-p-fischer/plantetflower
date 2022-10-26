@@ -4,10 +4,8 @@ namespace App\EventSubscriber;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Http\Event\CheckPassportEvent;
-
 use App\Entity\User;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
-
 
 class CheckVerifiedUserSubscriber implements EventSubscriberInterface
 {

@@ -11,7 +11,6 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class MondialRelayService
 {
-
     private $Client;
     private $annonceRepository;
     private $entityManager;
