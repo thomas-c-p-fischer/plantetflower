@@ -1,7 +1,9 @@
 .container-register {
     margin: 0;
     width: 100%;
+    position: relative;
 }
+
 .container-form_register {
     margin: 80px auto;
     border: 1px solid #c4c4c4;
@@ -17,6 +19,7 @@
     width: 16px;
     margin-bottom: -1px;
 }
+
 .facebook {
     width: 21px;
 }
@@ -132,7 +135,6 @@ input {
 }
 
 
-
 #labelStatus {
     display: flex;
     justify-content: center;
@@ -194,7 +196,7 @@ input {
     display: flex;
     flex-direction: row;
     justify-content: center;
-    align-items :flex-end;
+    align-items: flex-end;
 }
 
 #registration_form_agreeTerms {
@@ -234,12 +236,15 @@ input {
     .nameFirstname, .statusEmail {
         flex-direction: column;
     }
+
     .status, .email {
         width: 100%;
     }
+
     #labelStatus {
         margin-right: 0;
     }
+
     .status {
         margin: 0 10px 5px auto;
     }

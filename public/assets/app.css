@@ -13,10 +13,19 @@ header {
     background-color: #fff56e;
 }
 
+.backgroundSite {
+    width: 100%;
+}
+
+.divBanniere {
+    height: 0em;
+}
+
 main {
-    background-image: url("../media/img/banniere-search.png");
-    background-repeat: no-repeat;
-    background-size: 100%;
+    /*background-image: url("../media/img/banniere-search.png");*/
+    /*background-position: inherit;*/
+    /*background-repeat: no-repeat;*/
+    /*background-size: 100%;*/
     grid-area: GlobalMain;
     width: 100%;
     align-items: center;
