@@ -1,6 +1,8 @@
+<link rel="stylesheet" href="{{ asset('assets/emailLivraison.css') }}">
 <h1>Félicitations ! Votre article a été vendu avec succès.</h1>
 <h2>L'acheteur à choisi une transaction de "main à la main".</h2>
-<p>Il ne vous reste plus qu'à vous donner rendez-vous afin d'échanger votre achat.</p>
+<p>Il ne vous reste plus qu'à vous donner rendez-vous afin avec {{ prenomAcheteur }} afin de lui remettre le
+    produit.</p>
 <p>Il sera nécessaire de cliquer sur le lien afin suivant pour valider l'échange et finaliser la transaction.</p>
 
 <p>Voici les informations de contact de l'acheteur :</p>
@@ -9,4 +11,8 @@
 <p>Email : {{ mailAcheteur }}</p>
 {% if app.user.phoneNumber != null %}
     <p>Numéro de téléphone : {{ phoneAcheteur }}</p>
-{% endif %}
+<p>Cliquez<a href="{{ url }}"> ici </a>pour rejoindre la page de confirmation de réception de votre végétal</p>
+<div class="emailMerci">
+    <p>Merci pour votre confiance,</p>
+    <p>L'équipe Plant & Flower.</p>
+</div>
