@@ -136,9 +136,16 @@
             {% endif %}
         </div>
     </nav>
+
 </header>
 <main>
-    {% block body %}{% endblock %}
+    <div class="divBanniere">
+        <img src="{{ asset('media/img/banniere-search.png') }}" alt="" class="backgroundSite">
+    </div>
+    {% block body %}
+
+    {% endblock %}
+
 </main>
 <footer>
     <div class="container-footer_left">
