@@ -3,51 +3,77 @@
 {% block title %}Paiement - Plant et Flower{% endblock %}
 
 
-
 {% block body %}
-    <h1>Etape 2/2</h1>
-    <h2>Paiement</h2>
-    <h3>Votre récapitulatif</h3>
-    <p>Montant de l'achat </p><p>{{ annoncePriceOrigin }}€</p>
-    <p>Frais Plant&Flower </p><p>{{ annoncePriceTotal - annoncePriceOrigin }}€</p>
-    {% if buyerDelivery == true %}
-        <p>Coûts de livraison Mondial Relay</p>
-        <p>
-            {% if  annonce.poids  == "0g - 500g" %}
-                <span class="priceLivraison">5.50€</span>
-                <input type="hidden" value="{{ prixPoids == 5.50 }}">
-            {% elseif  annonce.poids  == "501g - 1kg" %}
-                <span class="priceLivraison">6€</span>
-                <input type="hidden" value="{{ prixPoids == 6 }}">
-            {% elseif   annonce.poids  == "1.001kg - 2kg" %}
-                <span class="priceLivraison">7.50€</span>
-                <input type="hidden" value="{{ prixPoids == 7.50 }}">
-            {% elseif annonce.poids  == "2.001kg - 3kg" %}
-                <span class="priceLivraison">8€</span>
-                <input type="hidden" value="{{ prixPoids == 8 }}">
+    <div class="pagePaiement">
+    <div class="etape2">
+        <h1>Etape 2/2</h1>
+    </div>
+    <div class="recapPaiement_CB">
+        <div class="recapPaiement">
+            <h2>Paiement</h2>
+            <h3>Votre récapitulatif :</h3>
+            <p>Montant de l'achat : {{ annoncePriceOrigin }} €</p>
+            {% if buyerDelivery == true %}
+                <p>Coûts de livraison Mondial Relay :
+                    {% if  annonce.poids  == "0g - 500g" %}
+                        <span class="priceLivraison">5.50 €</span>
+                        <input type="hidden" value="{{ prixPoids == 5.50 }}">
+                    {% elseif  annonce.poids  == "501g - 1kg" %}
+                        <span class="priceLivraison">6 €</span>
+                        <input type="hidden" value="{{ prixPoids == 6 }}">
+                    {% elseif   annonce.poids  == "1.001kg - 2kg" %}
+                        <span class="priceLivraison">7.50 €</span>
+                        <input type="hidden" value="{{ prixPoids == 7.50 }}">
+                    {% elseif annonce.poids  == "2.001kg - 3kg" %}
+                        <span class="priceLivraison">8 €</span>
+                        <input type="hidden" value="{{ prixPoids == 8 }}">
+                    {% endif %}
+                </p>
+                <div class="prixTotal">
+                    <h3>Total à payer : {{ annoncePriceTotal + prixPoids }} €</h3>
+                </div>
+            {% else %}
+                <div class="prixTotal">
+                    <h3>Total à payer : {{ annoncePriceTotal }} €</h3>
+                </div>
             {% endif %}
-        </p>
-        <h3>Total à payer </h3><h3>{{ annoncePriceTotal + prixPoids }}€</h3>
-    {% else %}
-        <h3>Total à payer </h3><h3>{{ annoncePriceTotal }}€</h3>
-    {%  endif %}
-    <form action="{{ cardRegistrationUrl }}" method="post">
-        <input type="hidden" name="data" value="{{ preregistrationData }}"/>
-        <input type="hidden" name="accessKeyRef" value="{{ accessKey }}"/>
-        <input type="hidden" name="returnURL" value="{{ returnURL }}"/>
+        </div>
 
-        <label for="cardNumber">Numéro de carte</label>
-        <input type="text" name="cardNumber" value=""/>
-        <div class="clear"></div>
+        <div class="coordonneeBancaire">
+            <img src="{{ asset('media/img/logo-cb-visa-mastercard.jpg') }}" alt="cb visa masterCard"
+                 class="cbVisaMasterCard">
+            <div class="cardInterne">
+                <form action="{{ cardRegistrationUrl }}" method="post">
+                    <input type="hidden" name="data" value="{{ preregistrationData }}"/>
+                    <input type="hidden" name="accessKeyRef" value="{{ accessKey }}"/>
+                    <input type="hidden" name="returnURL" value="{{ returnURL }}"/>
+                    <div class="cardNumber">
+                        {#                    <label for="cardNumber">Numéro de carte</label> #}
+                        <input type="text" name="cardNumber" value="" placeholder="Numéro de carte" autofocus/>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="complementCard">
 
-        <label for="cardExpirationDate">Date d'expiration</label>
-        <input type="text" name="cardExpirationDate" value=""/>
-        <div class="clear"></div>
-
-        <label for="cardCvx">Cryptogramme</label>
-        <input type="text" name="cardCvx" value=""/>
-        <div class="clear"></div>
-
-        <input type="submit" value="Payer"/>
-    </form>
+                        <div class="expCard">
+                            {#                        <label for="cardExpirationDate">Date d'expiration</label> #}
+                            <input type="text" name="cardExpirationDate" value="" placeholder="Date d'expiration"/>
+                            <div class="clear"></div>
+                        </div>
+                        <div class="CVXcard">
+                            {#                        <label for="cardCvx">Cryptogramme</label> #}
+                            <input type="text" name="cardCvx" value="" placeholder="Cryptogramme"/>
+                            <div class="clear"></div>
+                        </div>
+                    </div>
+                    <div class="submitCard">
+                        <input type="submit" value="Payer"/>
+                    </div>
+                </form>
+            </div>
+            <div class="divLogoMango">
+                <img src="{{ asset('media/img/logo-mangopay.png') }}" alt="mangoPay paiement en ligne e-commerce"
+                     class="logoMangoPay">
+            </div>
+        </div>
+    </div>
 {% endblock %}

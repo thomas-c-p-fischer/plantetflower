@@ -106,10 +106,11 @@ class PaiementController extends AbstractController
                 ->context([
                     'expiration_date' => new \DateTime('+10 days'),
                     'username' => $annonce->getUser()->getFirstName(),
-                    'message' => $etiquetteLivraison
+                    'message' => $etiquetteLivraison,
+                    'suivisColis' => $annonce->getTracingUrl()
                 ]);
             $mailer->send($email);
-         } else {
+        } else if ($annonce->isHandDelivery()) {
             //Si c'est une transaction main à la main, 2 mails sont envoyés. 1 au vendeur 1 a l'acheteur.
             //afin de confirmer la reception et finalisation le paiement.
             $emailAcheteur = (new TemplatedEmail())

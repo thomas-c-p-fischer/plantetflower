@@ -199,7 +199,7 @@ class MangoPayService
             $payIn->Fees->Currency = 'EUR';
             $payIn->ExecutionDetails = new PayInExecutionDetailsDirect();
             $payIn->ExecutionDetails->SecureModeNeeded = true;
-            $payIn->ExecutionDetails->SecureMode = 'DEFAULT';
+            $payIn->ExecutionDetails->SecureMode = 'FORCE';
             $payIn->ExecutionDetails->SecureModeReturnURL = "http://127.0.0.1:8000/annonce/" . $id . "/redirection";
             $payIn->PaymentDetails = new PayInPaymentDetailsCard();
             $payIn->PaymentDetails->CardId = $cardId;
