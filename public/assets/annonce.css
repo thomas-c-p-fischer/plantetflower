@@ -9,6 +9,11 @@
     margin: 0 auto;
 }
 
+.imageCardAnnonces {
+    margin-left: 1.5em;
+    border-radius: 0.5em;
+}
+
 .card {
     background-color: #C6FFD0;
     border-radius: 10px;
@@ -78,7 +83,6 @@ a {
 }
 
 
-
 .date-expiration {
     font-family: 'Open Sans', sans-serif;
     font-size: 13px;
@@ -99,20 +103,10 @@ a {
 /*}*/
 
 
-
-
-
-
-
 .total-annonce {
     width: 70%;
     margin-top: 7%;
 }
-
-
-
-
-
 
 
 /*home/annonces.html.twig*/
@@ -140,18 +134,20 @@ a {
 
 /*annonce/annonce.html.twig*/
 
+
 .container-return {
-    margin: 0 15px 15px;
+    margin-top: 8em;
+    margin-left: 2em;
 }
 
 .return {
-    padding: 10px 50px;
+    padding: 5px 25px;
     background-color: #c6ffd0;
     transition: background-color 0.2s;
     color: #48945d;
     box-shadow: 0 15px 10px -15px #111;
     font-size: 18px;
-    border-radius: 25px;
+    border-radius: 15px;
     border: 2px solid #48945d;
     cursor: pointer;
 }
@@ -164,23 +160,25 @@ a {
 
 .container-annonce {
     display: grid;
+    margin-top: 2em;
 }
 
 .container-annonce-img {
     display: grid;
-    grid-template-columns: 40% 20% 40%;
+    grid-template-columns: 50% 50%;
     grid-auto-rows: auto;
-    margin: 0 20px;
+    margin: 5em;
+    width: 92%;
 }
 
 .container-big-img {
     display: flex;
     justify-content: center;
-    align-items: center;
     margin: 10px 10px;
     overflow: hidden;
     height: auto;
     width: 100%;
+    align-items: center;
 }
 
 .display-left, .display-right {
@@ -210,18 +208,16 @@ a {
     border-radius: 20px;
 }
 
-.columnImages {
-    margin-left: 20px;
-    width: 57%;
-}
-
 .columnImage {
     display: flex;
-    flex-direction: column;
+    justify-content: space-evenly;
+    width: 90%;
+    margin-left: 3em;
+
 }
 
 .mini-image {
-    padding: 10px 0;
+    width: 9em;
     border-radius: 15% 30%;
 }
 
@@ -232,7 +228,7 @@ a {
 }
 
 .bg-gray-inactive {
-    background: #f5f5f5;
+    background: rgba(245, 245, 245, 0.6);
     border-radius: 20px;
     margin: 5px 5px 0 5px;
     padding: 10px 10px;
@@ -248,6 +244,7 @@ a {
     border-radius: 5px;
     font-size: 18px;
     margin: 5px;
+    width: 30%;
 }
 
 .green p {
@@ -265,9 +262,9 @@ a {
     margin: 5px 0;
 }
 
-.headInfo {
+.headTitle {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     height: 33px;
     margin-bottom: 20px;
@@ -281,6 +278,8 @@ a {
 
 .container-btn_sold_editor {
     margin: 10px 0;
+    display: flex;
+    justify-content: flex-end;
 }
 
 .btn-sold_editor {
@@ -314,13 +313,20 @@ a {
     background-color: #a40000;
 }
 
-.star {
-    /*width: 20px*/
+.divStar {
+    margin-right: 1em;
+    margin-top: 2px;
+}
+
+.favStar {
+    width: 2em;
 }
 
 .priceTotal {
-    margin-top: 15%;
-    font-weight: 600;
+    font-weight: bolder;
+    font-size: 2.5em;
+    display: flex;
+    justify-content: flex-end;
 }
 
 #annonce-confirm_delete {
@@ -402,73 +408,37 @@ a {
 .titre-description {
     grid-column-start: 1;
     grid-row-start: 1;
-    margin-left: 5%;
+    margin-bottom: 2em;
+    margin-top: 2em;
 }
 
+.descriptionTexte {
+    color: black;
+    text-align: justify;
+    margin: 1em;
+}
+
+
 #gray {
-    grid-column: 2 / span 2;
-    grid-row-start: 1;
+
 }
 
 .profileImage {
     width: 88px;
     height: 88px;
     border-radius: 9999px;
-    background-color: gray;
     margin-right: 20px;
     overflow: hidden;
+}
+
+.pdpAnnonce {
+    width: 5em;
 }
 
 .textInfo {
     grid-column: 2 / span 2;
 }
 
-@media only screen and (max-width: 768px) {
-    .container-big-img {
-        grid-column: 1 / span 3;
-        grid-row-start: 1;
-        width: 95%;
-        margin: 0 auto;
-    }
-
-    .return {
-        display: none;
-    }
-
-    .bg-gray-global {
-        grid-row-start: 3;
-        grid-column: 1 /span 3;
-        width: 95%;
-        margin: 0 auto;
-    }
-
-    .mini-image {
-        max-height: 120px;
-        max-width: 33%;
-        border-radius: 30px;
-    }
-
-    .columnImages {
-        grid-column: 1 / span 3;
-        grid-row-start: 2;
-        max-height: 120px;
-    }
-
-    .titre-description {
-        grid-column: 1 / span 3;
-        grid-row-start: 1;
-    }
-
-    .textInfo {
-        grid-column: 1 / span 3;
-        margin: 0 auto;
-    }
-
-    .columnImage {
-        display: flex;
-        flex-direction: row;
-    }
-}
 
 /*zone de distinction*/
 /*zone de distinction*/
@@ -555,19 +525,6 @@ h2 {
 
 .dropdown-button img {
     width: 20px
-}
-
-
-
-
-
-@media only screen and (max-width: 768px) {
-    #gray {
-        grid-column: 1 / span 3;
-        grid-row-start: 2;
-        margin: 0 auto;
-        width: 95%;
-    }
 }
 
 /*annonces.html.twig*/
@@ -756,4 +713,216 @@ h2 {
     height: 150px;
     display: flex;
     flex-direction: row;
+}
+
+/*RESPONSIVE DESIGN*/
+/*RESPONSIVE DESIGN*/
+/*RESPONSIVE DESIGN*/
+/*RESPONSIVE DESIGN*/
+/* TELEPHONE L MAX 425 */
+@media screen and (max-width: 425px) {
+    html {
+        width: 27em;
+    }
+
+    .container-return {
+        margin-top: 4em;
+        margin-left: 1em;
+    }
+
+    .return {
+        padding: 2px 16px;
+        background-color: #c6ffd0;
+        transition: background-color 0.2s;
+        color: #48945d;
+        box-shadow: 0 15px 10px -15px #111;
+        font-size: 14px;
+        border-radius: 15px;
+        border: 2px solid #48945d;
+        cursor: pointer;
+    }
+
+    .container-annonce {
+        margin-top: 0;
+        display: flex;
+    }
+
+    .container-big-img {
+        grid-column: 1 / span 3;
+        width: max-content;
+        margin: 0 auto;
+    }
+
+    #grand-image {
+        width: 20em;
+        margin-bottom: 7px;
+    }
+
+    .container-annonce-img {
+        display: grid;
+        grid-template-columns: 100%;
+        grid-auto-rows: auto;
+        margin: 2em 2em;
+    }
+
+    .display-left, .display-right {
+        display: none;
+    }
+
+    .columnImages {
+        margin-right: 5em;
+    }
+
+    .mini-image {
+        width: 5.5em;
+        border-radius: 30px;
+    }
+
+    .columnImage {
+        margin-left: 2em;
+        width: 100%;
+    }
+
+    .headTitle h1 {
+        font-size: 50px;
+    }
+
+    .titre-description h2 {
+        font-size: 25px;
+    }
+
+    .titre-description > .green {
+        width: 60%;
+        height: 1.9em;
+    }
+
+    .delivery_mod > .green {
+        width: 60%;
+        height: 1.9em;
+    }
+
+    .bg-gray-global {
+        grid-row-start: 3;
+        margin: 0 auto;
+    }
+
+    .bg-gray-inactive {
+        margin-bottom: 5px;
+    }
+
+    #gray {
+        grid-column: 1 / span 3;
+        margin: 0 auto;
+        width: 92%;
+    }
+
+    .textInfo {
+        grid-column: 1 / span 3;
+        margin: 7px 8px 0 10px;
+        font-size: 12px;
+        text-align: justify;
+    }
+}
+
+@media screen and (max-width: 768px) and (min-width: 430px) {
+
+
+    .container-return {
+        margin-top: 4em;
+        margin-left: 1em;
+    }
+
+    .return {
+        padding: 2px 16px;
+        background-color: #c6ffd0;
+        transition: background-color 0.2s;
+        color: #48945d;
+        box-shadow: 0 15px 10px -15px #111;
+        font-size: 14px;
+        border-radius: 15px;
+        border: 2px solid #48945d;
+        cursor: pointer;
+    }
+
+    .container-annonce {
+        margin-top: 0;
+        display: flex;
+    }
+
+    .container-big-img {
+        grid-column: 1 / span 3;
+        width: max-content;
+        margin: 0 auto;
+    }
+
+    #grand-image {
+        width: 20em;
+        margin-bottom: 7px;
+    }
+
+    .container-annonce-img {
+        display: grid;
+        grid-template-columns: 100%;
+        grid-auto-rows: auto;
+        margin: 2em 2em;
+    }
+
+    .display-left, .display-right {
+        display: none;
+    }
+
+    .columnImages {
+        margin-right: 5em;
+    }
+
+    .mini-image {
+        width: 5.5em;
+        border-radius: 30px;
+    }
+
+    .columnImage {
+        margin-left: 2em;
+        width: 100%;
+    }
+
+    .headTitle h1 {
+        font-size: 50px;
+    }
+
+    .titre-description h2 {
+        font-size: 25px;
+    }
+
+    .titre-description > .green {
+        width: 60%;
+        height: 1.9em;
+    }
+
+    .delivery_mod > .green {
+        width: 60%;
+        height: 1.9em;
+    }
+
+    .bg-gray-global {
+        grid-row-start: 3;
+        margin: 0 auto;
+    }
+
+    .bg-gray-inactive {
+        margin-bottom: 5px;
+    }
+
+    #gray {
+        grid-column: 1 / span 3;
+        margin: 0 auto;
+        width: 96%;
+    }
+
+    .textInfo {
+        grid-column: 1 / span 3;
+        margin: 7px 8px 0 10px;
+        font-size: 12px;
+        text-align: justify;
+    }
+
 }
