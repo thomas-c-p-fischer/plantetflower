@@ -2,7 +2,6 @@
 
 namespace App\Service;
 
-
 use App\Entity\User;
 use Exception;
 use MangoPay;
@@ -15,11 +14,9 @@ use MangoPay\PayInExecutionDetailsDirect;
 use MangoPay\PayInPaymentDetailsCard;
 use MangoPay\Wallet;
 
-
 class MangoPayService
 {
     private MangoPay\MangoPayApi $mangoPayApi;
-
     //Constructeur qui sert à l'initialisation de l'api.
     // Les "$_ENV" sont les éléments à compléter dans le .env.local.
     public function __construct()
@@ -199,7 +196,7 @@ class MangoPayService
             $payIn->Fees->Currency = 'EUR';
             $payIn->ExecutionDetails = new PayInExecutionDetailsDirect();
             $payIn->ExecutionDetails->SecureModeNeeded = true;
-            $payIn->ExecutionDetails->SecureMode = 'DEFAULT';
+            $payIn->ExecutionDetails->SecureMode = 'FORCE';
             $payIn->ExecutionDetails->SecureModeReturnURL = "http://127.0.0.1:8000/annonce/" . $id . "/redirection";
             $payIn->PaymentDetails = new PayInPaymentDetailsCard();
             $payIn->PaymentDetails->CardId = $cardId;

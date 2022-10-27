@@ -18,16 +18,16 @@
                        href="{{ path('annonce_ajouter') }}">Créer une annonce</a>
                 {% endif %}
             </div>
-            {#            <div class="container-search">#}
-            {#                {{ form_start(form, {'attr': {'class': 'search-formulaire'}} ) }}#}
-            {#                <div class="search_title">#}
-            {#                    {{ form_row(form.title) }}#}
-            {#                </div>#}
-            {#                <div class="search_btn">#}
-            {#                    {{ form_row(form.Rechercher) }}#}
-            {#                </div>#}
-            {#                {{ form_end(form) }}#}
-            {#            </div>#}
+            {#            <div class="container-search"> #}
+            {#                {{ form_start(form, {'attr': {'class': 'search-formulaire'}} ) }} #}
+            {#                <div class="search_title"> #}
+            {#                    {{ form_row(form.title) }} #}
+            {#                </div> #}
+            {#                <div class="search_btn"> #}
+            {#                    {{ form_row(form.Rechercher) }} #}
+            {#                </div> #}
+            {#                {{ form_end(form) }} #}
+            {#            </div> #}
 
             <div class="total-annonce">
                 {#                    changer le premier total par le nombre total d'annonces affichées selon le filtre ou la pagination sélectionner #}
@@ -41,38 +41,41 @@
         {# Fin bannière #}
         <div class="contenuProducts">
             {% for annonce in annonces %}
-                <div class="card">
-                    <a class="img-annonce-flex" href={{ path('annonce_afficher', {'annonceId': annonce.id}) }}>
-                        <div class="image-annonce">
-                            {% for image in annonce.images|slice(0,1) %}
-                                <img src="{{ asset('/uploads/'~ image.name) }}" alt="Image annonce"/>
-                            {% endfor %}
-                        </div>
-                        <div class="card-content">
-                            <div class="align-etoile">
-                                <span class="nom-plante">{{ annonce.title }}</span>
-                                <p class="etoile">☆</p>
-                                <p class="prix">
-                                    {{ annonce.priceTotal }}€</p>
+                {% if annonce.confirm == false %}
+                    <div class="card">
+                        <a class="img-annonce-flex" href={{ path('annonce_afficher', {'annonceId': annonce.id}) }}>
+                            <div class="image-annonce">
+                                {% for image in annonce.images|slice(0,1) %}
+                                    <img src="{{ asset('/uploads/'~ image.name) }}" alt="Image annonce"
+                                         class="imageCardAnnonces"/>
+                                {% endfor %}
                             </div>
-                            <div class="align-livraison">
-                                {% if annonce.shipement == true %}
-                                    <p class="livraison">
-                                        Livraison possible
-                                    </p>
-                                {% endif %}
-                                {% if annonce.handDelivery == true %}
-                                    <p class="not-livraison">
-                                        Remise en main propre
-                                    </p>
-                                {% endif %}
+                            <div class="card-content">
+                                <div class="align-etoile">
+                                    <span class="nom-plante">{{ annonce.title }}</span>
+                                    <p class="etoile">☆</p>
+                                    <p class="prix">
+                                        {{ annonce.priceTotal }}€</p>
+                                </div>
+                                <div class="align-livraison">
+                                    {% if annonce.shipement == true %}
+                                        <p class="livraison">
+                                            Livraison possible
+                                        </p>
+                                    {% endif %}
+                                    {% if annonce.handDelivery == true %}
+                                        <p class="not-livraison">
+                                            Remise en main propre
+                                        </p>
+                                    {% endif %}
+                                </div>
+                                <p class="date-expiration">
+                                    Date d'expiration : {{ annonce.dateExpiration | date ('d/m/Y') }}
+                                </p>
                             </div>
-                            <p class="date-expiration">
-                                Date d'expiration : {{ annonce.dateExpiration | date ('d/m/Y') }}
-                            </p>
-                        </div>
-                    </a>
-                </div>
+                        </a>
+                    </div>
+                {% endif %}
             {% endfor %}
         </div>
     </div>

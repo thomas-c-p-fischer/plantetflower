@@ -16,7 +16,6 @@ class ApiMondialRelay extends AbstractController
     private EntityManagerInterface $entityManager;
     private HttpClientInterface $httpClient;
 
-
     public function __construct(HttpClientInterface $httpClient, AnnonceRepository $annonceRepository, EntityManagerInterface $entityManager)
     {
         $this->httpClient = $httpClient;
@@ -28,19 +27,16 @@ class ApiMondialRelay extends AbstractController
     {
         $user = $security->getUser();
         $expeditor = $annonce->getUser();
-
         if ($user->getSex() == "homme") {
             $userFullname = "M. " . $user->getLastName() . " " . $user->getFirstName();
         } else {
             $userFullname = "MME " . $user->getLastName() . " " . $user->getFirstName();
         }
-
         if ($expeditor->getSex() == "homme") {
             $expeditorFullname = "M. " . $expeditor->getLastName() . " " . $expeditor->getFirstName();
         } else {
             $expeditorFullname = "MME " . $expeditor->getLastName() . " " . $expeditor->getFirstName();
         }
-
         $poids = 0;
         if ($annonce->getPoids() === "0g - 500g") {
             $poids = 499;
@@ -51,7 +47,6 @@ class ApiMondialRelay extends AbstractController
         } else if ($annonce->getPoids() === "2kg - 3kg") {
             $poids = 2999;
         }
-
         $MR_WebSiteId = "BDTEST13";
         $MR_WebSiteKey = "PrivateK";
         $client = new nusoap_client("http://api.mondialrelay.com/Web_Services.asmx?WSDL", true);
@@ -83,13 +78,9 @@ class ApiMondialRelay extends AbstractController
             'LIV_Rel_Pays' => 'FR',
             'LIV_Rel' => $livRelId
         );
-
         $code = implode("", $params);
         $code .= $MR_WebSiteKey;
-
         $params["Security"] = strtoupper(md5($code));
-
-
         $result = $client->call(
             'WSI2_CreationEtiquette',
             $params,
@@ -122,17 +113,13 @@ class ApiMondialRelay extends AbstractController
         return "&crc=" . strtoupper(md5($UrlToSecure));
     }
 
-
-    // requete pour interroger si colis livré à mettre en back toutes les 6h
-
+    // requête pour interroger si colis livré à mettre en back toutes les 6h
     public function getStatusTracing(ApiPayOut $ApiPayOut, ApiWallet $ApiWallet, ApiIban $ApiIban): string
     {
-
         $MR_WebSiteId = "BDTEST13";
         $MR_WebSiteKey = "PrivateK";
         $client = new nusoap_client("http://api.mondialrelay.com/Web_Services.asmx?WSDL", true);
         $client->soap_defencoding = 'utf-8';
-
         $annonce = $this->annonceRepository->findBy([
             'shipment' => 'exp_number'
         ]);
@@ -192,7 +179,6 @@ class ApiMondialRelay extends AbstractController
                 }
                 $this->entityManager->persist($key);
                 $this->entityManager->flush();
-
 
                 return 'Numéro expédition : ' . $expeditionNumber . ' STAT : ' . $result ["WSI2_TracingColisDetailleResult"]["STAT"] . ' Libellé : ' . $result ["WSI2_TracingColisDetailleResult"]["Libelle01"];
             }

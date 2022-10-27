@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+{% block title %}
+
+{% endblock %}
+{% block body %}
+    <div class='box_name'>
+        <div class="infos">
+            <p class="nom">Nom :
+                <span class="my_info">{{ user.lastName }}</span></p>
+        </div>
+
+        <div class="infos">
+            <p class="prenom">Prénom :
+                <span class="my_info">{{ user.firstname }}</span></p>
+        </div>
+    </div>
+   
+
+{% endblock %}
+
+
+

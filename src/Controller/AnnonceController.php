@@ -10,15 +10,11 @@ use App\Repository\AnnonceRepository;
 use App\Repository\ImageRepository;
 use App\Repository\UserRepository;
 use App\Service\MangoPayService;
-use App\Service\MondialRelayService;
-use Doctrine\Migrations\Configuration\Migration\FormattedFile;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -29,22 +25,38 @@ class AnnonceController extends AbstractController
     #[Route('/{annonceId}', '_afficher', requirements: ['annonceId' => '\d+'])]
     public function showAnnonce(AnnonceRepository $annonceRepository, $annonceId): Response
     {
+
         // Récupération de l'annonce par son Id
         $annonce = $annonceRepository->find($annonceId);
         // Récupération de l'id de l'auteur de l'annonce
         $idAuthorAnnonce = $annonce->getUser()->getId();
+        $id = $annonce->getId();
         // Récupération des annonces de l'auteur concernant l'annonce actuel
         $annoncesAuthor = $annonceRepository->findBy(array('user' => $idAuthorAnnonce));
         // Total des annonces de l'auteur concernant l'annonce actuel
         $totalAnnoncesAuthor = count($annoncesAuthor);
 
+        $this->redirectToRoute('annonce_voirprofil', compact('idAuthorAnnonce', 'id', 'annoncesAuthor'));
         // Redirection sur l'affichage de cette annonce
         return $this->render('annonce/annonce.html.twig', [
             'annonce' => $annonce,
             'annoncesAuthor' => $annoncesAuthor,
-            'totalAnnoncesAuthor' => $totalAnnoncesAuthor
+            'totalAnnoncesAuthor' => $totalAnnoncesAuthor,
+            'idAuthorAnnonce' => $idAuthorAnnonce
         ]);
     }
+
+    #[Route('/viewProfil/{id}', name: '_voirprofil')]
+    public function voirProfil(
+        UserRepository $userRepository,
+                       $id,
+    ): Response
+    {
+        $user = $userRepository->findOneBy(['id' => $id]);
+        
+        return $this->render('user_profil/voirUserProfil.html.twig', compact('id', 'user'));
+    }
+
 
     // fonction pour ajouter une annonce
     #[Route('/ajouter', name: '_ajouter')]
