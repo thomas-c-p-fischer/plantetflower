@@ -13,15 +13,177 @@
         </div>
         <div class="container-annonce">
             <div class="container-annonce-img">
-                {% for image in annonce.images %}
+                {% for image in annonce.images.slice(0,1) %}
                     <div class="image-slide container-big-img">
                         <button class="display-left" onclick="plusDivs(-1)">&#10094;</button>
-                        <img id="grand-image"
-                             src="{{ asset('/uploads/' ~ image.name) }}"
-                             alt="Grand"/>
+                        <img id="grand-image" src="{{ asset('/uploads/' ~ image.name) }}" alt="Grand"/>
                         <button class="display-right" onclick="plusDivs(+1)">&#10095;</button>
                     </div>
                 {% endfor %}
+                <div class="bg-gray-global">
+                    <div class="bg-gray-inactive">
+                        <div class="headTitle">
+                            <h1 class="plant">{{ annonce.title }}</h1>
+
+
+                        </div>
+                        <div class='titre-description'>
+                            <h2>Description</h2>
+                            <div class="green">
+                                <p>{{ annonce.category.content }}</p>
+                            </div>
+                            <div class="descriptionTexte">
+                                <p>{{ annonce.description }}</p>
+                            </div>
+                        </div>
+                        <div class="headInfo">
+                            <div>
+                                <h2>{{ annonce.ville }}</h2>
+                            </div>
+                            <div class="delivery_mod">
+                                {% if annonce.handDelivery %}
+                                    <div class="green">
+                                        <p>Remise en main propre</p>
+                                    </div>
+                                {% endif %}
+                                {% if annonce.shipement %}
+                                    <div class="green">
+                                        <p>Livraison possible</p>
+                                    </div>
+                                {% endif %}
+                                Pot disponible :
+                                {% if annonce.plantPot %}
+                                    oui
+                                {% else %}
+                                    non
+                                {% endif %}
+                            </div>
+                        </div>
+                        <h1 class='priceTotal'>{{ annonce.priceTotal }}€</h1>
+                        <div class="headInfo">
+                            <div class="container-all_btn_sold_editor">
+                                {% if annonce.sold and app.user.email != annonce.acheteur %}
+                                    <div class="container-btn_sold_editor">
+                                        <a class="btn-sold_editor" disabled>Déjà vendu</a>
+                                    </div>
+                                {% elseif annonce.sold == true
+                                    and app.user.email == annonce.acheteur
+                                    and annonce.confirm == false %}
+                                    <div class="container-btn_sold_editor">
+                                        <a class="btn-sold_editor"
+                                           href={{ path('paiement_confirmation', {'id': annonce.id}) }}>
+                                            Confirmer la réception
+                                        </a>
+                                    </div>
+                                {% elseif app.user
+                                    and app.user.id == annonce.user.id
+                                    and annonce.sold == false
+                                    and annonce.confirm == false %}
+                                    <div class="container-btn_sold_editor">
+                                        <a class="btn-sold_editor"
+                                           href={{ path('annonce_editer', {'annonceId': annonce.id}) }}>
+                                            Modifié l'annonce
+                                        </a>
+                                    </div>
+                                    <div class="container-btn_sold_editor">
+                                        <a id="annonce-delete_btn" class="btn-sold_editor">Retirer l'annonce</a>
+                                    </div>
+                                {% elseif not app.user %}
+                                    <div class="container-btn_sold_editor">
+                                        <a class="btn-sold_editor" href={{ path('registration_register') }}>
+                                            Acheter
+                                        </a>
+                                    </div>
+                                {% else %}
+                                    <div class="container-btn_sold_editor">
+                                        <div class="divStar">
+                                            <img src="{{ asset('media/img/star.png') }}" alt="Étoile" class="favStar">
+                                        </div>
+                                        <a class="btn-sold_editor"
+                                           href={{ path('annonce_modeDeRemise', {'id': annonce.id}) }}>
+                                            Acheter
+                                        </a>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div>
+                                <p>Date d'expiration : {{ annonce.dateExpiration | date('d/m/Y') }}</p>
+                            </div>
+                            <div id="annonce-confirm_delete">
+                                <p>Êtes-vous sûr de vouloir supprimer l'annonce ?</p>
+                                <div class="container-confirm_answer">
+                                    <a class="answer-delete_yes"
+                                       href="{{ path('annonce_supprimer', {'annonceId': annonce.id}) }}">Oui</a>
+                                    <a class="answer-delete_no" id="annonce-answer-delete_no">Non</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="description">
+                        <div id="gray" class="bg-gray-inactive row">
+                            <div class="profileImage">
+                                {#                            {% if (userAnnonce.image) %} #}
+                                {#                                <img src="{{ asset('/uploads/profils/' ~ userAnnonce.image) }}" #}
+                                {#                                     alt="Photo de profil"> #}
+                                {#                            {% else %} #}
+                                <img src="{{ asset('media/img/profil.png') }}"
+                                     alt="Photo de profil default" class="pdpAnnonce">
+                                {#                            {% endif %} #}
+                            </div>
+                            <div class="profilinfo">
+                                <h2>{{ annonce.user.firstName }}
+                                    {{ annonce.user.lastName }}</h2>
+                                <a href="{{ path('annonce_voirprofil',{'id': annonce.user.id}) }}">Consulter
+                                    le
+                                    profil du
+                                    vendeur.</a>
+                                <div id="toggle-list" class="headInfo row">
+                                    {#                                <h3> #}
+                                    {#                                    {% if totalAnnoncesAuthor < 2 %} #}
+                                    {#                                        {{ totalAnnoncesAuthor }} Annonce #}
+                                    {#                                    {% else %} #}
+                                    {#                                        {{ totalAnnoncesAuthor }} Annonces #}
+                                    {#                                    {% endif %}</h3> #}
+                                    {#                                <button class="dropdown-button"> #}
+                                    {#                                    <img src="{{ asset('media/img/down-arrow.png') }}" alt="Étoile"/> #}
+                                    {#                                </button> #}
+                                    {#                            </div> #}
+                                    {#                            <div id="list-annonce" class="col list-annonce inactive"> #}
+                                    {#                                {% for eachAnnonces in annoncesAuthor %} #}
+                                    {#                                    {% if eachAnnonces.sold == false %} #}
+                                    {#                                        <a href={{ path('home_annonces', {'id': eachAnnonces.id}) }}> #}
+                                    {#                                            <div class="bg-gray col"> #}
+                                    {#                                                <div class="row"> #}
+                                    {#                                                    <h4>{{ eachAnnonces.title }}</h4> #}
+                                    {#                                                    <img src="{{ asset('media/img/star.png') }}" alt="Étoile"> #}
+                                    {#                                                </div> #}
+                                    {#                                                <div class="row"> #}
+                                    {#                                                    <h5>{{ eachAnnonces.ville }}</h5> #}
+                                    {#                                                    <p> #}
+                                    {#                                                        {% if eachAnnonces.shipement %} #}
+                                    {#                                                            Livraison possible #}
+                                    {#                                                        {% else %} #}
+                                    {#                                                            Livraison non disponible #}
+                                    {#                                                        {% endif %} #}
+                                    {#                                                    </p> #}
+                                    {#                                                </div> #}
+                                    {#                                                <div class="row"> #}
+                                    {#                                                    <p>Date d'expiration #}
+                                    {#                                                        {{ eachAnnonces.dateExpiration  | date('d/m/Y') }}</p> #}
+                                    {#                                                    <h2>{{ eachAnnonces.priceTotal }}€</h2> #}
+                                    {#                                                </div> #}
+                                    {#                                            </div> #}
+                                    {#                                        </a> #}
+                                    {#                                    {% endif %} #}
+                                    {#                                {% endfor %} #}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="textInfo">
+                        <p>Les informations du vendeur seront données seulement après l’achat du produit.</p>
+                    </div>
+                </div>
                 <div class="columnImages">
                     <div class="columnImage">
                         <img class="mini-image"
@@ -38,166 +200,6 @@
                                  alt="miniature"/>
                         {% endif %}
                     </div>
-                </div>
-                <div class="bg-gray-global">
-                    <div class="bg-gray-inactive">
-                        <div class="headInfo">
-                            <div class="green">
-                                <p>{{ annonce.category.content }}</p>
-                            </div>
-                            <div class="star"><img src="{{ asset('media/img/star.png') }}" alt="Étoile"></div>
-                        </div>
-                        <h1 class="plant">{{ annonce.title }}</h1>
-                        <div class="headInfo">
-                            <div>
-                                <h2>{{ annonce.ville }}</h2>
-                            </div>
-                            <div class="delivery_mod">
-                                {% if annonce.handDelivery %}
-                                    <div class="green">
-                                        <p>Remise en main propre</p>
-                                    </div>
-                                {% endif %}
-                                {% if annonce.shipement %}
-                                    <div class="green">
-                                        <p>Livraison possible</p>
-                                    </div>
-                                {% endif %}
-                            </div>
-                        </div>
-                    <h1 class='priceTotal'>{{ annonce.priceTotal }}€</h1>
-                    <div class="headInfo">
-                        <p>Date d'expiration : {{ annonce.dateExpiration | date('d/m/Y') }}</p>
-                        <div class="container-all_btn_sold_editor">
-                            {% if annonce.sold and app.user.email != annonce.acheteur %}
-                                <div class="container-btn_sold_editor">
-                                    <a class="btn-sold_editor" disabled>Déjà vendu</a>
-                                </div>
-                            {% elseif annonce.sold == true
-                                and app.user.email == annonce.acheteur
-                                and annonce.confirm == false %}
-                                <div class="container-btn_sold_editor">
-                                    <a class="btn-sold_editor"
-                                       href={{ path('paiement_confirmation', {'id': annonce.id}) }}>
-                                        Confirmer la réception
-                                    </a>
-                                </div>
-                            {% elseif app.user
-                            and app.user.id == annonce.user.id
-                            and annonce.sold == false
-                            and annonce.confirm == false %}
-                                <div class="container-btn_sold_editor">
-                                    <a class="btn-sold_editor"
-                                       href={{ path('annonce_editer', {'annonceId': annonce.id}) }}>
-                                        Modifié l'annonce
-                                    </a>
-                                </div>
-                                <div class="container-btn_sold_editor">
-                                    <a id="annonce-delete_btn" class="btn-sold_editor">Retirer l'annonce</a>
-                                </div>
-                            {% elseif not app.user %}
-                                <div class="container-btn_sold_editor">
-                                    <a class="btn-sold_editor" href={{ path('registration_register') }}>
-                                        Acheter
-                                    </a>
-                                </div>
-                            {% else %}
-                                <div class="container-btn_sold_editor">
-                                    <a class="btn-sold_editor"
-                                       href={{ path('annonce_modeDeRemise', {'id': annonce.id}) }}>
-                                        Acheter
-                                    </a>
-                                </div>
-                            {% endif %}
-                        </div>
-                        <div id="annonce-confirm_delete">
-                            <p>Êtes-vous sûr de vouloir supprimer l'annonce ?</p>
-                            <div class="container-confirm_answer">
-                                <a class="answer-delete_yes"
-                                   href="{{ path('annonce_supprimer', {'annonceId': annonce.id}) }}">Oui</a>
-                                <a class="answer-delete_no" id="annonce-answer-delete_no">Non</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="description">
-                    <div class="absolute">
-                        <div class="background">
-                            <img src="{{ asset('media/img/background-yellow-green.png') }}" alt="Background">
-                        </div>
-                    </div>
-                    <div class='titre-description'>
-                        <h2>Description</h2>
-                        <p>
-                            {{ annonce.description }}
-                            <br><br>
-                            Pot disponible :
-                            {% if annonce.plantPot %}
-                                oui
-                            {% else %}
-                                non
-                            {% endif %}
-                        </p>
-                    </div>
-                    <div id="gray" class="bg-gray-inactive row">
-                        <div class="profileImage">
-                            {#                            {% if (userAnnonce.image) %} #}
-                            {#                                <img src="{{ asset('/uploads/profils/' ~ userAnnonce.image) }}" #}
-                            {#                                     alt="Photo de profil"> #}
-                            {#                            {% else %} #}
-                            <img src="{{ asset('media/img/profil.png') }}"
-                                 alt="Photo de profil default">
-                            {#                            {% endif %} #}
-                        </div>
-                        <div class="profilinfo">
-                            <h2>{{ annonce.user.firstName }}
-                                {{ annonce.user.lastName }}</h2>
-                            <p>Rate</p>
-                            <div id="toggle-list" class="headInfo row">
-                                {#                                <h3> #}
-                                {#                                    {% if totalAnnoncesAuthor < 2 %} #}
-                                {#                                        {{ totalAnnoncesAuthor }} Annonce #}
-                                {#                                    {% else %} #}
-                                {#                                        {{ totalAnnoncesAuthor }} Annonces #}
-                                {#                                    {% endif %}</h3> #}
-                                {#                                <button class="dropdown-button"> #}
-                                {#                                    <img src="{{ asset('media/img/down-arrow.png') }}" alt="Étoile"/> #}
-                                {#                                </button> #}
-                                {#                            </div> #}
-                                {#                            <div id="list-annonce" class="col list-annonce inactive"> #}
-                                {#                                {% for eachAnnonces in annoncesAuthor %} #}
-                                {#                                    {% if eachAnnonces.sold == false %} #}
-                                {#                                        <a href={{ path('home_annonces', {'id': eachAnnonces.id}) }}> #}
-                                {#                                            <div class="bg-gray col"> #}
-                                {#                                                <div class="row"> #}
-                                {#                                                    <h4>{{ eachAnnonces.title }}</h4> #}
-                                {#                                                    <img src="{{ asset('media/img/star.png') }}" alt="Étoile"> #}
-                                {#                                                </div> #}
-                                {#                                                <div class="row"> #}
-                                {#                                                    <h5>{{ eachAnnonces.ville }}</h5> #}
-                                {#                                                    <p> #}
-                                {#                                                        {% if eachAnnonces.shipement %} #}
-                                {#                                                            Livraison possible #}
-                                {#                                                        {% else %} #}
-                                {#                                                            Livraison non disponible #}
-                                {#                                                        {% endif %} #}
-                                {#                                                    </p> #}
-                                {#                                                </div> #}
-                                {#                                                <div class="row"> #}
-                                {#                                                    <p>Date d'expiration #}
-                                {#                                                        {{ eachAnnonces.dateExpiration  | date('d/m/Y') }}</p> #}
-                                {#                                                    <h2>{{ eachAnnonces.priceTotal }}€</h2> #}
-                                {#                                                </div> #}
-                                {#                                            </div> #}
-                                {#                                        </a> #}
-                                {#                                    {% endif %} #}
-                                {#                                {% endfor %} #}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="textInfo">
-                    <p>Les informations du vendeur seront données seulement après l’achat du produit.</p>
                 </div>
             </div>
         </div>

@@ -18,7 +18,7 @@ header {
 }
 
 .divBanniere {
-    height: 0em;
+    height: 0;
 }
 
 main {
@@ -178,16 +178,25 @@ footer {
 }
 
 .container-footer_right {
-    margin-bottom: 1.5em;
     display: flex;
     flex-direction: row;
     grid-area: container-footer_right;
     justify-content: space-around;
+    height: 100%;
+    margin-top: 25px;
 }
 
 .container-links {
     display: flex;
     flex-direction: column;
+
+}
+
+.navFooter {
+    display: flex;
+    width: 50%;
+    justify-content: space-between;
+
 }
 
 .title-links {
@@ -328,7 +337,15 @@ footer {
     }
 }
 
-@media only screen and (max-width: 525px) {
+@media screen and (max-width: 768px) {
+    .navFooter {
+        display: flex;
+        justify-content: space-between;
+        width: 50%;
+    }
+}
+
+@media screen and (max-width: 425px) {
     .all_rights_reserved {
         flex-direction: column;
     }
@@ -339,8 +356,15 @@ footer {
     }
 
     .container-links {
-        text-align: center;
-        margin: 10px;
+        text-align: left;
+    }
+
+    
+    .navFooter {
+        display: flex;
+        width: 100%;
+        justify-content: space-evenly;
+        margin-bottom: 15px;
     }
 }
 

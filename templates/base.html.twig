@@ -142,14 +142,33 @@
     <div class="divBanniere">
         <img src="{{ asset('media/img/banniere-search.png') }}" alt="" class="backgroundSite">
     </div>
-    {% block body %}
-
-    {% endblock %}
+    {% block body %}{% endblock %}
 
 </main>
 <footer>
+    <div class="container-footer_right">
+        <div class="navFooter">
+            <div class="container-links">
+                <h6 class="title-links">DÉCOUVRIR</h6>
+                <a href={{ path('home_annonces') }}>Annonces</a>
+                <a href={{ path('security_login') }}>Connexion</a>
+                <a href={{ path('registration_register') }}>Inscription</a>
+            </div>
+            <div class="container-links">
+                <h6 class="title-links">EN SAVOIR PLUS</h6>
+                <a href={{ path('home_about') }}>Notre histoire</a>
+                <a href={{ path('home_contact') }}>Contact</a>
+                <a href={{ path('home_faq') }}>F.A.Q</a>
+            </div>
+        </div>
+        <div class="container-links">
+            <h6 class="title-links">LÉGAL</h6>
+            <a href={{ path('home_mentionsLegales') }}>Mentions légales</a>
+            <a href={{ path('home_cgu') }}>CGU - CGV</a>
+        </div>
+    </div>
     <div class="container-footer_left">
-        <p>Echangez vos végétaux préférés
+        <p>Échangez vos végétaux préférés
             <wbr>
             partout en france
         </p>
@@ -163,30 +182,11 @@
         </div>
         <div class="all_rights_reserved">
             <p>
-                © 2021-2022 Tous droits réservés —
+                © 2022-2023 Tous droits réservés —
             </p>
             <a class="logoFooter" href={{ path('home_homepage') }}>
                 <img src="{{ asset('media/img/Logo_plants.png') }}"/>
             </a>
-        </div>
-    </div>
-    <div class="container-footer_right">
-        <div class="container-links">
-            <h6 class="title-links">DÉCOUVRIR</h6>
-            <a href={{ path('home_homepage') }}>Rechercher son végétal</a>
-            <a href={{ path('security_login') }}>Connexion</a>
-            <a href={{ path('registration_register') }}>Inscription</a>
-        </div>
-        <div class="container-links">
-            <h6 class="title-links">EN SAVOIR PLUS</h6>
-            <a href={{ path('home_about') }}>Notre histoire</a>
-            <a href={{ path('home_contact') }}>Contact</a>
-            <a href={{ path('home_faq') }}>F.A.Q</a>
-        </div>
-        <div class="container-links">
-            <h6 class="title-links">LÉGAL</h6>
-            <a href={{ path('home_mentionsLegales') }}>Mentions légales</a>
-            <a href={{ path('home_cgu') }}>CGU - CGV</a>
         </div>
     </div>
 </footer>
