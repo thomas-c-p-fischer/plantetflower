@@ -22,19 +22,46 @@ class HomeController extends AbstractController
     //route de la page d'accueil
     #[Route('/', name: '_homepage')]
     public function homepage(
-        AnnonceRepository $annoncesRepository,
-        Request           $request,
-        ImageRepository   $imageRepository,
+        AnnonceRepository      $annonceRepository,
+        Request                $request,
+        ImageRepository        $imageRepository,
+        EntityManagerInterface $entityManager,
 
     ): Response
     {
+        // récupération de toutes les annonces
+        $annoncesAll = $annonceRepository->findAll();
+
+        // création de la variable "maintenant"
+        $now = new \DateTime();
+
+        // boucle toutes les annonces
+        foreach ($annoncesAll as $annonce) {
+
+            // si le produit de l'annonce n'est pas encore vendu
+            if (!$annonce->isSold()) {
+
+                // boolean vrai si différence de temps entre l'expiration de l'annonce et maintenant
+                $diff = $annonce->getDateExpiration()->diff($now);
+
+                // retire l'annonce si elle est antérieure à maintenant et si l'annonce n'est pas vendu
+                if ($diff->invert == 0 && $annonce->getStatus() == "not sold") {
+                    $annonceRepository->remove($annonce);
+                    $entityManager->flush();
+                }
+            }
+        }
+
+        // nouvelle récupération des annonces non-vendu uniquement
+        // après avoir retiré celles éventuellement expirées.
+        $annoncesAll = $annonceRepository->findBy(array('sold' => 0));
+
         $limit = 10;
         $page = (int)$request->query->get("page", 1);
 
-        $total = $annoncesRepository->getTotalAnnonces();
-        $lastAnnonces = $annoncesRepository->getLastAnnonces();
+        $total = $annonceRepository->getTotalAnnonces();
+        $lastAnnonces = $annonceRepository->getLastAnnonces();
         $images = $imageRepository->findAll();
-        $annoncesAll = $annoncesRepository->findAll();
         $form = $this->createForm(SearchAnnonceType::class);
         $form->handleRequest($request);
         $annonces = [];
@@ -44,9 +71,9 @@ class HomeController extends AbstractController
             $title = $form->get('title')->getData();
 
             if ($title != "") {
-                $annonces = $annoncesRepository->findBy(['title' => $title]);
+                $annonces = $annonceRepository->findBy(['title' => $title]);
             } else {
-                $annonces = $annoncesRepository->getPaginatedAnnonces($page, $limit);
+                $annonces = $annonceRepository->getPaginatedAnnonces($page, $limit);
             }
         }
         return $this->render('home/homepage.html.twig', [
@@ -97,8 +124,9 @@ class HomeController extends AbstractController
             }
         }
 
-        // nouvelle récupération des annonces après avoir retiré celles éventuellement expirées
-        $annonces = $annonceRepository->findAll();
+        // nouvelle récupération des annonces non-vendu uniquement
+        // après avoir retiré celles éventuellement expirées.
+        $annonces = $annonceRepository->findBy(array('sold' => 0));
 
         // total de toutes les annonces
         $totalAnnonces = count($annonces);

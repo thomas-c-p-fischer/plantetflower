@@ -1,4 +1,4 @@
-// Script permettant de d'afficher le prix en fonction du mode de remise.
+// Script permettant d'afficher le prix en fonction du mode de remise.
 // Recuperation des elements par Id qu'on initialise dans une variable.
 let checkboxHandDelivery = document.getElementById('checkboxHandDelivery');
 let checkboxShipment = document.getElementById('checkboxShipment');
