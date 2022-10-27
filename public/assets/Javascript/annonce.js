@@ -1,4 +1,4 @@
-// Script permettant de d'afficher la demande de confirmation de suppression d'annonce
+// Script permettant d'afficher la demande de confirmation de suppression d'annonce
 // dans les pages annonce.html.twig et editAnnonce.html.twig.
 // Recuperation des elements par Id qu'on initialise dans une variable.
 let aDeleteBtn = document.getElementById('annonce-delete_btn');

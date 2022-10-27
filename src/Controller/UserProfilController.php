@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Form\InformationFormType;
+use App\Repository\AnnonceRepository;
 use App\Repository\UserRepository;
 use App\Service\MangoPayService;
 use MangoPay\KycDocumentType;
@@ -16,9 +17,10 @@ class UserProfilController extends AbstractController
 {
     #[Route('/profil/{id}', name: '_profil')]
     public function profil(
-        Request         $request,
-        MangoPayService $service,
-        UserRepository  $userRepository,
+        Request           $request,
+        MangoPayService   $service,
+        UserRepository    $userRepository,
+        AnnonceRepository $annonceRepository,
     ): Response
     {
 
@@ -28,6 +30,8 @@ class UserProfilController extends AbstractController
         //Création du formulaire d'ajout d'IBAN.
         $informationForm = $this->createForm(InformationFormType::class);
         $informationForm->handleRequest($request);
+        //Récupération de toutes les annonces achetée par cet utilisateur.
+        $annonces = $annonceRepository->findBy(array('acheteur' => $mail));
         //Récupération de la donnée sans stockage en BDD
         $iban = $informationForm['IBAN']->getData();
         $document = KycDocumentType::IdentityProof;
@@ -42,7 +46,7 @@ class UserProfilController extends AbstractController
             $service->submitKYCDocument($userConnect, $kycDoc);
 
         }
-        return $this->renderform('user_profil/userProfil.html.twig', compact('informationForm', 'mail'));
+        return $this->renderform('user_profil/userProfil.html.twig', compact('informationForm', 'mail', 'annonces'));
     }
 
 //    #[Route('/edit', name: '_edit')]

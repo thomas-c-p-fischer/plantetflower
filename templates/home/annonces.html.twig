@@ -13,12 +13,9 @@
                 vie et achetez-en de nouveaux
             </h1>
             <div class="container-btn_create_annonce">
-                {% if (app.user) %}
+                {% if app.user and app.user.owner %}
                     <a class="btn-create_annonce"
                        href="{{ path('annonce_ajouter') }}">Créer une annonce</a>
-                {% else %}
-                    <a class="btn-create_annonce"
-                       href="{{ path('security_login') }}">Créer une annonce</a>
                 {% endif %}
             </div>
             {#            <div class="container-search"> #}

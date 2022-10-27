@@ -53,8 +53,11 @@
                 <img src="{{ asset('media/img/profil.png') }}" alt="Icon_profil"/>
             </a>
         </div>
-        <a class="logo" href={{ path('home_homepage') }}>
+        <a class="logo" id="logo_with_text" href={{ path('home_homepage') }}>
             <img src="{{ asset('media/img/Logo_plants.png') }}" alt="plante"/>
+        </a>
+        <a class="logo" id="text_only" href={{ path('home_homepage') }}>
+            <img src="{{ asset('media/img/Text_plants.png') }}" alt="plante"/>
         </a>
         {% if app.user %}
             <ul class="list-users_pages">
@@ -105,19 +108,11 @@
                             <img class="nav-icons" src="{{ asset('media/img/user-pen-solid.png') }}" alt="user-profil">
                         </a>
                     </li>
-                    <li class="list-item2">
-                        <a href={{ path('security_logout') }}>
-                            <img class="userIcons" src="{{ asset('media/img/person-exit-solid.png') }}"
-                                 alt="user-disconnect">
-                        </a>
-                    </li>
-
                     {% if is_granted('ROLE_ADMIN') %}
                         <li class="list-item2">
                             <a href="{{ path('admin') }}">Admin</a>
                         </li>
                     {% endif %}
-
                 </ul>
             {% else %}
                 <ul class="list-users_pages">
@@ -125,11 +120,6 @@
                         <a href={{ path('registration_register') }}>
                             <img class="nav-icons" src="{{ asset('media/img/user-plus-solid.png') }}"
                                  alt="user-register">
-                        </a>
-                    </li>
-                    <li class="list-item2">
-                        <a href={{ path('security_login') }}>
-                            <img class="userIcons" src="{{ asset('media/img/user-solid.png') }}" alt="user-connect">
                         </a>
                     </li>
                 </ul>

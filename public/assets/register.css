@@ -89,6 +89,12 @@ input {
     margin-right: 5px;
 }
 
+.name {
+    color: black;
+    font-size: 25px;
+    padding-left: 15px
+}
+
 .information p {
     font-size: 9px;
     color: #848484;
