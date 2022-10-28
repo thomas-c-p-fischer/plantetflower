@@ -188,7 +188,7 @@ input {
     }
 }
 
-@media only screen and (max-width: 320px) {
+@media only screen and (max-width: 425px) {
     .nationality label{
         margin-right: 11.5%;
     }
