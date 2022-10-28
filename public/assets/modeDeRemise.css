@@ -1,0 +1,63 @@
+.etape1 {
+    text-align: center;
+    margin-top: 5em;
+    color: #4a975f;
+}
+
+.delivery_choice h2 {
+    margin-left: 3em;
+}
+
+.delivery_choice {
+    height: 140vh;
+}
+
+.labelMainPropre {
+    width: 15%;
+    height: 20px;
+}
+
+.mondialRelay {
+    width: 15%;
+    height: 20px;
+}
+
+.labelMondialRelay {
+    width: 21.7em;
+    height: 20px;
+    margin-left: 6em;
+}
+
+#Zone_Widget {
+    margin-right: 35em;
+    margin-left: 35em;
+    margin-top: 1em;
+}
+
+.totalPrice {
+    display: flex;
+    justify-content: center;
+    margin-top: 3em;
+    flex-direction: column;
+}
+
+.prixAvecLivraison {
+    justify-content: center;
+    display: flex;
+}
+
+#priceHandDelivery {
+    display: flex;
+    justify-content: center;
+    margin-top: 2em;
+}
+
+#mode_remise_form_payer {
+    width: 5em;
+    height: 2em;
+    border-radius: 0.5em;
+    background: #b0f2b6;
+    border: 1px solid;
+    font-size: 17px;
+    box-shadow: -14px -37px 29px -28px #4a975f inset;
+}

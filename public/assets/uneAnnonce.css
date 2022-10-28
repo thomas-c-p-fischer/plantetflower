@@ -1,0 +1,373 @@
+.container-return {
+    margin-top: 8em;
+    margin-left: 2em;
+}
+
+.return {
+    padding: 5px 25px;
+    background-color: #c6ffd0;
+    transition: background-color 0.2s;
+    color: #48945d;
+    box-shadow: 0 15px 10px -15px #111;
+    font-size: 18px;
+    border-radius: 15px;
+    border: 2px solid #48945d;
+    cursor: pointer;
+}
+
+.return:hover {
+    background-color: #48945d;
+    transition: background-color 0.2s;
+    color: white;
+}
+
+.fullAnnonce {
+    display: flex;
+    margin-bottom: 5em;
+}
+
+.corpsAnnonce {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 37px;
+}
+
+.imagePrincipale {
+    width: 35%;
+}
+
+#imagePrincipale_self {
+    width: 100%;
+    border-radius: 20px;
+}
+
+.columnImage {
+    display: flex;
+    flex-direction: column;
+    width: 9%;
+}
+
+.mini-image {
+    width: 7em;
+    border-radius: 15% 30%;
+    margin-bottom: 2em;
+}
+
+
+.ficheAnnonce {
+    background: rgba(245, 245, 245, 86%);
+    border-radius: 20px;
+    margin: 5px 5px 0 5px;
+    padding: 10px 10px;
+    border: 2px solid #4a975f;
+    width: 35%;
+}
+
+.dateExpAnnonce {
+    font-size: 15px;
+}
+
+.headTitle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.annonceCategory {
+    background-color: #c6ffd0;
+    border-radius: 5px;
+    font-size: 18px;
+    margin: 5px;
+    width: 30%;
+}
+
+#annonceCategory {
+    padding: 7px 17px;
+}
+
+.annonceDescription {
+    color: black;
+    text-align: justify;
+    margin: 1em 5em 0.5em 1em;
+}
+
+.delivery_mod {
+    display: flex;
+
+}
+
+.deliveryBackground {
+    background-color: #c6ffd0;
+    border-radius: 5px;
+    font-size: 18px;
+    margin: 5px;
+    width: 39%;
+}
+
+.potPlant {
+    margin-left: 5px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.delivery_mod_choice {
+    width: 79%;
+}
+
+.container-all_btn_sold_editor {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.container-btn_sold_editor {
+    margin: 10px 0;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.btn-sold_editor {
+    background-color: #c6ffd0;
+    transition: background-color 0.2s;
+    border: 2px solid #48945d;
+    color: #48945d;
+    font-size: 30px;
+    border-radius: 10px;
+    padding: 5px 10px;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.btn-sold_editor:hover {
+    background-color: #48945d;
+    transition: background-color 0.2s;
+    color: white;
+}
+
+#annonce-delete_btn {
+    border: 2px solid #ff0000;
+}
+
+#annonce-delete_btn:hover {
+    border: 2px solid #a40000;
+    background-color: #a40000;
+}
+
+#annonce-confirm_delete {
+    display: none;
+    background-color: #c6ffd0;
+    border: 2px solid #ff0000;
+    border-radius: 10px;
+}
+
+#annonce-confirm_delete p {
+    display: flex;
+    justify-content: center;
+    margin: 15px 0 20px;
+}
+
+.container-confirm_answer {
+    display: flex;
+    flex-direction: row;
+    text-decoration: none;
+    justify-content: space-evenly;
+}
+
+.container-confirm_answer a {
+    width: 100px;
+    border-radius: 5px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    margin-bottom: 30px;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.answer-delete_yes {
+    background-color: red;
+    transition: background-color 0.2s;
+    cursor: pointer;
+}
+
+.answer-delete_yes:hover {
+    background-color: #a40000;
+    transition: background-color 0.2s;
+}
+
+.answer-delete_no {
+    background-color: green;
+    transition: background-color 0.2s;
+    cursor: pointer;
+}
+
+.answer-delete_no:hover {
+    background-color: #004b00;
+    transition: background-color 0.2s;
+}
+
+.description {
+    display: flex;
+}
+
+.infoVendeur a {
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+}
+
+.infoVendeur a:hover {
+    color: #48945d;
+}
+
+.infoVendeur {
+    margin-top: 17px;
+}
+
+.pdpAnnonce {
+    width: 5em;
+}
+
+/*RESPONSIVE DESIGN*//*RESPONSIVE DESIGN*//*RESPONSIVE DESIGN*//*RESPONSIVE DESIGN*//*RESPONSIVE DESIGN*//*RESPONSIVE DESIGN*//*RESPONSIVE DESIGN*/
+/* TELEPHONE L MAX 425 */
+@media screen and (max-width: 425px) {
+
+    .container-return {
+        margin-top: 4em;
+        margin-left: 1em;
+    }
+
+    .return {
+        padding: 2px 16px;
+        background-color: #c6ffd0;
+        transition: background-color 0.2s;
+        color: #48945d;
+        box-shadow: 0 15px 10px -15px #111;
+        font-size: 14px;
+        border-radius: 15px;
+        border: 2px solid #48945d;
+        cursor: pointer;
+    }
+
+    .fullAnnonce {
+        margin-top: 0;
+        display: flex;
+    }
+
+    .corpsAnnonce {
+        display: flex;
+        justify-content: space-evenly;
+        margin-top: 37px;
+        flex-direction: column;
+        flex-wrap: wrap;
+    }
+
+    .imagePrincipale {
+        width: max-content;
+        margin-left: 2em;
+    }
+
+    #imagePrincipale_self {
+        width: 20em;
+        margin-bottom: 7px;
+    }
+
+    .mini-image {
+        width: 5.5em;
+        border-radius: 30px;
+    }
+
+    .columnImage {
+        display: flex;
+        justify-content: space-evenly;
+        margin-top: 37px;
+        flex-direction: column;
+    }
+
+    .ficheAnnonce {
+        width: 90%;
+    }
+
+}
+
+@media screen and (max-width: 768px) and (min-width: 430px) {
+    /*annonces.twig.html*/
+    .contenuProducts {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .card {
+        margin: 0 0 10px 12px;
+    }
+
+    .container-return {
+        margin-top: 4em;
+        margin-left: 1em;
+    }
+
+    .total-annonce {
+        margin-left: 26px;
+    }
+
+    .return {
+        padding: 2px 16px;
+        background-color: #c6ffd0;
+        transition: background-color 0.2s;
+        color: #48945d;
+        box-shadow: 0 15px 10px -15px #111;
+        font-size: 14px;
+        border-radius: 15px;
+        border: 2px solid #48945d;
+        cursor: pointer;
+    }
+
+    .fullAnnonce {
+        margin-top: 0;
+        display: flex;
+    }
+
+    .corpsAnnonce {
+        display: flex;
+        justify-content: space-evenly;
+        margin-top: 37px;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .imagePrincipale {
+        width: max-content;
+    }
+
+    #imagePrincipale_self {
+        width: 20em;
+        margin-bottom: 7px;
+    }
+
+    .mini-image {
+        width: 5.5em;
+        border-radius: 30px;
+    }
+
+    .columnImage {
+        display: flex;
+        justify-content: space-evenly;
+        margin-top: 37px;
+        flex-direction: column;
+    }
+
+    .ficheAnnonce {
+        width: 90%;
+    }
+
+}
