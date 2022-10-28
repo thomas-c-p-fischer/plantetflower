@@ -15,28 +15,30 @@
 {% endblock %}
 
 {% block body %}
-    <h1>Etape 1/2</h1>
-    <h2>Mode de remise</h2>
+    <div class="etape1">
+        <h1>Etape 1/2</h1>
+    </div>
     <div class="delivery_choice">
-        <div class="annonce">
-            <img class="image mini-image"
-                 src="{{ asset('/uploads/' ~ annonce.images[0].name) }}"
-                 alt="Image miniature"/>
+        {#        <div class="annonce"> #}
+        {#            <img class="image mini-image" #}
+        {#                 src="{{ asset('/uploads/' ~ annonce.images[0].name) }}" #}
+        {#                 alt="Image miniature"/> #}
 
-            <h4>{{ annonce.title }}</h4>
-            <p>{{ annonce.PriceTotal }}€</p>
+        {#            <h4>{{ annonce.title }}</h4> #}
+        {#            <p>{{ annonce.PriceTotal }}€</p> #}
 
-        </div>
-        <h3>Mode de remise</h3>
-
+        {#        </div> #}
+        <h2>Choisir le mode de remise</h2>
         {{ form_start(form) }}
 
         {% if annonce.handDelivery %}
+
             {{ form_row(form.mainPropre, {
                 'label': 'Remise en main propre',
-                'id': 'checkboxHandDelivery'
-
+                'id': 'checkboxHandDelivery',
+                'attr':{ 'class':'labelMainPropre'}
             }) }}
+
         {% else %}
             {{ form_row(form.mainPropre, {
                 'label': 'Remise en main propre',
@@ -44,60 +46,63 @@
             }) }}
         {% endif %}
         {% if annonce.shipement %}
-            <div>
-                {{ form_row(form.mondialRelay, {
-                    'label': 'Mondial relay',
-                    'id': 'checkboxShipment',
-                    'name':'mondialRelay'
-
-                }) }} <img src="{{ asset('media/img/logo_mondial_relay.svg') }}"
-                           alt="logo mondial relay livraison france">
-            </div>
-        {% else %}
+        <div>
             {{ form_row(form.mondialRelay, {
                 'label': 'Mondial relay',
-                'disabled': 'true'
+                'id': 'checkboxShipment',
+                'name':'mondialRelay',
+                'attr':{ 'class':'labelMondialRelay'}
+
             }) }}
-        {% endif %}
-        {% if annonce.shipement %}
-            <div id="priceShipment">
-                <p>
-                    {% if  annonce.poids  == "0g - 500g" %}
-                        <span class="priceLivraison">5.50€</span>
-                        <input type="hidden" value="{{ prixPoids == 5.50 }}">
-                    {% elseif  annonce.poids  == "501g - 1kg" %}
-                        <span class="priceLivraison">6€</span>
-                        <input type="hidden" value="{{ prixPoids == 6 }}">
-                    {% elseif   annonce.poids  == "1.001kg - 2kg" %}
-                        <span class="priceLivraison">7.50€</span>
-                        <input type="hidden" value="{{ prixPoids == 7.50 }}">
-                    {% elseif annonce.poids  == "2.001kg - 3kg" %}
-                        <span class="priceLivraison">8€</span>
-                        <input type="hidden" value="{{ prixPoids == 8 }}">
-                    {% endif %}
-                </p>
-                <!-- Zone dans laquelle le Widget est chargé -->
-                <div id="Zone_Widget"></div>
-                <!-- Balise intégrant le point relais sélectionné -->
-                {{ form_row(form.relais,{'id':"Target_Widget",'name':'relais','value':''}) }}
-                
-                <h3>Total</h3>
-                <p>{{ annonce.priceTotal + prixPoids }}€</p>
-            </div>
-        {% endif %}
+            {% else %}
+                {{ form_row(form.mondialRelay, {
+                    'label': 'Mondial relay',
+                    'disabled': 'true'
+                }) }}
+            {% endif %}
+            {% if annonce.shipement %}
+                <div id="priceShipment">
+                    <!-- Zone dans laquelle le Widget est chargé -->
+                    <div id="Zone_Widget"></div>
+                    <!-- Balise intégrant le point relais sélectionné -->
+                    {{ form_row(form.relais,{'id':"Target_Widget",'name':'relais','value':''}) }}
+                    <div class="totalPrice">
+                        <div>
+                            <p>
+                                {% if  annonce.poids  == "0g - 500g" %}
+                                    <span class="priceLivraison">Prix de la livraison : 5.50€</span>
+                                    <input type="hidden" value="{{ prixPoids == 5.50 }}">
+                                {% elseif  annonce.poids  == "501g - 1kg" %}
+                                    <span class="priceLivraison">Prix de la livraison : 6€</span>
+                                    <input type="hidden" value="{{ prixPoids == 6 }}">
+                                {% elseif   annonce.poids  == "1.001kg - 2kg" %}
+                                    <span class="priceLivraison">Prix de la livraison : 7.50€</span>
+                                    <input type="hidden" value="{{ prixPoids == 7.50 }}">
+                                {% elseif annonce.poids  == "2.001kg - 3kg" %}
+                                    <span class="priceLivraison">Prix de la livraison : 8€</span>
+                                    <input type="hidden" value="{{ prixPoids == 8 }}">
+                                {% endif %}
+                            </p>
+                        </div>
+                        <div class="prixAvecLivraison">
+                            <h3 id="totalPrix">Total : {{ annonce.priceTotal + prixPoids }}€</h3>
+
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
 
 
-        {% if annonce.handDelivery == true %}
-            <div id="priceHandDelivery">
-                <h3>Total</h3>
-                <p>{{ annonce.priceTotal }}€</p>
-            </div>
-        {% endif %}
+            {% if annonce.handDelivery == true %}
+                <div id="priceHandDelivery">
+                    <h3>Total : {{ annonce.priceTotal }}€</h3>
+                </div>
+            {% endif %}
 
-        {{ form_row(form.payer) }}
+            {{ form_row(form.payer) }}
 
-        {{ form_end(form) }}
+            {{ form_end(form) }}
 
+        </div>
     </div>
-
 {% endblock %}
