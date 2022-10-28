@@ -63,22 +63,24 @@
         </a>
         {% if app.user %}
             <ul class="list-users_pages">
-                <li class="secondary_users_page">
+                {% if is_granted('ROLE_ADMIN') %}
+                    <li>
+                        <a href="{{ path('admin') }}">
+                            <img class="nav-icons" src="{{ asset('media/img/server-solid.png') }}" alt="admin">
+                        </a>
+                    </li>
+                {% endif %}
+                <li>
                     <a href={{ path('user_profil',{'id' : app.user.id }) }}>
                         <img class="nav-icons" src="{{ asset('media/img/user-pen-solid.png') }}" alt="user-profil">
                     </a>
                 </li>
-                <li>
+                <li class="secondary_users_page">
                     <a href={{ path('security_logout') }}>
                         <img class="nav-icons" src="{{ asset('media/img/person-exit-solid.png') }}"
                              alt="user-disconnect">
                     </a>
                 </li>
-                {% if is_granted('ROLE_ADMIN') %}
-                    <li>
-                        <a href="{{ path('admin') }}">Admin</a>
-                    </li>
-                {% endif %}
             </ul>
         {% else %}
             <ul class="list-users_pages">
@@ -99,15 +101,16 @@
             <a href={{ path('home_homepage') }}>Accueil</a>
             <a href={{ path('home_annonces') }}>Annonces</a>
             <a href={{ path('home_about') }}>À propos</a>
-            <a href={{ path('home_contact') }}>Contact</a>
             <a href={{ path('home_faq') }}>FAQ</a>
+            <a href={{ path('home_contact') }}>Contact</a>
         </div>
         <div id="container-dropdown-secondary_user_page">
             {% if app.user %}
                 <ul class="list-users_pages">
                     <li>
-                        <a href={{ path('user_profil',{'id' : app.user.id }) }}>
-                            <img class="nav-icons" src="{{ asset('media/img/user-pen-solid.png') }}" alt="user-profil">
+                        <a href={{ path('security_logout') }}>
+                            <img class="nav-icons" src="{{ asset('media/img/person-exit-solid.png') }}"
+                                 alt="user-disconnect">
                         </a>
                     </li>
                     {% if is_granted('ROLE_ADMIN') %}
