@@ -4,6 +4,13 @@
     position: relative;
 }
 
+.container-register h2 {
+    font-size: 30px;
+    color: #4C9A62;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 500;
+}
+
 .container-form_register {
     margin: 80px auto;
     border: 1px solid #c4c4c4;
@@ -13,27 +20,6 @@
     width: 90%;
     max-width: 600px;
     background-color: rgba(255, 255, 255, 0.5);
-}
-
-.google {
-    width: 16px;
-    margin-bottom: -1px;
-}
-
-.facebook {
-    width: 21px;
-}
-
-.img_social_network {
-    margin-left: 10px;
-    margin-bottom: 10px;
-}
-
-.container-register h2 {
-    font-size: 30px;
-    color: #4C9A62;
-    font-family: "Montserrat", sans-serif;
-    font-weight: 500;
 }
 
 #title_get_to_know {
@@ -47,7 +33,40 @@
 
 .container-register p {
     font-size: 12px;
+    margin-bottom: 1%;
+}
+
+.img_social_network {
+    margin-left: 10px;
     margin-bottom: 10px;
+}
+
+.google {
+    width: 16px;
+    margin-bottom: -1px;
+}
+
+.facebook {
+    width: 21px;
+}
+
+.container-name-firstname {
+    display: flex;
+    justify-content: space-evenly;
+    width: 90%;
+    margin: 10px auto;
+}
+
+.name {
+    margin-right: 5px;
+    color: black;
+    font-size: 25px;
+    padding-left: 15px
+}
+
+.name, .firstname {
+    width: 100%;
+    margin-bottom: 1%;
 }
 
 input::-moz-placeholder {
@@ -58,10 +77,6 @@ input::placeholder {
     color: #000;
 }
 
-form div ul li {
-    color: red;
-}
-
 input {
     background: #c6ffd0;
     border-radius: 20px;
@@ -70,118 +85,47 @@ input {
     height: 40px;
     font-family: "ABeeZee", sans-serif;
     font-size: 13px;
-    width: 100%;
+    width: 95%;
 }
 
-.container-name-firstname {
-    display: flex;
-    justify-content: space-evenly;
-    width: 90%;
-    margin: 10px auto;
-}
-
-.name, .firstname {
-    width: 100%;
-    margin-bottom: 5px;
-}
-
-.name {
-    margin-right: 5px;
-}
-
-.name {
-    color: black;
-    font-size: 25px;
-    padding-left: 15px
-}
-
-.information p {
-    font-size: 9px;
+.information-text p {
+    font-size: 12px;
     color: #848484;
 }
 
-.container-address_block_1 {
+.birthday {
+    margin-bottom: 1%;
+}
+
+#registration_form_birthday {
     display: flex;
-    justify-content: center;
-    width: 90%;
-    margin: 0 auto 5px auto;
+    justify-content: space-evenly;
+    font-family: "ABeeZee", sans-serif;;
 }
 
-.street, .zipcode {
-    margin: 0 10px 0 0
+.address, .address2, .zipcode, .city, .email, .password{
+    margin-bottom: 1%;
 }
 
-.address, .city {
-    width: 100%;
+#registration_form_countryOfResidence{
+    width: 100px;
 }
 
-.container-address-complement {
+#registration_form_nationality{
+    width: 100px;
+}
+
+.nationality label{
+    margin-right: 7.5%;
+}
+
+.userCategory label{
     display: flex;
-    justify-content: center;
-    width: 90%;
-    margin: 0 auto 0 auto;
 }
 
-.address-complement {
-    width: 100%;
-}
-
-.container-address_block_2 {
-    display: flex;
-    justify-content: center;
-    width: 90%;
-    margin: 5px auto 20px auto;
-}
-
-.container-status-email {
-    display: flex;
-    justify-content: center;
-    width: 90%;
-    margin: 0 auto 5px auto;
-}
-
-
-#labelStatus {
-    display: flex;
-    justify-content: center;
-    margin-right: 65%;
-}
-
-#labelStatus p {
-    color: black;
-    font-size: 15px;
-}
-
-.status {
-    width: 40%;
-    margin: 0 10px 0 auto;
-}
-
-.status select {
-    background: #c6ffd0;
-    border-radius: 20px;
-    text-align: center;
-    border: none;
-    height: 40px;
-    width: 100%;
-    font-family: "ABeeZee", sans-serif;
-    font-size: 13px;
-}
-
-.email {
-    width: 100%;
-}
-
-.container-password {
-    display: flex;
-    justify-content: center;
-    width: 90%;
-    margin: 0 auto 0 auto;
-}
-
-.password {
-    width: 100%;
-    margin: 0 auto 20px auto;
+.userCategory input{
+    margin-bottom: 3%;
+    width: 25px;
 }
 
 #registration_form_recaptcha {
@@ -194,7 +138,7 @@ input {
 
 .agree_terms a {
     color: #79c990;
-    margin-left: 5px;
+    margin-left: 4px;
 }
 
 .agree_terms div {
@@ -208,22 +152,6 @@ input {
 #registration_form_agreeTerms {
     width: 15px;
     margin: 0 10px;
-}
-
-/*#lienMango {*/
-/*    text-decoration: none;*/
-/*    color: #000;*/
-/*}*/
-
-/*.lienMango:hover {*/
-/*    text-decoration: underline;*/
-/*}*/
-
-.social {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: flex-end;
 }
 
 .btn_registration {
@@ -257,5 +185,11 @@ input {
 
     .agreeTerms div {
         display: contents;
+    }
+}
+
+@media only screen and (max-width: 320px) {
+    .nationality label{
+        margin-right: 11.5%;
     }
 }
