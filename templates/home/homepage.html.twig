@@ -39,24 +39,23 @@
                                 <span class="hP-city">{{ annonce.ville | upper | slice(0, 8) ~ '...' }}</span>
                             </div>
                             <div class="container-text_card">
-                                <div class="container-plant_name_star">
+                                <div class="container-plant_name">
                                     <span class="plant-name">{{ annonce.title|upper }}</span>
-                                    <p class="star">☆</p>
+                                </div>
+                                <div class="container-price">
+                                    <p class="price">{{ annonce.priceTotal }} €</p>
                                 </div>
                                 <div class="container-hand_delivery_shipment">
                                     {% if annonce.handDelivery == true %}
                                         <p class="hand_delivery">
-                                            EN MAIN PROPRE
+                                            En main propre
                                         </p>
                                     {% endif %}
                                     {% if annonce.shipement == true %}
                                         <p class="shipment">
-                                            LIVRAISON
+                                            Livraison
                                         </p>
                                     {% endif %}
-                                </div>
-                                <div class="container-price">
-                                    <p class="price">{{ annonce.priceTotal }} €</p>
                                 </div>
                             </div>
                         </div>
@@ -64,8 +63,8 @@
                 {% endif %}
             {% endfor %}
         </div>
-        <div class="container-all_plants container-all_annonces">
-            <a id="all_annonces" href="{{ path('home_annonces') }}">Voir nos annonces</a>
+        <div class="container-all_plants" id="first-container-all_plants">
+            <a href="{{ path('home_annonces') }}">Tous les végétaux</a>
         </div>
     </div>
     <div class="container-functioning">
@@ -112,8 +111,8 @@
                 </div>
             </div>
         </div>
-        <div class="container-all_plants">
-            <a href="{{ path('home_annonces') }}">Tous les végétaux</a>
-        </div>
+    </div>
+    <div class="container-all_plants" id="second-container-all_plants">
+        <a href="{{ path('home_annonces') }}">Tous les végétaux</a>
     </div>
 {% endblock %}
