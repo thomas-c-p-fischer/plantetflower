@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="{{ asset("/assets/faq.css") }}">
     <link rel="stylesheet" href="{{ asset("/assets/contact.css") }}">
     <link rel="stylesheet" href="{{ asset("/assets/uneAnnonce.css") }}">
-    {#    <link rel="stylesheet" href="{{ asset("/assets/BordelAnnonce.css") }}"> #}
+    <link rel="stylesheet" href="{{ asset("/assets/lesAnnonces.css") }}">
     <link rel="stylesheet" href="{{ asset("/assets/createEditAnnonce.css") }}">
     <link rel="stylesheet" href="{{ asset("/assets/mentions.css") }}">
     <link rel="stylesheet" href="{{ asset("/assets/register.css") }}">
@@ -142,19 +142,17 @@
 </main>
 <footer>
     <div class="container-footer_right">
-        <div class="navFooter">
-            <div class="container-links">
-                <h6 class="title-links">DÉCOUVRIR</h6>
-                <a href={{ path('home_annonces') }}>Annonces</a>
-                <a href={{ path('security_login') }}>Connexion</a>
-                <a href={{ path('registration_register') }}>Inscription</a>
-            </div>
-            <div class="container-links">
-                <h6 class="title-links">EN SAVOIR PLUS</h6>
-                <a href={{ path('home_about') }}>Notre histoire</a>
-                <a href={{ path('home_contact') }}>Contact</a>
-                <a href={{ path('home_faq') }}>F.A.Q</a>
-            </div>
+        <div class="container-links">
+            <h6 class="title-links">DÉCOUVRIR</h6>
+            <a href={{ path('home_annonces') }}>Annonces</a>
+            <a href={{ path('security_login') }}>Connexion</a>
+            <a href={{ path('registration_register') }}>Inscription</a>
+        </div>
+        <div class="container-links">
+            <h6 class="title-links">EN SAVOIR PLUS</h6>
+            <a href={{ path('home_about') }}>Notre histoire</a>
+            <a href={{ path('home_contact') }}>Contact</a>
+            <a href={{ path('home_faq') }}>F.A.Q</a>
         </div>
         <div class="container-links">
             <h6 class="title-links">LÉGAL</h6>
