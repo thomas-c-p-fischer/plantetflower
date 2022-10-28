@@ -269,12 +269,13 @@
         display: flex;
         justify-content: space-evenly;
         margin-top: 37px;
-        flex-direction: row;
+        flex-direction: column;
         flex-wrap: wrap;
     }
 
     .imagePrincipale {
         width: max-content;
+        margin-left: 2em;
     }
 
     #imagePrincipale_self {
