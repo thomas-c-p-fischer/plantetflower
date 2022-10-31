@@ -17,10 +17,6 @@
     align-self: center;
 }
 
-.message{
-
-}
-
 .envoyer button{
     background-color: #48945d;
     color: white;
@@ -36,4 +32,10 @@
 .envoyer a:hover {
     background-color: rgba(72, 148, 93, 0.78);
     transition: background-color 0.2s;
+}
+
+@media only screen and (max-width:768px){
+    .nom{
+        width: 20%;
+    }
 }
