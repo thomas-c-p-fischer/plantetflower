@@ -1,10 +1,30 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-
+Contact - Plant&Flower
 {% endblock %}
 
 {% block body %}
-
+    <div class="formContact">
+        <div class="nom">
+            {{ form_start(form) }}
+            {{ form_row(form.nom, {'label': false, 'attr':
+                {'placeholder': 'Nom', 'class': 'formNom'}}) }}
+        </div>
+        <div class="email">
+            {{ form_row(form.email, {'label': false, 'attr':
+                {'placeholder': 'Email', 'class': 'formEmail'}}) }}
+        </div>
+        <div class="message">
+            {{ form_row(form.message, {'label': false, 'attr':
+                {'placeholder': 'Message', 'class': 'formMessage'}}) }}
+        </div>
+        <div class="envoyer">
+            <button type="submit" class="btn_envoyer">
+                Envoyer
+            </button>
+        </div>
+        {{ form_end(form) }}
+    </div>
 {% endblock %}
 
