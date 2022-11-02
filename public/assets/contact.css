@@ -8,13 +8,52 @@
 
 .nom{
     margin-bottom: 1%;
-    width: 15%;
+    width: 20%;
     align-self: center;
+
+}
+
+.formNom{
+    border: 1px solid #111;
+    background: #c6ffd0;
+    border-radius: 20px;
+    text-align: center;
+    height: 40px;
+    font-family: "ABeeZee", sans-serif;
+    font-size: 13px;
+    width: 95%;
+}
+
+.formNom::-moz-placeholder{
+    color:#111;
+}
+
+.formNom::placeholder{
+    color:#111;
 }
 
 .email{
     width: 20%;
     align-self: center;
+}
+
+.formEmail{
+    border: 1px solid #111;
+    background: #c6ffd0;
+    border-radius: 20px;
+    text-align: center;
+    height: 40px;
+    font-family: "ABeeZee", sans-serif;
+    font-size: 13px;
+    width: 95%;
+}
+
+.formEmail::placeholder{
+    color:#111;
+}
+
+.formEmail::-moz-placeholder{
+    color:#111;
 }
 
 .envoyer button{
