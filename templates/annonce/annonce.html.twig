@@ -4,12 +4,20 @@
 
 {% block js %}
     <script defer src={{ asset('assets/Javascript/annonce.js') }}></script>
+    <script defer src={{ asset('assets/Javascript/modeDeRemise.js') }}></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="//unpkg.com/leaflet/dist/leaflet.js"></script>
+    <link rel="stylesheet" type="text/css" href="//unpkg.com/leaflet/dist/leaflet.css"/>
+    <!-- Widget MR -->
+    <script src="//widget.mondialrelay.com/parcelshop-picker/jquery.plugin.mondialrelay.parcelshoppicker.min.js"></script>
+    <script src="{{ asset('assets/Javascript/widgetMondialRelay.js') }}"></script>
 {% endblock js %}
 
 {% block body %}
 
     <div class="container-return">
-        <a class="return" href={{ path('home_annonces') }}>Retour</a>
+        <a class="return" href={{ path('home_annonces') }}><img src="{{ asset('media/img/chevron-gauche.png') }}"
+                                                                alt="bouton retour chevron" class="chevronBack"></a>
     </div>
     <div class="fullAnnonce">
         <div class="corpsAnnonce">
@@ -42,42 +50,125 @@
                 <div class="headTitle">
                     <h1 class="plant">{{ annonce.title }}</h1>
                 </div>
-                <div class='titre-description'>
-                    <h2>Description</h2>
-                    <div class="annonceCategory">
-                        <p id="annonceCategory">{{ annonce.category.content }}</p>
+                <div class="annonceCategory">
+                    <p id="annonceCategory">{{ annonce.category.content }}</p>
+                    <div class="potPlant">
+                        <p>Pot disponible :
+                            {% if annonce.plantPot %}
+                                oui
+                            {% else %}
+                                non
+                            {% endif %}
+                        </p>
                     </div>
+                </div>
+                <div class='titre-description'>
                     <div class="annonceDescription">
                         <p>{{ annonce.description }}</p>
                     </div>
                 </div>
-                <div class="headInfo">
-                    <div>
-                        <h2>{{ annonce.ville }}</h2>
+                <div class="bonASavoir">
+                    <div class="headInfo">
+                        <img src="{{ asset('media/img/credit-card (1).png') }}" alt="" class="headInfo_icone">
+                        <p>Paiement sécurisé avec MangoPay</p>
                     </div>
-                    <div class="delivery_mod">
-                        <div class="delivery_mod_choice">
+                    <div class="headInfo">
+                        <img src="{{ asset('media/img/eco.png') }}" alt="" class="headInfo_icone">
+                        <p>Geste éco-responsable</p>
+                    </div>
+                    <div class="headInfo">
+                        <img src="{{ asset('media/img/check-mark (1).png') }}" alt="" class="headInfo_icone">
+                        <p>Mise en relation assuré</p>
+                    </div>
+                    <div class="infoVendeur">
+                        <a href="{{ path('annonce_voirprofil',{'id': annonce.user.id}) }}">Consulter le profil de
+                            {{ annonce.user.firstName }}.</a>
+                    </div>
+                </div>
+                <div class="deliveryMode">
+                    <div class="delivery_mod_choice">
+                        {{ form_start(formDelivery) }}
+                        <div class="deliveryChoiceLabel">
                             {% if annonce.handDelivery %}
-                                <div class="deliveryBackground">
-                                    <p>Remise en main propre</p>
+                                <div class="deliveryInput1">
+                                    <div class="deliveryLabel1">
+                                        {{ form_widget(formDelivery.mainPropre, {'id': 'checkboxHandDelivery','label':'remise en main propre',
+                                            'attr':{ 'class':'checkboxDelivery'}
+                                        }) }}
+                                        {{ form_label(formDelivery.mainPropre2) }}
+                                        <img src="{{ asset('media/img/delivery-box.png') }}" alt=""
+                                             class="deliveryIcone">
+                                    </div>
+                                    <div class="deliveryPrice1">
+                                        <p>{{ annonce.priceTotal }}€</p>
+                                    </div>
                                 </div>
+                            {% else %}
+                                {{ form_widget(formDelivery.mainPropre, {
+                                    'label': 'Remise en main propre',
+                                    'disabled': 'true'
+                                }) }}
+
                             {% endif %}
-                            {% if annonce.shipement %}
-                                <div class="deliveryBackground">
-                                    <p>Livraison possible</p>
-                                </div>
-                            {% endif %}
-                            <div class="potPlant">
-                                Pot disponible :
-                                {% if annonce.plantPot %}
-                                    oui
-                                {% else %}
-                                    non
-                                {% endif %}
-                            </div>
                         </div>
+                        <div class="deliveryChoiceLabel">
+                            {% if annonce.shipement %}
+                                <div class="deliveryInput2">
+                                    <div class="deliveryLabel2">
+                                        {{ form_widget(formDelivery.mondialRelay, {
+                                            'label': 'Mondial relay',
+                                            'id': 'checkboxShipment',
+                                            'name':'mondialRelay',
+                                            'attr':{ 'class':'checkboxDelivery'}
+                                        }) }}
+                                        {{ form_label(formDelivery.mondialRelay) }}
+                                        <img src="{{ asset('media/img/mondialRelay.png') }}" alt=""
+                                             class="deliveryIcone">
+                                    </div>
+                                    <div class="deliveryPrice2">
+                                        {% if  annonce.poids  == "0g - 500g" %}
+                                            <div class="priceLivraison"> {{ annonce.priceTotal + prixPoids }}€</div>
+                                            <input type="hidden" value="{{ prixPoids == 5.50 }}">
+                                        {% elseif  annonce.poids  == "501g - 1kg" %}
+                                            <div class="priceLivraison"> {{ annonce.priceTotal + prixPoids }}€</div>
+                                            <input type="hidden" value="{{ prixPoids == 6 }}">
+                                        {% elseif   annonce.poids  == "1.001kg - 2kg" %}
+                                            <div class="priceLivraison"> {{ annonce.priceTotal + prixPoids }}€</div>
+                                            <input type="hidden" value="{{ prixPoids == 7.50 }}">
+                                        {% elseif annonce.poids  == "2.001kg - 3kg" %}
+                                            <div class="priceLivraison"> {{ annonce.priceTotal + prixPoids }}€</div>
+                                            <input type="hidden" value="{{ prixPoids == 8 }}">
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% else %}
+                                {{ form_row(formDelivery.mondialRelay, {
+                                    'label': 'Mondial relay',
+                                    'disabled': 'true'
+                                }) }}
+                            {% endif %}
+                        </div>
+                        {% if annonce.shipement %}
+                            <div id="priceShipment">
+                                <!-- Zone dans laquelle le Widget est chargé -->
+                                <div id="Zone_Widget"></div>
+                                <!-- Balise intégrant le point relais sélectionné -->
+                                {{ form_row(formDelivery.relais,{'id':"Target_Widget",'name':'relais','value':''}) }}
+                            </div>
+                        {% endif %}
+                        {% if not app.user %}
+                            <div>
+                                <a href={{ path('registration_register') }}>
+                                    {{ form_widget(formDelivery.payer) }}
+                                </a>
+                            </div>
+                        {% else %}
+                            <div>
+                                {{ form_widget(formDelivery.payer) }}
+                            </div>
+                        {% endif %}
+                        {{ form_end(formDelivery) }}
                         <div>
-                            <h1 class='priceTotal'>{{ annonce.priceTotal }}€</h1>
                             <div class="container-all_btn_sold_editor">
                                 {% if annonce.sold and app.user.email != annonce.acheteur %}
                                     <div class="container-btn_sold_editor">
@@ -105,43 +196,18 @@
                                     <div class="container-btn_sold_editor">
                                         <a id="annonce-delete_btn" class="btn-sold_editor">Retirer l'annonce</a>
                                     </div>
-                                {% elseif not app.user %}
-                                    <div class="container-btn_sold_editor">
-                                        <a class="btn-sold_editor" href={{ path('registration_register') }}>
-                                            Acheter
-                                        </a>
-                                    </div>
-                                {% else %}
-                                    <div class="container-btn_sold_editor">
-                                        <a class="btn-sold_editor"
-                                           href={{ path('annonce_modeDeRemise', {'id': annonce.id}) }}>
-                                            Acheter
-                                        </a>
+                                    <div id="annonce-confirm_delete">
+                                        <p>Êtes-vous sûr de vouloir supprimer l'annonce ?</p>
+                                        <div class="container-confirm_answer">
+                                            <a class="answer-delete_yes"
+                                               href="{{ path('annonce_supprimer', {'annonceId': annonce.id}) }}">Oui</a>
+                                            <a class="answer-delete_no" id="annonce-answer-delete_no">Non</a>
+                                        </div>
                                     </div>
                                 {% endif %}
                             </div>
                         </div>
-                        <div id="annonce-confirm_delete">
-                            <p>Êtes-vous sûr de vouloir supprimer l'annonce ?</p>
-                            <div class="container-confirm_answer">
-                                <a class="answer-delete_yes"
-                                   href="{{ path('annonce_supprimer', {'annonceId': annonce.id}) }}">Oui</a>
-                                <a class="answer-delete_no" id="annonce-answer-delete_no">Non</a>
-                            </div>
-                        </div>
                     </div>
-                </div>
-                <div class="description">
-                    <img src="{{ asset('media/img/profil.png') }}" alt="Photo de profil default" class="pdpAnnonce">
-                    <div class="infoVendeur">
-                        <p>Vendu par : {{ annonce.user.firstName }}</p>
-                        <a href="{{ path('annonce_voirprofil',{'id': annonce.user.id}) }}">Consulter les annonces de
-                            {{ annonce.user.firstName }}.</a>
-                    </div>
-                </div>
-
-                <div class="textInfo">
-                    <p>Les informations du vendeur seront données seulement après l’achat du produit.</p>
                 </div>
             </div>
         </div>

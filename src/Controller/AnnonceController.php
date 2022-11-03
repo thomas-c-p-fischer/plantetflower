@@ -23,9 +23,15 @@ class AnnonceController extends AbstractController
 {
     //  fonction pour afficher une annonce
     #[Route('/{annonceId}', '_afficher', requirements: ['annonceId' => '\d+'])]
-    public function showAnnonce(AnnonceRepository $annonceRepository, $annonceId): Response
+    public function showAnnonce(
+        AnnonceRepository      $annonceRepository,
+                               $annonceId,
+        Request                $request,
+        EntityManagerInterface $em,
+    ): Response
     {
-
+        // récupération de toutes les annonces
+        $annoncesAll = $annonceRepository->findAll();
         // Récupération de l'annonce par son Id
         $annonce = $annonceRepository->find($annonceId);
         // Récupération de l'id de l'auteur de l'annonce
@@ -35,14 +41,58 @@ class AnnonceController extends AbstractController
         $annoncesAuthor = $annonceRepository->findBy(array('user' => $idAuthorAnnonce));
         // Total des annonces de l'auteur concernant l'annonce actuel
         $totalAnnoncesAuthor = count($annoncesAuthor);
+        //Création de la form
+        $formDelivery = $this->createForm(ModeRemiseFormType::class);
+        $formDelivery->handleRequest($request);
+        //Déclaration des variables avec les données nécessaires
+        $annoncePoids = $annonce->getPoids();
+        $buyerDelivery = $annonce->isBuyerDelivery();
+        //Variable qui va changer le prix total si mondial relay est choisi par rapport au poids
+        $prixPoids = 0;
+        if ($annoncePoids == "0g - 500g") {
+            $prixPoids = 5.50;
+        } elseif ($annoncePoids == "501g - 1kg") {
+            $prixPoids = 6;
+        } elseif ($annoncePoids == "1.001kg - 2kg") {
+            $prixPoids = 7.50;
+        } elseif ($annoncePoids == "2.001kg - 3kg") {
+            $prixPoids = 8;
+        }
+
+        //Si le formulaire est envoyé et valide à la fois
+        if ($formDelivery->isSubmitted() && $formDelivery->isValid()) {
+            //Si la checkBox mondial relay n'est pas cochée alors :
+            if ($formDelivery->get('mondialRelay')->getData() != 'checked') {
+                //le paramètre de l'entité annonce buyer_delivery sera false
+                $annonce->setBuyerDelivery(false);
+                //sinon si la checkbox mondial relay est cochée
+            } else {
+                //alors le paramètre de l'entité Annonce buyer_delivery sera true
+                $annonce->setBuyerDelivery(true);
+                //Recuperation de l'ID de point de relais choisi afin de créer l'étiquette lorsque le paiement est accepté
+                $idRelais = $formDelivery->get('relais')->getData();
+                //Cette id est placé en session afin de la récupérée dans le controller de callBack "PaiementController" dans la methode de redirection.
+                $_SESSION['idRelais'] = $idRelais;
+            }
+            //Comme buyer_delivery est un paramètre de l'entité Annonce, il nous faut persist et flush pour implémenter
+            //les changements en BDD
+            $em->persist($annonce);
+            $em->flush($annonce);
+            //Et après on redirige vers le controller de l'étape du paiement
+            return $this->redirectToRoute('annonce_paiement', compact('id', 'buyerDelivery'));
+        }
 
         $this->redirectToRoute('annonce_voirprofil', compact('idAuthorAnnonce', 'id', 'annoncesAuthor'));
         // Redirection sur l'affichage de cette annonce
-        return $this->render('annonce/annonce.html.twig', [
+        return $this->renderForm('annonce/annonce.html.twig', [
             'annonce' => $annonce,
             'annoncesAuthor' => $annoncesAuthor,
             'totalAnnoncesAuthor' => $totalAnnoncesAuthor,
-            'idAuthorAnnonce' => $idAuthorAnnonce
+            'idAuthorAnnonce' => $idAuthorAnnonce,
+            'formDelivery' => $formDelivery,
+            'prixPoids' => $prixPoids,
+            'annoncesAll' => $annoncesAll
+
         ]);
     }
 
@@ -53,7 +103,7 @@ class AnnonceController extends AbstractController
     ): Response
     {
         $user = $userRepository->findOneBy(['id' => $id]);
-        
+
         return $this->render('user_profil/voirUserProfil.html.twig', compact('id', 'user'));
     }
 
@@ -333,67 +383,6 @@ class AnnonceController extends AbstractController
         // Envoie des informations en base de donnée
         $entityManager->persist($annonce);
         $entityManager->flush();
-    }
-
-    //Controller dans lequel on choisit le mode de remise (main propre ou mondialRelay), (étape 1/2)
-    #[Route('/modeDeRemise/{id}', '_modeDeRemise')]
-    public function modeDeRemise(
-        AnnonceRepository      $annonceRepository,
-        Request                $request,
-        EntityManagerInterface $em,
-                               $id,
-    ): Response
-    {
-        //Récupération de l'annonce par son Id
-        $annonce = $annonceRepository->find($id);
-        //Création de la form
-        $form = $this->createForm(ModeRemiseFormType::class);
-        $form->handleRequest($request);
-        //Déclaration des variables avec les données nécessaires
-        $annoncePoids = $annonce->getPoids();
-        $buyerDelivery = $annonce->isBuyerDelivery();
-        //Variable qui va changer le prix total si mondial relay est choisi par rapport au poids
-        $prixPoids = 0;
-        if ($annoncePoids == "0g - 500g") {
-            $prixPoids = 5.50;
-        } elseif ($annoncePoids == "501g - 1kg") {
-            $prixPoids = 6;
-        } elseif ($annoncePoids == "1.001kg - 2kg") {
-            $prixPoids = 7.50;
-        } elseif ($annoncePoids == "2.001kg - 3kg") {
-            $prixPoids = 8;
-        }
-
-        //Si le formulaire est envoyé et valide à la fois
-        if ($form->isSubmitted() && $form->isValid()) {
-            //Si la checkBox mondial relay n'est pas cochée alors :
-            if ($form->get('mondialRelay')->getData() != 'checked') {
-                //le paramètre de l'entité annonce buyer_delivery sera false
-                $annonce->setBuyerDelivery(false);
-                //sinon si la checkbox mondial relay est cochée
-            } else {
-                //alors le paramètre de l'entité Annonce buyer_delivery sera true
-                $annonce->setBuyerDelivery(true);
-                //Recuperation de l'ID de point de relais choisi afin de créer l'étiquette lorsque le paiement est accepté
-                $idRelais = $form->get('relais')->getData();
-                //Cette id est placé en session afin de la récupérée dans le controller de callBack "PaiementController" dans la methode de redirection.
-                $_SESSION['idRelais'] = $idRelais;
-            }
-            //Comme buyer_delivery est un paramètre de l'entité Annonce, il nous faut persist et flush pour implémenter
-            //les changements en BDD
-            $em->persist($annonce);
-            $em->flush($annonce);
-            //Et après on redirige vers le controller de l'étape 2/2 du paiement
-            return $this->redirectToRoute('annonce_paiement', compact('id', 'buyerDelivery'));
-        }
-
-        return $this->renderForm("annonce/modeDeRemise.html.twig",
-            compact(
-                'annonce',
-                'prixPoids',
-                'form',
-                'id',
-            ));
     }
 
     //Controller pour le paiement d'une annonce (étape2/2)

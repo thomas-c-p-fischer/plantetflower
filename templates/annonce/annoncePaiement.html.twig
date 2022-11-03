@@ -5,14 +5,12 @@
 
 {% block body %}
     <div class="pagePaiement">
-    <div class="etape2">
-        <h1>Etape 2/2</h1>
-    </div>
+
     <div class="recapPaiement_CB">
         <div class="recapPaiement">
             <h2>Paiement</h2>
             <h3>Votre récapitulatif :</h3>
-            <p>Montant de l'achat : {{ annoncePriceOrigin }} €</p>
+            <p>Montant de l'achat : {{ annoncePriceTotal }} €</p>
             {% if buyerDelivery == true %}
                 <p>Coûts de livraison Mondial Relay :
                     {% if  annonce.poids  == "0g - 500g" %}
@@ -40,8 +38,11 @@
         </div>
 
         <div class="coordonneeBancaire">
-            <img src="{{ asset('media/img/logo-cb-visa-mastercard.jpg') }}" alt="cb visa masterCard"
-                 class="cbVisaMasterCard">
+            <div class="carteBancaire">
+                <img src="{{ asset('media/img/cb.jpg') }}" alt="carte bancaire" class="cbVisaMasterCard">
+                <img src="{{ asset('media/img/visa.jpg') }}" alt="visa" class="cbVisaMasterCard">
+                <img src="{{ asset('media/img/mastercard.jpg') }}" alt="masterCard" class="cbVisaMasterCard">
+            </div>
             <div class="cardInterne">
                 <form action="{{ cardRegistrationUrl }}" method="post">
                     <input type="hidden" name="data" value="{{ preregistrationData }}"/>

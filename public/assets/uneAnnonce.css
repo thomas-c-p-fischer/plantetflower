@@ -1,18 +1,22 @@
 .container-return {
-    margin-top: 8em;
     margin-left: 2em;
+    display: flex;
+
 }
 
 .return {
-    padding: 5px 25px;
+    padding: 10px 10px;
     background-color: #c6ffd0;
     transition: background-color 0.2s;
     color: #48945d;
     box-shadow: 0 15px 10px -15px #111;
-    font-size: 18px;
     border-radius: 15px;
     border: 2px solid #48945d;
     cursor: pointer;
+}
+
+.chevronBack {
+    width: 25px;
 }
 
 .return:hover {
@@ -23,7 +27,7 @@
 
 .fullAnnonce {
     display: flex;
-    margin-bottom: 5em;
+    margin: 0 15em 5em 15em;
 }
 
 .corpsAnnonce {
@@ -44,7 +48,10 @@
 .columnImage {
     display: flex;
     flex-direction: column;
-    width: 9%;
+    width: 8%;
+    align-content: center;
+    align-items: flex-end;
+    justify-content: space-between;
 }
 
 .mini-image {
@@ -55,11 +62,7 @@
 
 
 .ficheAnnonce {
-    background: rgba(245, 245, 245, 86%);
-    border-radius: 20px;
-    margin: 5px 5px 0 5px;
     padding: 10px 10px;
-    border: 2px solid #4a975f;
     width: 35%;
 }
 
@@ -67,53 +70,141 @@
     font-size: 15px;
 }
 
-.headTitle {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 20px;
-    text-align: left;
-}
-
 .annonceCategory {
-    background-color: #c6ffd0;
-    border-radius: 5px;
-    font-size: 18px;
-    margin: 5px;
-    width: 30%;
+    border-bottom: 2px solid #48945D;
+    width: 36em;
+    margin-top: 0.5em;
+    display: flex;
 }
 
 #annonceCategory {
-    padding: 7px 17px;
+    margin-bottom: 0.5em;
 }
 
 .annonceDescription {
     color: black;
     text-align: justify;
-    margin: 1em 5em 0.5em 1em;
+    margin: 1em 5em 0 0;
 }
 
-.delivery_mod {
+.bonASavoir {
+    margin-bottom: 2em;
+    margin-top: 1em;
+}
+
+.headInfo {
     display: flex;
+    align-items: center;
+    margin-right: 1em;
+}
+
+.headInfo_icone {
+    width: 2em;
+    margin-bottom: 1em;
+    margin-right: 1.5em;
+}
+
+.deliveryMode {
+    display: flex;
+    flex-direction: column;
+    width: 95%;
+}
+
+.deliveryChoiceLabel {
+    border: 2px solid;
+    border-radius: 0.5em;
+    margin-bottom: 7px;
+    width: 37em;
+}
+
+.deliveryLabel2 > label {
+    margin-right: 7em;
+}
+
+.deliveryInput1 {
+    display: flex;
+    margin-left: 18px;
+}
+
+.deliveryInput2 {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    height: 66px;
+}
+
+.deliveryPrice1 {
+    display: flex;
+    align-items: center;
+    font-size: 2em;
+    margin-left: 2.8em;
+}
+
+.deliveryPrice2 {
+    display: flex;
+    align-items: center;
+    font-size: 2em;
 
 }
 
-.deliveryBackground {
-    background-color: #c6ffd0;
-    border-radius: 5px;
-    font-size: 18px;
-    margin: 5px;
-    width: 39%;
+.deliveryLabel1 {
+    display: flex;
+    align-items: center;
+    width: 50%;
+    margin-right: 8em;
+}
+
+.deliveryLabel2 {
+    display: flex;
+    align-items: center;
+    width: 40%;
+    margin-right: 12.3em;
+}
+
+.deliveryLabel label {
+    width: 53%;
+}
+
+.checkboxDelivery {
+    width: 8%;
+}
+
+.deliveryIcone {
+    width: 45px;
+    height: 38px;
+    margin-top: 4px;
+}
+
+
+.labelMainPropre {
+    width: 15%;
+    height: 20px;
+}
+
+.mondialRelay {
+    width: 15%;
+    height: 20px;
+}
+
+
+#mode_remise_form_payer {
+    border-radius: 0.5em;
+    background: #C6FFD0;
+    border: 2px solid;
+    font-size: 17px;
+    width: 35em;
+    height: 3em;
+    cursor: pointer;
 }
 
 .potPlant {
-    margin-left: 5px;
-    font-size: 20px;
+    margin-left: 2em;
     font-weight: bold;
+
 }
 
-.delivery_mod_choice {
-    width: 79%;
+#priceShipment {
+    width: 37.6em;
 }
 
 .container-all_btn_sold_editor {
@@ -227,16 +318,11 @@
     font-weight: bold;
 }
 
-.infoVendeur a:hover {
-    color: #48945d;
-}
-
-.infoVendeur {
-    margin-top: 17px;
-}
-
-.pdpAnnonce {
-    width: 5em;
+.suggestionAnnonce {
+    margin-left: 16em;
+    border-bottom: 2px solid #48945D;
+    width: 25%;
+    font-size: 20px;
 }
 
 /*RESPONSIVE DESIGN*//*RESPONSIVE DESIGN*//*RESPONSIVE DESIGN*//*RESPONSIVE DESIGN*//*RESPONSIVE DESIGN*//*RESPONSIVE DESIGN*//*RESPONSIVE DESIGN*/
@@ -244,7 +330,6 @@
 @media screen and (max-width: 425px) {
 
     .container-return {
-        margin-top: 4em;
         margin-left: 1em;
     }
 
@@ -261,8 +346,9 @@
     }
 
     .fullAnnonce {
-        margin-top: 0;
+        margin: 0;
         display: flex;
+
     }
 
     .corpsAnnonce {
@@ -272,6 +358,69 @@
         flex-direction: column;
         flex-wrap: wrap;
     }
+
+    .annonceCategory {
+        border-bottom: 2px solid #48945D;
+        width: 25em;
+        margin-top: 0.5em;
+        display: flex;
+    }
+
+    .deliveryChoiceLabel {
+        border: 2px solid;
+        border-radius: 0.5em;
+        margin-bottom: 7px;
+        width: 25em;
+    }
+
+    .deliveryInput1 {
+        display: flex;
+        margin-left: 7px;
+    }
+
+    .deliveryPrice1 {
+        display: flex;
+        align-items: center;
+        font-size: 2em;
+        margin-left: 0;
+    }
+
+    .deliveryLabel2 {
+        display: flex;
+        align-items: center;
+        width: 40%;
+        margin-right: 8.3em;
+    }
+
+    .deliveryLabel > label {
+        width: 78%;
+        margin-left: 2em;
+    }
+
+    .deliveryLabel2 > label {
+        margin-right: 1em;
+    }
+
+    #mode_remise_form_payer {
+        border-radius: 0.5em;
+        background: #C6FFD0;
+        border: 2px solid;
+        font-size: 17px;
+        width: 23.8em;
+        height: 3em;
+        cursor: pointer;
+    }
+
+    #priceShipment {
+        width: 24.8em;
+    }
+
+    .annonceDescription {
+        color: black;
+        text-align: justify;
+        margin: 0.5em 0 0 0;
+    }
+
 
     .imagePrincipale {
         width: max-content;
@@ -292,8 +441,11 @@
         display: flex;
         justify-content: space-evenly;
         margin-top: 37px;
-        flex-direction: column;
+        flex-direction: row;
+        margin-left: 1em;
+        width: 60%;
     }
+
 
     .ficheAnnonce {
         width: 90%;
@@ -301,7 +453,7 @@
 
 }
 
-@media screen and (max-width: 768px) and (min-width: 430px) {
+@media screen and (max-width: 768px) and (min-width: 500px) {
     /*annonces.twig.html*/
     .contenuProducts {
         grid-template-columns: repeat(3, 1fr);
@@ -312,7 +464,7 @@
     }
 
     .container-return {
-        margin-top: 4em;
+        margin-top: 0.5em;
         margin-left: 1em;
     }
 
@@ -333,16 +485,14 @@
     }
 
     .fullAnnonce {
-        margin-top: 0;
         display: flex;
+        margin: 0 2em 5em 9.5em;
     }
 
     .corpsAnnonce {
         display: flex;
-        justify-content: space-evenly;
-        margin-top: 37px;
-        flex-direction: row;
-        flex-wrap: wrap;
+        flex-direction: column;
+
     }
 
     .imagePrincipale {
@@ -350,8 +500,7 @@
     }
 
     #imagePrincipale_self {
-        width: 20em;
-        margin-bottom: 7px;
+        width: 30em;
     }
 
     .mini-image {
@@ -367,7 +516,66 @@
     }
 
     .ficheAnnonce {
-        width: 90%;
+        width: 30em;
     }
+
+    .annonceCategory {
+        border-bottom: 2px solid #48945D;
+        width: 30em;
+        margin-top: 0.5em;
+        display: flex;
+    }
+
+    .deliveryChoiceLabel {
+        border: 2px solid;
+        border-radius: 0.5em;
+        margin-bottom: 7px;
+        width: 30em;
+    }
+
+    .deliveryInput1 {
+        display: flex;
+        margin-left: 7px;
+    }
+
+    .deliveryPrice1 {
+        display: flex;
+        align-items: center;
+        font-size: 2em;
+        margin-left: 0;
+    }
+
+    .deliveryLabel2 {
+        display: flex;
+        align-items: center;
+        width: 40%;
+        margin-right: 8.3em;
+    }
+
+    .deliveryLabel2 > label {
+        margin-right: 3em;
+    }
+
+
+    #mode_remise_form_payer {
+        border-radius: 0.5em;
+        background: #C6FFD0;
+        border: 2px solid;
+        font-size: 17px;
+        width: 28.6em;
+        height: 3em;
+        cursor: pointer;
+    }
+
+    #priceShipment {
+        width: 30em;
+    }
+
+    .annonceDescription {
+        color: black;
+        text-align: justify;
+        margin: 0.5em 0 0 0;
+    }
+
 
 }
