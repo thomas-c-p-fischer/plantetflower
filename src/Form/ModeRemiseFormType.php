@@ -16,13 +16,9 @@ class ModeRemiseFormType extends AbstractType
         $builder
 //            ->setAction('annonce_paiement')
             ->add('mainPropre', CheckboxType::class, ['required' => false, 'attr' => ['multiple' => false]])
+            ->add('mainPropre2', HiddenType::class, ['label' => 'Remise en main propre'])
             ->add('mondialRelay', CheckboxType::class, ['required' => false, 'attr' => ['multiple' => false]])
-            ->add('payer', SubmitType::class,
-                [
-                    'attr' => [
-                        'value' => 'Payer'
-                    ]
-                ])
+            ->add('payer', SubmitType::class, ['label' => 'PAYER', 'attr' => ['value' => 'Payer']])
             ->add('relais', HiddenType::class);
     }
 
