@@ -44,15 +44,6 @@
                         </div>
                         <div class="input-column">
                             {# <input  type="text" class="input-modif"/> #}
-                            {{ form_row(form.streetnumber, {
-                                'label': "N°rue :",
-                                'attr': {
-                                    class: 'input-modif'
-                                }
-                            } ) }}
-                        </div>
-                        <div class="input-column">
-                            {# <input  type="text" class="input-modif"/> #}
                             {{ form_row(form.address, {
                                 'label': "Adresse",
                                 'attr': {
@@ -98,17 +89,8 @@
                         </div>
                         <div class="input-column">
                             {# <input  type="text" class="input-modif"/> #}
-                            {{ form_row(form.sex, {
+                            {{ form_row(form.gender, {
                                 'label': "Civilité :",
-                                'attr': {
-                                    class: 'input-modif'
-                                }
-                            } ) }}
-                        </div>
-                        <div class="input-column">
-                            {# <input  type="text" class="input-modif"/> #}
-                            {{ form_row(form.status, {
-                                'label': "Status :",
                                 'attr': {
                                     class: 'input-modif'
                                 }
@@ -134,13 +116,12 @@
                         </div>
                     </div>
                     <div class="btn-edit">
-                        {# {{ form_row(form.captcha, {
-                                        'attr': {
-                                            class: 'captcha'
-                                        }
-                                    } ) }} #}
-                        <button class="btn-green" type="submit">Valider</button>
-                        <button class="btn-red"><a href={{ path('user_profil') }}>Annuler</a></button>
+                        <a href="{{ path('user_profil',{ 'id' : user.id }) }}" class="btn-green">
+                            <button class="btn-green" type="submit">Valider</button>
+                        </a>
+                        {#                        <a href={{ path('user_profil', {'id':user.id}) }}> #}
+                        {#                            <button class="btn-red">Annuler</button> #}
+                        {#                        </a> #}
                     </div>
                 </div>
             </div>
