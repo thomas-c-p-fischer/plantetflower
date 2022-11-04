@@ -8,6 +8,7 @@ use App\Repository\AnnonceRepository;
 use App\Repository\ImageRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
@@ -37,6 +38,9 @@ class HomeController extends AbstractController
         // Récupération uniquement des annonces non-vendu.
         $annonces = $annonceRepository->findBy(array('sold' => 0));
 
+        // Duplication de cette même variable pour une nouvelle qui sera uniquement utilisé pour le script.
+        $annoncesForScript = $annonces;
+
         // Si le formulaire est envoyé et valide à la fois.
         if ($form->isSubmitted() && $form->isValid()) {
 
@@ -46,7 +50,7 @@ class HomeController extends AbstractController
             // Redirection sur la page des annonces avec la recherche de l'utilisateur.
             return $this->redirectToRoute("home_annonces", compact('title'));
         }
-        return $this->renderForm('home/homepage.html.twig', compact('annonces', 'form'));
+        return $this->renderForm('home/homepage.html.twig', compact('annonces','annoncesForScript', 'form'));
     }
 
     // Route de la page annonces.
@@ -64,23 +68,65 @@ class HomeController extends AbstractController
         $form = $this->createForm(SearchAnnonceType::class);
         $form->handleRequest($request);
 
-        // Récupération uniquement des annonces non-vendu.
+        // Récupération uniquement des annonces non-vendu qui sera utilisé pour le script.
         $annonces = $annonceRepository->findBy(array('sold' => 0));
 
-        // Si le formulaire n'est pas envoyé ce qui est le cas dans le premier passage dans cette fonction.
+        // Duplication de cette même variable pour une nouvelle qui sera uniquement utilisé pour le script.
+        $annoncesForScript = $annonces;
+
+        // Total de toutes les annonces non-vendus.
+        $totalAnnonces = count($annonces);
+
+        // Si le formulaire n'est pas envoyé ce qui est le cas dans le premier passage de cette fonction.
         if (!$form->isSubmitted()) {
+
             // Si la recherche effectuer par l'utilisateur dans la homepage existe.
             if (isset($_GET['title'])) {
+
                 // Récupération de cette recherche.
                 $title = $_GET['title'];
+
                 // Utilisation de cette recherche dans le formulaire où il sera placé au même endroit dans cette page.
                 $form->get('title')->setData($title);
+
+                // Récupération des annonces non-vendu dont le titre correspond à la recherche de l'utilisateur.
+                $annonces = $annonceRepository->findBy(array('sold' => 0, 'title' => $title));
             }
+
+            // Si le formulaire est envoyé.
+        } else {
+
+            // Récupération de la recherche de l'utilisateur.
+            $title = $form->get('title')->getData();
+
+            // Récupération des annonces non-vendu dont le titre correspond à la recherche de l'utilisateur.
+            $annonces = $annonceRepository->findBy(array('sold' => 0, 'title' => $title));
         }
 
-        // Total de toutes les annonces.
-        $totalAnnonces = count($annonces);
-        return $this->renderForm('home/annonces.html.twig', compact('annonces', 'totalAnnonces', 'form'));
+        // Total de toutes les annonces non-vendus correspondant ou non à la recherche de l'utilisateur selon le cas.
+        $totalAnnoncesFound = count($annonces);
+
+        // Si il n'y a pas d'annonce trouvé.
+        if ($totalAnnoncesFound == 0) {
+
+            // Récupération des annonces non-vendu.
+            $annonces = $annonceRepository->findBy(array('sold' => 0));
+
+            // Si l'utilisateur à saisie une recherche
+            if ($form->get('title')->getData() != '') {
+
+                // Utilisation du message d'erreur pour indiquer qu'aucune annonce n'a été trouvé.
+                $form->addError(new FormError("Aucune annonce n'a été trouvé pour votre recherche..."));
+            }
+
+            // Sinon si l'utilisateur n'a rien saisie pour la recherche.
+        } elseif ($form->get('title')->getData() == '') {
+
+            // Le nombre d'annonces trouvées est de 0.
+            $totalAnnoncesFound = 0;
+        }
+
+        return $this->renderForm('home/annonces.html.twig', compact('annonces', 'totalAnnonces','totalAnnoncesFound','annoncesForScript','form'));
     }
 
     // Route de la page À propos.
@@ -93,21 +139,20 @@ class HomeController extends AbstractController
     // Route de la page contact.
     #[Route('/contact', name: '_contact')]
     public function contact(
-        Request $request,
+        Request         $request,
         MailerInterface $mailer
     ): Response
     {
         $form = $this->createForm(ContactType::class);
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid())
-        {
+        if ($form->isSubmitted() && $form->isValid()) {
             $contactFormData = $form->getData();
             $message = (new Email())
                 ->from($contactFormData['email'])
                 ->to('plantetflower@gmail.com')
                 ->subject('Message de contact')
                 ->text(
-                    'Expéditeur : '.$contactFormData['email'].\PHP_EOL.
+                    'Expéditeur : ' . $contactFormData['email'] . \PHP_EOL .
                     $contactFormData['message'], 'text/plain'
                 );
             $mailer->send($message);
@@ -116,7 +161,7 @@ class HomeController extends AbstractController
         }
 
         return $this->renderForm('home/contact.html.twig',
-        compact('form'));
+            compact('form'));
     }
 
     // Route de la page FAQ.
