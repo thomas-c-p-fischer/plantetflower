@@ -94,6 +94,10 @@
         flex-direction: column;
     }
 
+    .contactTitle{
+        margin-left: 3%;
+    }
+
     .plantetflower{
         margin-top: 4%;
         margin-left:25%;
