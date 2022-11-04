@@ -1,0 +1,107 @@
+.welcomeProfil {
+    text-align: center;
+    margin-top: 2em;
+}
+
+.block_profil {
+    background-color: rgba(255, 255, 255, 0.5);
+    border: 1px solid;
+    box-shadow: 1px 0 13px 0 #000000ba;
+    position: relative;
+    display: flex;
+    height: 10em;
+    margin: 2em 30em 0 33em;
+    border-radius: 0.5em;
+}
+
+.photoProfil {
+    display: flex;
+    justify-content: center;
+    width: 50%;
+    margin-top: 2em;
+}
+
+.imgProfilUser {
+    width: 6em;
+    position: absolute;
+    border: 2px solid black;
+    border-radius: 3em;
+}
+
+.name_Firstname_user {
+    display: flex;
+    margin-top: 3em;
+    flex-wrap: wrap;
+}
+
+.villeVendeur {
+    margin-top: 10px;
+}
+
+.name_User {
+    margin-right: 2em;
+    font-size: 1.5em;
+}
+
+.enVenteEgalement {
+    margin: 2em 80em 2em 5em;
+    border-bottom: 2px solid green;
+    position: relative;
+}
+
+.enVenteEgalement > h2 {
+    margin-bottom: 15px;
+}
+
+.allCards {
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: 33em;
+    margin-right: 28em;
+}
+
+.container_annonce_card {
+    border: 1px solid;
+    border-radius: 0.5em;
+    margin: 0 1em 2em 0;
+    /* background-color: rgb(105 223 91 / 14%); */
+    box-shadow: 1px 0 13px 0 #193517a1;
+}
+
+.container_annonce_card > a {
+    text-decoration: none;
+
+}
+
+.imageAnnonce {
+    width: 200px;
+    height: 150px;
+    display: flex;
+    flex-direction: row;
+    border-bottom: 1px solid;
+    color: black;
+}
+
+.imageAnnonce > img {
+    margin-bottom: 5px;
+
+}
+
+.nomVente {
+    color: black;
+    font-weight: bold;
+    font-size: 1.2em;
+    text-align: center;
+}
+
+.prix_annonce {
+    font-weight: bold;
+    font-size: 1.5em;
+    color: darkolivegreen;
+    text-align: center;
+}
+
+.livraison {
+    text-align: center;
+    font-size: 15px;
+}
