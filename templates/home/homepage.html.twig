@@ -18,7 +18,9 @@
         <div class="container-search">
             {{ form_start(form, {'attr': {'class': 'search-formulaire'}} ) }}
             <div class="search_title">
-                {{ form_row(form.title) }}
+                {{ form_row(form.title,{
+                    'name': 'title'
+                }) }}
             </div>
             <div class="search_btn">
                 {{ form_row(form.Rechercher) }}
@@ -26,7 +28,7 @@
             {{ form_end(form) }}
         </div>
         <div class="container-slideshow">
-            {% for annonce in annoncesAll %}
+            {% for annonce in annonces %}
                 {% if annonce.sold == false %}
                     <a class="mySlides"
                        data-ref={{ annonce.id }} href={{ path('annonce_afficher', {'annonceId': annonce.id}) }}>
@@ -56,6 +58,9 @@
                                             Livraison
                                         </p>
                                     {% endif %}
+                                </div>
+                                <div class="container-more">
+                                    <p class="more">+ d'infos</p>
                                 </div>
                             </div>
                         </div>

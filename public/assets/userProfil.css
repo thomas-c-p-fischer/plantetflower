@@ -86,10 +86,10 @@ p.message_text {
     text-indent: 10px;
 }
 
-label {
+.container_profil label {
     color: black;
     text-align: left;
-    padding: 20px 30px 10px 35px;
+    padding: 10px 30px;
     font-size: 17px;
 }
 

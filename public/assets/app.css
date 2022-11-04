@@ -7,6 +7,10 @@
     padding: 0;
 }
 
+a {
+    text-decoration: none;
+}
+
 header {
     display: grid;
     grid-area: header;
@@ -30,6 +34,7 @@ main {
     width: 100%;
     align-items: center;
     margin: 0;
+    overflow-x: hidden;
 }
 
 /* Navbar */
@@ -375,11 +380,6 @@ footer {
 
     .list-mains_pages a {
         margin: 5px 1px;
-    }
-
-    .total-annonce {
-        width: 8em;
-        margin-left: 39px;
     }
 
     footer {
