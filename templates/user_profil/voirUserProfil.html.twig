@@ -3,19 +3,59 @@
 
 {% endblock %}
 {% block body %}
-    <div class='box_name'>
-        <div class="infos">
-            <p class="nom">Nom :
-                <span class="my_info">{{ user.lastName }}</span></p>
-        </div>
-
-        <div class="infos">
-            <p class="prenom">Prénom :
-                <span class="my_info">{{ user.firstname }}</span></p>
-        </div>
+    <div class="welcomeProfil">
+        <h2>Bienvenue sur le profil de {{ user.firstName }}</h2>
     </div>
-   
+    <div class="block_profil">
+        <div class="photoProfil">
+            <img src="{{ asset('media/img/profil.png') }}" alt="photo de profil" class="imgProfilUser">
+        </div>
+        <div class="name_Firstname_user">
+            <div class="name_User">
+                <h4> Prénom : {{ user.firstName }}</h4>
+                <div class="villeVendeur">
+                    <h5> Ville : {{ user.city | upper }}</h5>
+                </div>
+            </div>
+            <div class="name_User">
+                <h4>Nom : {{ user.lastName | upper }}</h4>
+            </div>
+            <div>
+                <p>👉️Les informations du vendeur sont uniquement visible lors d'un achat.👈️</p>
+            </div>
+        </div>
 
+    </div>
+
+    <div class="enVenteEgalement">
+        <h2>En vente également : </h2>
+    </div>
+    <div class="allCards">
+        {% for annonce in user.annonces %}
+            <div class="container_annonce_card">
+                <a class="img-annonce-flex" href={{ path('annonce_afficher', {'annonceId': annonce.id}) }}>
+                    <div class="imageAnnonce">
+                        {% for image in annonce.images|slice(0,1) %}
+                            <img src="{{ asset('/uploads/'~ image.name) }}" alt="Image annonce"
+                                 class="imageCardAnnonces"/>
+                        {% endfor %}
+                    </div>
+                    <div class="">
+                        <div class="nomVente">{{ annonce.title | upper }}</div>
+                        <p class="prix_annonce">
+                            {{ annonce.priceTotal }}€</p>
+                    </div>
+                    <div class="livraison">
+                        {% if annonce.shipement == true %}
+                            <p>Livraison possible</p>
+                        {% else %}
+                            <p>Remise en main propre</p>
+                        {% endif %}
+                    </div>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
 {% endblock %}
 
 
