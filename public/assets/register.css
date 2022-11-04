@@ -4,7 +4,7 @@
     position: relative;
 }
 
-.container-register h2 {
+.container-register h1 {
     font-size: 30px;
     color: #4C9A62;
     font-family: "Montserrat", sans-serif;
@@ -69,15 +69,15 @@
     margin-bottom: 1%;
 }
 
-input::-moz-placeholder {
+.container-register input::-moz-placeholder {
     color: #000;
 }
 
-input::placeholder {
+.container-register input::placeholder {
     color: #000;
 }
 
-input {
+.container-register input {
     background: #c6ffd0;
     border-radius: 20px;
     text-align: center;

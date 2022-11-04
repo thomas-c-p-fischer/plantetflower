@@ -8,6 +8,25 @@
     color: #48945d;
 }
 
+.annonceForm input::-moz-placeholder {
+    color: #000;
+}
+
+.annonceForm input::placeholder {
+    color: #000;
+}
+
+.annonceForm input {
+    background: #c6ffd0;
+    border-radius: 20px;
+    text-align: center;
+    border: none;
+    height: 40px;
+    font-family: "ABeeZee", sans-serif;
+    font-size: 13px;
+    width: 95%;
+}
+
 .container-form_cea-img_cea {
     display: flex;
     flex-direction: row;
@@ -132,7 +151,7 @@
     margin: 20px 0;
 }
 
-h3 {
+.annonceForm h3 {
     display: flex;
     justify-content: start;
     margin: 0 0 10px 20px;

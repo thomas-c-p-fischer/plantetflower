@@ -4,41 +4,49 @@
     Annonces - Plant et Flower
 {% endblock %}
 
+{% block js %}
+    <script defer src={{ asset('assets/Javascript/annonces.js') }}></script>
+{% endblock js %}
+
 {% block body %}
     <div class="containerGlobaleProducts">
-        {# Bannière #}
-        <div class="container_imgsearchProducts">
-            <h1>
-                Donnez à vos végétaux une seconde
-                vie et achetez-en de nouveaux
-            </h1>
-            <div class="container-btn_create_annonce">
+        <div class="globaleProducts_head">
+            <div class="annonces-container-title_searchProducts">
+                <h1>
+                    Donnez à vos végétaux une seconde
+                    vie et achetez-en de nouveaux
+                </h1>
+                <div class="annonces-container-search">
+                    {{ form_start(form, {'attr': {'class': 'search-formulaire'}} ) }}
+                    <div class="annonces-search_title">
+                        {{ form_row(form.title, {
+                            'name': 'title',
+                            'id': 'inputSearch',
+                        }) }}
+                    </div>
+                    <div class="annonces-search_btn">
+                        {{ form_row(form.Rechercher, {
+                            'onclick': 'getValue();'
+                        }) }}
+                    </div>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+            <div class="annonces-container-btn_create">
                 {% if app.user and app.user.owner %}
                     <a class="btn-create_annonce"
                        href="{{ path('annonce_ajouter') }}">Créer une annonce</a>
                 {% endif %}
             </div>
-            {#            <div class="container-search"> #}
-            {#                {{ form_start(form, {'attr': {'class': 'search-formulaire'}} ) }} #}
-            {#                <div class="search_title"> #}
-            {#                    {{ form_row(form.title) }} #}
-            {#                </div> #}
-            {#                <div class="search_btn"> #}
-            {#                    {{ form_row(form.Rechercher) }} #}
-            {#                </div> #}
-            {#                {{ form_end(form) }} #}
-            {#            </div> #}
-
-            <div class="total-annonce">
-                {#                    changer le premier total par le nombre total d'annonces affichées selon le filtre ou la pagination sélectionner #}
-                {{ totalAnnonces }} annonces sur {{ totalAnnonces }}
-            </div>
-            <div class="navigation">
-                {#                    pagination à installer avec kplabs #}
-                {#                    {{ knp_pagination_render(annonces) }} #}
-            </div>
         </div>
-        {# Fin bannière #}
+        <div class="total-annonce">
+            {#                    changer le premier total par le nombre total d'annonces affichées selon le filtre ou la pagination sélectionner #}
+            {{ totalAnnonces }} annonces sur {{ totalAnnonces }}
+        </div>
+        {#            <div class="navigation"> #}
+        {#                    pagination à installer avec kplabs #}
+        {#                    {{ knp_pagination_render(annonces) }} #}
+        {#            </div> #}
         <div class="contenuProducts">
             {% for annonce in annonces %}
                 {% if annonce.confirm == false %}

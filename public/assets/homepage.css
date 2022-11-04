@@ -42,6 +42,23 @@
     margin: 20px auto;
 }
 
+.search_title {
+    grid-area: titre-search;
+    margin: 5px;
+}
+
+.container-search input::-moz-placeholder {
+    color: #000;
+}
+
+.container-search input::placeholder {
+    color: #000;
+}
+
+.search_btn {
+    grid-area: bouton-search;
+}
+
 .container-slideshow {
     display: flex;
     justify-content: center;
@@ -91,18 +108,19 @@
     top: 5px;
     right: 5px;
     background-color: rgba(255, 245, 110, 0.89);
-    color: green;
+    color: #48945D;
     border-radius: 15px;
     text-align: center;
     padding: 0 10px;
 }
 
 .container-text_card {
+    margin-top: 5px;
     font-family: 'Montserrat', sans-serif;
     font-size: 1rem;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: start;
     align-items: center;
     width: 100%;
     height: 119px;
@@ -111,7 +129,6 @@
 }
 
 .container-plant_name {
-    margin-top: 5px;
     display: flex;
     justify-content: space-around;
     flex-direction: row;
@@ -128,16 +145,16 @@
     border-radius: 15px;
     width: 90%;
     font-size: 14px;
-    color: green;
+    color: #48945D;
     font-weight: bold;
     text-align: center;
 }
 
 .container-price {
-    margin-bottom: 5px;
-    width: 100%;
     display: flex;
-    justify-content: center
+    width: 100%;
+    height: 20px;
+    justify-content: center;
 }
 
 .price {
@@ -145,9 +162,8 @@
     white-space: nowrap;
     overflow: hidden;
     border-radius: 15px;
-    width: 60%;
-    background-color: white;
-    color: green;
+    color: #48945D;
+    font-size: 16px;
     font-weight: bold;
     text-align: center;
 }
@@ -158,7 +174,7 @@
     justify-content: space-around;
     align-items: center;
     width: 90%;
-    height: 55px;
+    height: 50px;
 }
 
 .container-hand_delivery_shipment p {
@@ -171,13 +187,30 @@
     border-radius: 15px;
     width: 90%;
     background-color: #fefbc6;
-    color: green;
+    color: #48945D;
     text-align: center;
 }
 
 .container-all_plants {
     display: flex;
     justify-content: center;
+}
+
+.container-more {
+    width: 100%;
+    margin-top: 2px;
+    background-color: #48945D;
+    text-align: center;
+}
+
+.container-more:hover {
+    background-color: rgba(72, 148, 93, 0.78);
+    transition: background-color 0.2s;
+}
+
+.more {
+    color: #ffffff;
+    font-size: 20px;
 }
 
 #first-container-all_plants {
@@ -191,7 +224,7 @@
 }
 
 .container-all_plants a {
-    background-color: #48945d;
+    background-color: #48945D;
     color: white;
     padding: 10px 50px;
     transition: background-color 0.2s;

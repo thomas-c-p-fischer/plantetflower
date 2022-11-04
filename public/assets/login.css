@@ -10,6 +10,25 @@
     position: relative;
 }
 
+.container-login input::-moz-placeholder {
+    color: #000;
+}
+
+.container-login input::placeholder {
+    color: #000;
+}
+
+.container-login input {
+    background: #c6ffd0;
+    border-radius: 20px;
+    text-align: center;
+    border: none;
+    height: 40px;
+    font-family: "ABeeZee", sans-serif;
+    font-size: 13px;
+    width: 95%;
+}
+
 .container-login h2 {
     margin: 20px;
 
