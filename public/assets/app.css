@@ -344,10 +344,10 @@ footer {
         box-shadow: 0 15px 10px -15px #111;
     }
 
-    .list-mains_pages a:hover {
-        background-color: rgba(72, 148, 93, 0.78);
-        transition: background-color 0.2s;
-    }
+    /*.list-mains_pages a:hover {*/
+    /*    background-color: rgba(72, 148, 93, 0.78);*/
+    /*    transition: background-color 0.2s;*/
+    /*}*/
 
     footer {
         display: flex;

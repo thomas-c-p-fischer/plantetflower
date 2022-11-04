@@ -1,99 +1,85 @@
 @import url('https://fonts.googleapis.com/css2?family=Quicksand&display=swap');
 
+.contactAll{
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 3%;
+    margin-top: 5%
+}
+
 .contactTitle{
     font-family: 'Quicksand', sans-serif;
     color: rgb(73,148,93);
-    font-size: 120%;
-    margin-left: 2%;
-    margin-top: 9%;
-}
-
-.contactAll{
-    display: flex;
-}
-
-.imgContact{
-    width: 30%;
-    height: 30%;
-    margin-top: 3%;
-    margin-right: 13.5%;
+    margin-left: 10%;
+    margin-right: 16%;
+    align-self: center;
 }
 
 .formContact{
     display: flex;
     flex-direction: column;
     text-align: center;
-    margin-bottom: 5%;
-    margin-top: 1%;
+    justify-content: flex-end;
 }
 
-.nom{
+.mailContact{
+    margin-bottom: 16%;
+}
+
+.nom, .email{
     margin-bottom: 1%;
     width: 100%;
     align-self: center;
 }
 
-.formNom{
-    border: 1px solid rgba(17, 17, 17, 0.35);
-    background-color: rgba(198, 255, 208, 0.65);
-    border-radius: 20px;
-    text-align: center;
-    height: 40px;
+.formNom, .formEmail, .formMessage{
+    background-color: transparent;
+    border: 0;
+    border-bottom: 1px solid #19191E;
+    -webkit-appearance: none;
+    border-radius: 0;
+    font-size: 15px;
+    padding-left: 0;
+    color: #333;
+    line-height: 1.9;
+    display: block;
+    width: 300%;
+    font-weight: 300;
+    transition: all 0.3s ease-in-out;
+    resize: none;
     font-family: 'Quicksand', sans-serif;
-    font-size: 13px;
-    width: 95%;
+    text-decoration: none;
 }
 
-.formNom::-moz-placeholder{
-    color:#111;
+.formNom:focus, .formEmail:focus, .formMessage:focus{
+    outline: none;
 }
 
-.formNom::placeholder{
-    color:#111;
-}
-
-.email{
-    width: 100%;
-    align-self: center;
-}
-
-.formEmail{
-    border: 1px solid rgba(17, 17, 17, 0.35);
-    background-color: rgba(198, 255, 208, 0.65);
-    border-radius: 20px;
-    text-align: center;
-    height: 40px;
-    font-family: 'Quicksand', sans-serif;
-    font-size: 13px;
-    width: 95%;
-}
-
-.formEmail::placeholder{
+.formEmail::placeholder, .formNom::placeholder, .formMessage::placeholder{
     color:#111;
     font-family: 'Quicksand', sans-serif;
 }
 
-.formEmail::-moz-placeholder{
+.formEmail::-moz-placeholder, .formMessage::-moz-placeholder, .formNom::-moz-placeholder{
     color:#111;
     font-family: 'Quicksand', sans-serif;
 }
 
 .formMessage{
-    background-color: rgba(198, 255, 208, 0.65);
-    color: rgb(92, 136, 104);
-    font-family: 'Quicksand', sans-serif;
+    margin-bottom: 10%;
 }
 
 .envoyer button{
-    background-color: rgba(72, 148, 93, 0.8);
-    color: white;
-    padding: 10px 50px;
-    transition: background-color 0.2s;
-    box-shadow: 0 15px 10px -15px rgb(17, 17, 17);
-    font-size: 15px;
-    border-radius: 25px;
+    border: 1px solid #000;
+    color: #000;
+    background-color: transparent;
+    width: 100%;
+    display: inline-block;
+    padding: 0px 10px;
+    font-size: 12px;
+    text-transform: uppercase;
+    line-height: 34px;
     cursor: pointer;
-    border: 2px solid rgba(72, 148, 93, 0.8);
     font-family: 'Quicksand', sans-serif;
 }
 
@@ -105,14 +91,29 @@
 @media only screen and (max-width:768px){
     .contactAll{
         display: flex;
-        justify-content: center;
+        flex-direction: column;
     }
 
-    .imgContact{
-        display: none;
+    .plantetflower{
+        margin-top: 4%;
+        margin-left:25%;
     }
 
-    .nom{
-        width: 100%;
+    .mailContact{
+        margin-left:25%;
+        margin-bottom: 3%;
+    }
+
+    .formNom, .formEmail, .formMessage{
+        width: 50%;
+        margin-left:25%;
+    }
+
+    .formMessage{
+        margin-bottom: 1%;
+    }
+
+    .envoyer button{
+        width: 50%;
     }
 }

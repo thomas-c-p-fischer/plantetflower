@@ -1,34 +1,40 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}
-    Contact - Plant&Flower
-{% endblock %}
+{% block title %}Contact - Plant&Flower{% endblock %}
 
 {% block body %}
-    <h1 class="contactTitle">Vous avez des questions, des suggestions, toute l'équipe est disponible pour vous répondre !</h1>
     <div class="contactAll">
-        <img class="imgContact" src="{{ asset('media/img/contact.png') }}" alt="contact plantetflower">
-        <div class="formContact">
-            <div class="nom">
-                {{ form_start(form) }}
-                {{ form_row(form.nom, {'label': false, 'attr':
-                    {'placeholder': 'Nom', 'class': 'formNom'}}) }}
+        <h1 class="contactTitle">Vous avez des questions,
+            <br>
+            des suggestions,
+            <br>
+            toute l'équipe est disponible
+            <br>
+            pour vous répondre !</h1>
+        <div class="address&Form">
+            <p class="plantetflower">Plant&Flower®</p>
+            <p class="mailContact">contact@plantetflower.com</p>
+            <div class="formContact">
+                <div class="nom">
+                    {{ form_start(form) }}
+                    {{ form_row(form.nom, {'label': false, 'attr':
+                        {'placeholder': 'Nom', 'class': 'formNom'}}) }}
+                </div>
+                <div class="email">
+                    {{ form_row(form.email, {'label': false, 'attr':
+                        {'placeholder': 'Email', 'class': 'formEmail'}}) }}
+                </div>
+                <div class="message">
+                    {{ form_row(form.message, {'label': false, 'attr':
+                        {'placeholder': 'Message', 'class': 'formMessage'}}) }}
+                </div>
+                <div class="envoyer">
+                    <button type="submit" class="btn_envoyer">
+                        Envoyer
+                    </button>
+                </div>
+                {{ form_end(form) }}
             </div>
-            <div class="email">
-                {{ form_row(form.email, {'label': false, 'attr':
-                    {'placeholder': 'Email', 'class': 'formEmail'}}) }}
-            </div>
-            <div class="message">
-                {{ form_row(form.message, {'label': false, 'attr':
-                    {'placeholder': 'Message', 'class': 'formMessage'}}) }}
-            </div>
-            <div class="envoyer">
-                <button type="submit" class="btn_envoyer">
-                    Envoyer
-                </button>
-            </div>
-            {{ form_end(form) }}
         </div>
     </div>
 {% endblock %}
-
