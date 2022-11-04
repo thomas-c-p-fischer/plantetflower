@@ -47,16 +47,6 @@ class UserFormType extends AbstractType
                         )
                     ),
                 )))
-            //Le champ du numéro de rue
-            ->add('streetnumber', TextType::class, array(
-                'constraints' => array(
-                    new NotBlank(),
-                    new Regex(array(
-                            'pattern' => '/^[0-9a-zA-Z_\-\'., \/]{0,32}$/',
-                            'message' => 'Votre Numéro de rue n\'est pas valide : {{ value }}'
-                        )
-                    ),
-                )))
             //Les 2 champs suivants sont pour l'adresse en respectant le format donné par le regex
             ->add('address', TextType::class, array(
                 'constraints' => array(
@@ -108,22 +98,30 @@ class UserFormType extends AbstractType
                     ),
                 )))
             //choix du genre de l'user
-            ->add('sex', ChoiceType::class, [
+            ->add('gender', ChoiceType::class, [
                 'placeholder' => 'Civilité',
                 'choices' => [
                     'Monsieur' => 'M',
                     'Madame' => 'MME',
                 ]
             ])
-            //Ce champ du formulaire permettra à l'user de choisir son statut
-            ->add('status', ChoiceType::class, [
-                'placeholder' => 'Vous souhaiteriez être...',
-                'choices' => [
-                    'vendeur' => 'vendeur',
-                    'acheteur' => 'acheteur',
-                    'acheteur/vendeur' => 'acheteur/vendeur',
-                ]
-            ])
+//            //Ce champ du formulaire permettra à l'user de choisir son statut
+//            ->add('owner', ChoiceType::class, [
+//                'placeholder' => 'Vous souhaiteriez être...',
+//                'choices' => [
+//                    'vendeur' => 'vendeur',
+//                    'acheteur' => 'acheteur',
+//                    'acheteur/vendeur' => 'acheteur/vendeur',
+//                ]
+//            ])
+//            ->add('payer', ChoiceType::class, [
+//                'placeholder' => 'Vous souhaiteriez être...',
+//                'choices' => [
+//                    'vendeur' => 'vendeur',
+//                    'acheteur' => 'acheteur',
+//                    'acheteur/vendeur' => 'acheteur/vendeur',
+//                ]
+//            ])
             //Champ d'ajout de l'email user avec regex pour format
             ->add('email', TextType::class, array(
                 'label' => false,
@@ -144,7 +142,7 @@ class UserFormType extends AbstractType
                 'attr' => ['autocomplete' => 'new-password'],
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Please enter a password',
+                        'message' => 'Le mot de passe est obligatoire',
                     ]),
                     new Length([
                         'min' => 6,

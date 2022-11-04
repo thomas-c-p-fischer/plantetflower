@@ -2,14 +2,20 @@
 
 namespace App\Controller;
 
+use App\Entity\Annonce;
+use App\Entity\Image;
+use App\Entity\User;
 use App\Form\InformationFormType;
+use App\Form\UserFormType;
 use App\Repository\AnnonceRepository;
 use App\Repository\UserRepository;
 use App\Service\MangoPayService;
+use Doctrine\ORM\EntityManagerInterface;
 use MangoPay\KycDocumentType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/user', 'user')]
@@ -46,54 +52,48 @@ class UserProfilController extends AbstractController
             $service->submitKYCDocument($userConnect, $kycDoc);
 
         }
-        return $this->renderform('user_profil/userProfil.html.twig', compact('informationForm', 'mail', 'annonces'));
+        return $this->renderform('user_profil/userProfil.html.twig', compact('informationForm', 'mail', 'annonces', 'userConnect'));
     }
 
-//    #[Route('/edit', name: '_edit')]
-//    public function modifyMyInformations(
-//        Request                     $request,
-//        UserPasswordHasherInterface $userPasswordHasher,
-//        EntityManagerInterface      $em
-//    ): Response
-//    {
-//        // on récupère le formulaire
-//        $user = $this->getUser();
-//        $MangoPayId = $user->getIdMangopay();
-//        $form = $this->createForm(UserFormType::class, $user);
-//        $form->handleRequest($request);
-//        // si le formulaire a été soumis
-//        if ($form->isSubmitted() && $form->isValid()) {
-//            $MangoPayEdited = $ApiUser->EditProfil($user, $form);
-//            // on récupère l'image
-//            $images = $form->get('image')->getData();
-//            if ($images) {
-//                // on génère un nv nom de fichier
-//                $fichier = md5(uniqid()) . '.' . $images->guessExtension();
-//                // on copie le fichier dans le dossier uploads
-//                $images->move(
-//                    $this->getParameter('images_directory'),
-//                    $fichier
-//                );
-//                $user->setImage(
-//                    $fichier
-//                );
-//            }
-//            $password = $form->get('plainPassword')->getData();
-//            if ($password) {
-//                $user->setPassword(
-//                    $userPasswordHasher->hashPassword(
-//                        $user,
-//                        $form->get('plainPassword')->getData()
-//                    )
-//                );
-//            }
-//            $em->persist($user);
-//            $em->flush();
-//            return $this->redirectToRoute('user_profil');
-//        }
-//        $formView = $form->createView();
-//        return $this->render('user_profil/editInformations.html.twig', [
-//            'form' => $formView
-//        ]);
-//    }
+
+    #[Route('/edit/{id}', name: '_edit')]
+    public function modifyMyInformations(
+        Request                     $request,
+        UserPasswordHasherInterface $userPasswordHasher,
+        UserRepository              $userRepository,
+        EntityManagerInterface      $em,
+                                    $id
+
+    ): Response
+    {
+
+        $user = new User();
+        $user->setEmail($this->getUser()->getUserIdentifier());
+        $user = $userRepository->find($id);
+
+        dump($user);
+        $form = $this->createForm(UserFormType::class, $user);
+        $form->handleRequest($request);
+        // si le formulaire a été soumis
+        if ($form->isSubmitted() && $form->isValid()) {
+            $password = $user->getPassword();
+            if ($password) {
+                $user->setPassword(
+                    $userPasswordHasher->hashPassword(
+                        $user,
+                        $form->get('plainPassword')->getData()
+                    )
+                );
+            }
+            $em->persist($user);
+            $em->flush();
+            dump($user);
+            return $this->redirectToRoute('user_profil', compact('id'));
+        }
+
+        return $this->render('user_profil/editInformations.html.twig', [
+            'form' => $form->createView(),
+            'user' => $user
+        ]);
+    }
 }
