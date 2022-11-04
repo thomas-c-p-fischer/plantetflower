@@ -1,157 +1,135 @@
+// Script permettant d'effectuer une autocomplétion.
+// La fonction d'autocomplétion prend deux arguments :
+// L’élément de champ de texte (inp) et un tableau pouvant contenir les valeurs d'autocomplétion (arr).
+function autocomplete(inp, arr) {
+    let currentFocus;
 
-    // Sélectionner l'élément input et récupérer sa valeur
-    let input = document.getElementById("inputSearch").value;
-    // Afficher la valeur
-    alert(input);
+    // Fonction s'exécutant lorsque l'utilisateur écrit dans le champ de texte.
+    inp.addEventListener("input", function (e) {
+        let a, b, i, val = this.value;
 
-
-    // let i;
-//     let card = document.getElementsByClassName("card");
-//     let search = document.getElementById("search").value;
-//     // // Aucune card n'est visible.
-//     // for (i = 0; i < card.length; i++) {
-//     //     card[i].style.display = "none";
-//     // }
-//     console.log(search);
-//     console.log(search.value);
-//     if (search !== null) {
-//         for (i = 0; i < card.length; i++) {
-//             card[i].style.display = "none";
-//         }
-//     } else {
-//         for (i = 0; i < card.length; i++) {
-//             card[i].style.display = "block";
-//         }
-
-    // slideIndex++;
-    // // Si l'annonce actuelle est la seule annonce alors taille de l'index est de 1.
-    // if (slideIndex > card.length) {
-    //     slideIndex = 1
-    // }
-    // // Si les deux annonces suivantes celle actuel alors l'annonce actuelle + les deux suivantes sont visibles.
-    // if (card[slideIndex] && card[slideIndex + 1]) {
-    //     card[slideIndex - 1].style.display = "block";
-    //     card[slideIndex].style.display = "block";
-    //     card[slideIndex + 1].style.display = "block";
-    //     // Change d'annonce toutes les 3 secondes.
-    //     setTimeout(showSlides, 3000);
-    // } else {
-    //     // Refait appel à la fonction pour retour à la 1ère annonce
-    //     showSlides();
-    // }
-// }
-
-    function autocomplete(inp, arr) {
-        /*the autocomplete function takes two arguments,
-        the text field element and an array of possible autocompleted values:*/
-        let currentFocus;
-        /*execute a function when someone writes in the text field:*/
-        inp.addEventListener("input", function(e) {
-            let a, b, i, val = this.value;
-            /*close any already open lists of autocompleted values*/
-            closeAllLists();
-            if (!val) { return false;}
-            currentFocus = -1;
-            /*create a DIV element that will contain the items (values):*/
-            a = document.createElement("DIV");
-            a.setAttribute("id", this.id + "autocomplete-list");
-            a.setAttribute("class", "autocomplete-items");
-            /*append the DIV element as a child of the autocomplete container:*/
-            this.parentNode.appendChild(a);
-            /*for each item in the array...*/
-            for (i = 0; i < arr.length; i++) {
-                /*check if the item starts with the same letters as the text field value:*/
-                if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
-                    /*create a DIV element for each matching element:*/
-                    b = document.createElement("DIV");
-                    /*make the matching letters bold:*/
-                    b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
-                    b.innerHTML += arr[i].substr(val.length);
-                    /*insert a input field that will hold the current array item's value:*/
-                    b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
-                    /*execute a function when someone clicks on the item value (DIV element):*/
-                    b.addEventListener("click", function(e) {
-                        /*insert the value for the autocomplete text field:*/
-                        inp.value = this.getElementsByTagName("input")[0].value;
-                        /*close the list of autocompleted values,
-                        (or any other open lists of autocompleted values:*/
-                        closeAllLists();
-                    });
-                    a.appendChild(b);
-                }
-            }
-        });
-        /*execute a function presses a key on the keyboard:*/
-        inp.addEventListener("keydown", function(e) {
-            let x = document.getElementById(this.id + "autocomplete-list");
-            if (x) x = x.getElementsByTagName("div");
-            if (e.keyCode == 40) {
-                /*If the arrow DOWN key is pressed,
-                increase the currentFocus variable:*/
-                currentFocus++;
-                /*and and make the current item more visible:*/
-                addActive(x);
-            } else if (e.keyCode == 38) { //up
-                /*If the arrow UP key is pressed,
-                decrease the currentFocus variable:*/
-                currentFocus--;
-                /*and and make the current item more visible:*/
-                addActive(x);
-            } else if (e.keyCode == 13) {
-                /*If the ENTER key is pressed, prevent the form from being submitted,*/
-                e.preventDefault();
-                if (currentFocus > -1) {
-                    /*and simulate a click on the "active" item:*/
-                    if (x) x[currentFocus].click();
-                }
-            }
-        });
-        function addActive(x) {
-            /*a function to classify an item as "active":*/
-            if (!x) return false;
-            /*start by removing the "active" class on all items:*/
-            removeActive(x);
-            if (currentFocus >= x.length) currentFocus = 0;
-            if (currentFocus < 0) currentFocus = (x.length - 1);
-            /*add class "autocomplete-active":*/
-            x[currentFocus].classList.add("autocomplete-active");
+        // Ferme la liste des valeurs déjà ouverte.
+        closeAllLists();
+        if (!val) {
+            return false;
         }
-        function removeActive(x) {
-            /*a function to remove the "active" class from all autocomplete items:*/
-            for (let i = 0; i < x.length; i++) {
-                x[i].classList.remove("autocomplete-active");
+        currentFocus = -1;
+
+        // Crée une DIV qui contiendra les valeurs.
+        a = document.createElement("DIV");
+        a.setAttribute("id", this.id + "autocomplete-list");
+        a.setAttribute("class", "autocomplete-items");
+
+        // Ajoute la DIV en tant que fils du conteneur d'autocomplétion.
+        this.parentNode.appendChild(a);
+
+        // Boucle sur les éléments du tableau.
+        for (i = 0; i < arr.length; i++) {
+
+            // Vérifie si l’élément commence par les mêmes lettres que la valeur du champ de texte.
+            if (arr[i].substr(0, val.length).toUpperCase() === val.toUpperCase()) {
+
+                // Créer une DIV pour chaque élément correspondant.
+                b = document.createElement("DIV");
+
+                // Met les lettres correspondantes en gras.
+                b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+                b.innerHTML += arr[i].substr(val.length);
+
+                // Insère un champ de saisie qui contiendra la valeur de l’élément du tableau actuel.
+                b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+
+                // Exécute une fonction lorsque quelqu’un clique sur la valeur de la DIV.
+                b.addEventListener("click", function (e) {
+
+                    // Insère la valeur du champ de texte d'autocomplétion.
+                    inp.value = this.getElementsByTagName("input")[0].value;
+
+                    // Ferme la liste des valeurs d'autocomplétion
+                    // (ou toute autre liste ouverte de valeurs d'autocomplétion).
+                    closeAllLists();
+                });
+                a.appendChild(b);
             }
         }
-        function closeAllLists(elmnt) {
-            /*close all autocomplete lists in the document,
-            except the one passed as an argument:*/
-            let x = document.getElementsByClassName("autocomplete-items");
-            for (let i = 0; i < x.length; i++) {
-                if (elmnt != x[i] && elmnt != inp) {
-                    x[i].parentNode.removeChild(x[i]);
-                }
+    });
+
+    // Fonction s'exécutant lorsque l'utilisateur appuie sur une touche du clavier.
+    inp.addEventListener("keydown", function (e) {
+        let x = document.getElementById(this.id + "autocomplete-list");
+        if (x) x = x.getElementsByTagName("div");
+
+        // Si l'utilisateur appuie sur la touche fléchée BAS, la variable currentFocus augmente.
+        if (e.keyCode === 40) {
+            currentFocus++;
+
+            // Rend l’élément courant plus visible.
+            addActive(x);
+
+            // Si l'utilisateur appuie sur la touche fléchée HAUT, la variable currentFocus diminue.
+        } else if (e.keyCode === 38) {
+            currentFocus--;
+
+            // Rend l’élément courant plus visible.
+            addActive(x);
+        } else if (e.keyCode === 13) {
+
+            // Si l'utilisateur appuie sur la touche ENTRÉE, cela empêche la soumission du formulaire.
+            e.preventDefault();
+            if (currentFocus > -1) {
+
+                // Simule un clic sur l’élément "actif".
+                if (x) x[currentFocus].click();
             }
         }
-        /*execute a function when someone clicks in the document:*/
-        document.addEventListener("click", function (e) {
-            closeAllLists(e.target);
-        });
+    });
+
+    // Fonction pour classer un élément comme "actif".
+    function addActive(x) {
+        if (!x) return false;
+
+        // Supprime la classe "active" sur tous les éléments.
+        removeActive(x);
+        if (currentFocus >= x.length) currentFocus = 0;
+        if (currentFocus < 0) currentFocus = (x.length - 1);
+
+        // Ajoute la classe "autocomplete-active".
+        x[currentFocus].classList.add("autocomplete-active");
     }
 
-    let titles = document.getElementsByClassName("nom-plante");
-    for (i = 0; i < titles.length; i++) {
-
-        // console.log(Object.values(titles));
-        // console.log(titles[i].textContent);
-
+    // Fonction pour supprimer la classe "active" de tous les éléments d'autocomplétion.
+    function removeActive(x) {
+        for (let i = 0; i < x.length; i++) {
+            x[i].classList.remove("autocomplete-active");
+        }
     }
 
+    function closeAllLists(elmnt) {
 
-    /*An array containing all the country names in the world:*/
-    let countries = ["Afghanistan","Albania","Algeria","Andorra","Angola","Anguilla","Antigua & Barbuda","Argentina","Armenia","Aruba","Australia","Austria","Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bermuda","Bhutan","Bolivia","Bosnia & Herzegovina","Botswana","Brazil","British Virgin Islands","Brunei","Bulgaria","Burkina Faso","Burundi","Cambodia","Cameroon","Canada","Cape Verde","Cayman Islands","Central Arfrican Republic","Chad","Chile","China","Colombia","Congo","Cook Islands","Costa Rica","Cote D Ivoire","Croatia","Cuba","Curacao","Cyprus","Czech Republic","Denmark","Djibouti","Dominica","Dominican Republic","Ecuador","Egypt","El Salvador","Equatorial Guinea","Eritrea","Estonia","Ethiopia","Falkland Islands","Faroe Islands","Fiji","Finland","France","French Polynesia","French West Indies","Gabon","Gambia","Georgia","Germany","Ghana","Gibraltar","Greece","Greenland","Grenada","Guam","Guatemala","Guernsey","Guinea","Guinea Bissau","Guyana","Haiti","Honduras","Hong Kong","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Isle of Man","Israel","Italy","Jamaica","Japan","Jersey","Jordan","Kazakhstan","Kenya","Kiribati","Kosovo","Kuwait","Kyrgyzstan","Laos","Latvia","Lebanon","Lesotho","Liberia","Libya","Liechtenstein","Lithuania","Luxembourg","Macau","Macedonia","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Marshall Islands","Mauritania","Mauritius","Mexico","Micronesia","Moldova","Monaco","Mongolia","Montenegro","Montserrat","Morocco","Mozambique","Myanmar","Namibia","Nauro","Nepal","Netherlands","Netherlands Antilles","New Caledonia","New Zealand","Nicaragua","Niger","Nigeria","North Korea","Norway","Oman","Pakistan","Palau","Palestine","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Puerto Rico","Qatar","Reunion","Romania","Russia","Rwanda","Saint Pierre & Miquelon","Samoa","San Marino","Sao Tome and Principe","Saudi Arabia","Senegal","Serbia","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","Solomon Islands","Somalia","South Africa","South Korea","South Sudan","Spain","Sri Lanka","St Kitts & Nevis","St Lucia","St Vincent","Sudan","Suriname","Swaziland","Sweden","Switzerland","Syria","Taiwan","Tajikistan","Tanzania","Thailand","Timor L'Este","Togo","Tonga","Trinidad & Tobago","Tunisia","Turkey","Turkmenistan","Turks & Caicos","Tuvalu","Uganda","Ukraine","United Arab Emirates","United Kingdom","United States of America","Uruguay","Uzbekistan","Vanuatu","Vatican City","Venezuela","Vietnam","Virgin Islands (US)","Yemen","Zambia","Zimbabwe"];
+        // Ferme toutes les listes d'autocomplétion du document, sauf celle passée comme argument.
+        let x = document.getElementsByClassName("autocomplete-items");
+        for (let i = 0; i < x.length; i++) {
+            if (elmnt !== x[i] && elmnt !== inp) {
+                x[i].parentNode.removeChild(x[i]);
+            }
+        }
+    }
 
-    // console.log(titles[i].textContent);
+    // s'exécutant lorsque l'utilisateur clique sur le document.
+    document.addEventListener("click", function (e) {
+        closeAllLists(e.target);
+    });
+}
 
+// Récupération des noms de toutes les plantes non vendus se trouvant en BDD.
+let annoncesTitles = document.getElementsByClassName("plantName");
+let allPlantNames = [];
+for (i = 0; i < annoncesTitles.length; i++) {
+    allPlantNames[i] = annoncesTitles[i].id;
+}
 
-    /*initiate the autocomplete function on the "myInput" element, and pass along the countries array as possible autocomplete values:*/
-    autocomplete(document.getElementById("inputSearch"), titles);
+// Nouveau tableau ne contenant aucuns doublons des noms de plantes de la BDD.
+let uniquePlantNames = allPlantNames.filter((x, i) => allPlantNames.indexOf(x) === i);
+
+// Renvoie le nom des plantes de BDD sans doublons à l'input comprenant l'autocomplétion.
+autocomplete(document.getElementById("inputSearch"), uniquePlantNames);

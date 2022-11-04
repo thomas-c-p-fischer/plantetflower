@@ -39,14 +39,24 @@
                 {% endif %}
             </div>
         </div>
-        <div class="total-annonce">
-            {#                    changer le premier total par le nombre total d'annonces affichées selon le filtre ou la pagination sélectionner #}
-            {{ totalAnnonces }} annonces sur {{ totalAnnonces }}
-        </div>
-        {#            <div class="navigation"> #}
-        {#                    pagination à installer avec kplabs #}
-        {#                    {{ knp_pagination_render(annonces) }} #}
-        {#            </div> #}
+        {% for annonce in annoncesForScript %}
+            {% if annonce.confirm == false %}
+                <p class="plantName" id="{{ annonce.title }}"></p>
+            {% endif %}
+        {% endfor %}
+        {% if not form.vars.valid %}
+            <div>
+                {{ form_errors(form) }}
+            </div>
+        {% elseif totalAnnoncesFound == 0 %}
+            <div class="total-annonce">
+                {{ totalAnnonces }} annonces
+            </div>
+            {% else %}
+                <div class="total-annonce">
+                    {{ totalAnnoncesFound }} annonces trouvées sur {{ totalAnnonces }}
+                </div>
+        {% endif %}
         <div class="contenuProducts">
             {% for annonce in annonces %}
                 {% if annonce.confirm == false %}
