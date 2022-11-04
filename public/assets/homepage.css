@@ -238,9 +238,6 @@
 .container-all_plants a:hover {
     background-color: rgba(72, 148, 93, 0.78);
     transition: background-color 0.2s;
-}a:hover {
-    background-color: rgba(72, 148, 93, 0.78);
-    transition: background-color 0.2s;
 }
 
 .container-functioning {
