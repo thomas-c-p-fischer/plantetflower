@@ -16,18 +16,20 @@
             Donnez à vos végétaux une seconde
             vie et achetez-en de nouveaux
         </h1>
-        <div class="container-search">
-            {{ form_start(form, {'attr': {'class': 'search-formulaire'}} ) }}
-            <div class="search_title">
-                {{ form_row(form.title, {
-                    'name': 'title',
-                    'id': 'inputSearch',
-                }) }}
+        <div class="container-position_search">
+            <div class="container-search">
+                {{ form_start(form, {'attr': {'class': 'search-formulaire'}} ) }}
+                <div class="search_title">
+                    {{ form_row(form.title, {
+                        'name': 'title',
+                        'id': 'inputSearch',
+                    }) }}
+                </div>
+                <div class="search_btn">
+                    {{ form_row(form.Rechercher) }}
+                </div>
+                {{ form_end(form) }}
             </div>
-            <div class="search_btn">
-                {{ form_row(form.Rechercher) }}
-            </div>
-            {{ form_end(form) }}
         </div>
         {% for annonce in annoncesForScript %}
             {% if annonce.confirm == false %}
@@ -36,7 +38,7 @@
         {% endfor %}
         <div class="container-slideshow">
             {% for annonce in annonces %}
-                {% if annonce.sold == false %}
+                {% if annonce.confirm == false %}
                     <a class="mySlides"
                        data-ref={{ annonce.id }} href={{ path('annonce_afficher', {'annonceId': annonce.id}) }}>
                         <div class="container-card">
