@@ -21,14 +21,35 @@
     justify-content: space-around;
 }
 
+
 .cardNumber {
     width: 25em;
     margin-left: 2.3em;
     margin-top: 2em;
+
 }
 
 .cardNumber > input {
     width: 29.8em;
+    background: #71d48c;
+    border-radius: 0.8em;
+    height: 2.5em;
+    text-align: center;
+
+}
+
+.CVXcard > input {
+    background: #71d48c;
+    border-radius: 0.8em;
+    height: 2.5em;
+    text-align: center;
+}
+
+.expCard > input {
+    background: #71d48c;
+    border-radius: 0.8em;
+    height: 2.5em;
+    text-align: center;
 }
 
 .complementCard {
@@ -36,6 +57,14 @@
     margin-top: 1.5em;
     justify-content: space-around;
     margin-right: 16px;
+}
+
+.expCard {
+    margin-left: 9px;
+}
+
+.CVXcard {
+    margin-left: 4em;
 }
 
 .cardInterne {
@@ -58,14 +87,24 @@
 }
 
 .submitCard {
-    margin: 1em 2em 0 2em;
+    margin: 1em 2.7em 0 2em;
+    display: flex;
+    justify-content: flex-end;
+}
 
+.submitCard > input {
+    background: #71d48c;
+    border-radius: 0.8em;
+    height: 2.5em;
+    width: 10.8em;
 }
 
 .recapPaiement {
     width: 30em;
     border-radius: 1.5em;
     border: 2px solid #6bba7c;
+    background: #dfe5a4ab;
+
 
 }
 
@@ -135,12 +174,12 @@
     }
 
     .submitCard {
-        margin: 1em 0 0 0;
+        margin: 1em 15px 0 11px
     }
 
     .submitCard > input {
-        width: 26em;
-        margin-left: 1em;
+        width: 28em;
+
     }
 }
 
@@ -187,11 +226,11 @@
     }
 
     .submitCard {
-        margin: 1em 0 0 0;
+        margin: 1em 15px 0 11px
     }
 
     .submitCard > input {
-        width: 26em;
-        margin-left: 1em;
+        width: 28em;
+     
     }
 }
