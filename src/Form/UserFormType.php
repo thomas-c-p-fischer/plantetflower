@@ -20,12 +20,12 @@ class UserFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            //Champ du formulaire pour ajouter une image
-            ->add('image', FileType::class, [
-                'label' => false,
-                'mapped' => false,
-                'required' => false
-            ])
+//            //Champ du formulaire pour ajouter une image
+//            ->add('image', FileType::class, [
+//                'label' => false,
+//                'mapped' => false,
+//                'required' => false
+//            ])
             //champ du nom
             ->add('lastname', TextType::class, array(
                     'constraints' => array(
@@ -105,23 +105,15 @@ class UserFormType extends AbstractType
                     'Madame' => 'MME',
                 ]
             ])
-//            //Ce champ du formulaire permettra à l'user de choisir son statut
-//            ->add('owner', ChoiceType::class, [
-//                'placeholder' => 'Vous souhaiteriez être...',
-//                'choices' => [
-//                    'vendeur' => 'vendeur',
-//                    'acheteur' => 'acheteur',
-//                    'acheteur/vendeur' => 'acheteur/vendeur',
-//                ]
-//            ])
-//            ->add('payer', ChoiceType::class, [
-//                'placeholder' => 'Vous souhaiteriez être...',
-//                'choices' => [
-//                    'vendeur' => 'vendeur',
-//                    'acheteur' => 'acheteur',
-//                    'acheteur/vendeur' => 'acheteur/vendeur',
-//                ]
-//            ])
+            //Ce champ du formulaire permettra à l'user de choisir son statut
+            ->add('owner', ChoiceType::class, [
+                'placeholder' => 'Vous souhaiteriez être...',
+                'choices' => [
+                    'vendeur' => 'vendeur',
+                    'acheteur' => 'acheteur',
+                    'acheteur/vendeur' => 'acheteur/vendeur',
+                ]
+            ])
             //Champ d'ajout de l'email user avec regex pour format
             ->add('email', TextType::class, array(
                 'label' => false,
