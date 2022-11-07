@@ -211,14 +211,12 @@
 
 .container-all_btn_sold_editor {
     display: flex;
-    flex-direction: column;
     margin-bottom: 20px;
+    width: 34em;
 }
 
 .container-btn_sold_editor {
     margin: 10px 0;
-    display: flex;
-    justify-content: flex-end;
 }
 
 .btn-sold_editor {
