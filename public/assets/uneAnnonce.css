@@ -15,6 +15,13 @@
     cursor: pointer;
 }
 
+.annonce-message {
+    display: flex;
+    justify-content: center;
+    color: #48945d;
+    font-size: 30px;
+}
+
 .chevronBack {
     width: 25px;
 }

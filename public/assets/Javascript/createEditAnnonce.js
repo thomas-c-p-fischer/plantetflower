@@ -391,8 +391,8 @@ if (cA_hand_delivery) {
 
     hand_delivery = document.getElementById("createAnnonce-hand_delivery");
     shipement = document.getElementById("createAnnonce_shipement");
-    hand_delivery.checked = true;
-    shipement.checked = true;
+    hand_delivery.checked = false;
+    shipement.checked = false;
     hand_delivery.addEventListener('click', hand_delivery_check);
     shipement.addEventListener('click', shipement_check);
 

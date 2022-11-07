@@ -16,7 +16,7 @@
         </div>
         {% if app.user.owner %}
             <div class="container-uP-btn-create_annonce">
-                <a href="{{ path('annonce_ajouter') }}">Créer une annonce</a>
+                <a href="{{ path('annonce_ajouter') }}"><strong>+</strong> Ajouter une annonce</a>
             </div>
         {% endif %}
         {% if app.user.owner == "vendeur" %}
@@ -208,7 +208,7 @@
                         <div class="not_annonces">
                             <p>Vous n'avez pas encore d'annonces. Créez en une dès maintenant !</p>
                             <a class="uP-btn-create_annonce"
-                               href="{{ path('annonce_ajouter') }}">Créer une annonce</a>
+                               href="{{ path('annonce_ajouter') }}"><strong>+</strong> Ajouter une annonce</a>
                         </div>
                     {% elseif app.user.annonces %}
                         <div class="up-container-all_annonces">
