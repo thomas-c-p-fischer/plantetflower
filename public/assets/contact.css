@@ -1,38 +1,40 @@
 @import url('https://fonts.googleapis.com/css2?family=Quicksand&display=swap');
 
-.contactAll{
+.contactAll {
     display: flex;
     flex-direction: row;
     margin-bottom: 3%;
-    margin-top: 5%
+    margin-top: 5%;
+    height: 100vh;
+
 }
 
-.contactTitle{
+.contactTitle {
     font-family: 'Quicksand', sans-serif;
-    color: rgb(73,148,93);
+    color: rgb(73, 148, 93);
     margin-left: 10%;
     margin-right: 16%;
     align-self: center;
 }
 
-.formContact{
+.formContact {
     display: flex;
     flex-direction: column;
     text-align: center;
     justify-content: flex-end;
 }
 
-.mailContact{
+.mailContact {
     margin-bottom: 16%;
 }
 
-.nom, .email{
+.nom, .email {
     margin-bottom: 1%;
     width: 100%;
     align-self: center;
 }
 
-.formNom, .formEmail, .formMessage{
+.formNom, .formEmail, .formMessage {
     background-color: transparent;
     border: 0;
     border-bottom: 1px solid #19191E;
@@ -51,31 +53,31 @@
     text-decoration: none;
 }
 
-.formNom:focus, .formEmail:focus, .formMessage:focus{
+.formNom:focus, .formEmail:focus, .formMessage:focus {
     outline: none;
 }
 
-.formEmail::placeholder, .formNom::placeholder, .formMessage::placeholder{
-    color:#111;
+.formEmail::placeholder, .formNom::placeholder, .formMessage::placeholder {
+    color: #111;
     font-family: 'Quicksand', sans-serif;
 }
 
-.formEmail::-moz-placeholder, .formMessage::-moz-placeholder, .formNom::-moz-placeholder{
-    color:#111;
+.formEmail::-moz-placeholder, .formMessage::-moz-placeholder, .formNom::-moz-placeholder {
+    color: #111;
     font-family: 'Quicksand', sans-serif;
 }
 
-.formMessage{
+.formMessage {
     margin-bottom: 10%;
 }
 
-.envoyer button{
+.envoyer button {
     border: 1px solid #000;
     color: #000;
     background-color: transparent;
     width: 100%;
     display: inline-block;
-    padding: 0px 10px;
+    padding: 0 10px;
     font-size: 12px;
     text-transform: uppercase;
     line-height: 34px;
@@ -84,40 +86,40 @@
 }
 
 .envoyer button:hover {
-    background-color: rgb(255,245,110);
+    background-color: rgb(255, 245, 110);
     transition: background-color 0.2s;
 }
 
-@media only screen and (max-width:768px){
-    .contactAll{
+@media only screen and (max-width: 768px) {
+    .contactAll {
         display: flex;
         flex-direction: column;
     }
 
-    .contactTitle{
+    .contactTitle {
         margin-left: 3%;
     }
 
-    .plantetflower{
+    .plantetflower {
         margin-top: 4%;
-        margin-left:25%;
+        margin-left: 25%;
     }
 
-    .mailContact{
-        margin-left:25%;
+    .mailContact {
+        margin-left: 25%;
         margin-bottom: 3%;
     }
 
-    .formNom, .formEmail, .formMessage{
+    .formNom, .formEmail, .formMessage {
         width: 50%;
-        margin-left:25%;
+        margin-left: 25%;
     }
 
-    .formMessage{
+    .formMessage {
         margin-bottom: 1%;
     }
 
-    .envoyer button{
+    .envoyer button {
         width: 50%;
     }
 }
