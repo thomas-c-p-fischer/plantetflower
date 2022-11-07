@@ -8,19 +8,6 @@
         <div class="contain-edit">
             <div class="box-edit">
                 {{ form_start(form, { 'attr': {'class': 'box-2-edit'} }) }}
-                <div class="image-profil-edit">
-                    {% if (app.user.image) %}
-                        <img class="imageInformation" src="{{ asset('/uploads/profils/' ~ app.user.image) }}"
-                             alt="Photo de profil">
-                    {% else %}
-                        <img class="imageInformation" src="{{ asset('media/img/profil.png') }}"
-                             alt="Photo de profil default">
-                    {% endif %}
-                </div>
-                <div class="input-file-profil">
-                    {{ form_row(form.image, {'label': "+", 'label_attr': {'class': 'btn-upload-profil'} } ) }}
-                </div>
-
                 <div class="input-modification">
                     <div class="box-column">
                         <div class="input-column">
@@ -98,6 +85,15 @@
                         </div>
                         <div class="input-column">
                             {# <input  type="text" class="input-modif"/> #}
+                            {{ form_row(form.owner, {
+                                'label': "Status:",
+                                'attr': {
+                                    class: 'input-modif'
+                                }
+                            } ) }}
+                        </div>
+                        <div class="input-column">
+                            {# <input  type="text" class="input-modif"/> #}
                             {{ form_row(form.email, {
                                 'label': "Email :",
                                 'attr': {
@@ -116,16 +112,13 @@
                         </div>
                     </div>
                     <div class="btn-edit">
-                        <a href="{{ path('user_profil',{ 'id' : user.id }) }}" class="btn-green">
-                            <button class="btn-green" type="submit">Valider</button>
-                        </a>
-                        {#                        <a href={{ path('user_profil', {'id':user.id}) }}> #}
-                        {#                            <button class="btn-red">Annuler</button> #}
-                        {#                        </a> #}
+                        <button class="btn-green" type="submit">Valider</button>
+                        <a href="{{ path('user_profil', {'id':user.id}) }}" class="btn-red">Annuler</a>
                     </div>
                 </div>
             </div>
             {{ form_end(form) }}
+
         </div>
     </div>
 {% endblock %}

@@ -70,8 +70,6 @@ class UserProfilController extends AbstractController
         $user = new User();
         $user->setEmail($this->getUser()->getUserIdentifier());
         $user = $userRepository->find($id);
-
-        dump($user);
         $form = $this->createForm(UserFormType::class, $user);
         $form->handleRequest($request);
         // si le formulaire a été soumis
@@ -85,9 +83,19 @@ class UserProfilController extends AbstractController
                     )
                 );
             }
+            $status = $form->get('owner')->getData();
+            if ($status === "acheteur") {
+                $user->setOwner(false);
+                $user->setPayer(true);
+            } elseif ($status === "vendeur") {
+                $user->setOwner(true);
+                $user->setPayer(false);
+            } else {
+                $user->setOwner(true);
+                $user->setPayer(true);
+            }
             $em->persist($user);
             $em->flush();
-            dump($user);
             return $this->redirectToRoute('user_profil', compact('id'));
         }
 
