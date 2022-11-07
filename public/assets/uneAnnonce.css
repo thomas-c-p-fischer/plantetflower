@@ -445,7 +445,7 @@
         margin-top: 37px;
         flex-direction: row;
         margin-left: 1em;
-        width: 60%;
+        width: 90%;
     }
 
 
@@ -514,7 +514,8 @@
         display: flex;
         justify-content: space-evenly;
         margin-top: 37px;
-        flex-direction: column;
+        flex-direction: row;
+        width: 100%;
     }
 
     .ficheAnnonce {

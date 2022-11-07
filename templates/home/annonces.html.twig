@@ -16,20 +16,22 @@
                     Donnez à vos végétaux une seconde
                     vie et achetez-en de nouveaux
                 </h1>
-                <div class="annonces-container-search">
-                    {{ form_start(form, {'attr': {'class': 'search-formulaire'}} ) }}
-                    <div class="annonces-search_title">
-                        {{ form_row(form.title, {
-                            'name': 'title',
-                            'id': 'inputSearch',
-                        }) }}
+                <div class="annonces-container-position_search">
+                    <div class="annonces-container-search">
+                        {{ form_start(form, {'attr': {'class': 'search-formulaire'}} ) }}
+                        <div class="annonces-search_title">
+                            {{ form_row(form.title, {
+                                'name': 'title',
+                                'id': 'inputSearch',
+                            }) }}
+                        </div>
+                        <div class="annonces-search_btn">
+                            {{ form_row(form.Rechercher, {
+                                'onclick': 'getValue();'
+                            }) }}
+                        </div>
+                        {{ form_end(form) }}
                     </div>
-                    <div class="annonces-search_btn">
-                        {{ form_row(form.Rechercher, {
-                            'onclick': 'getValue();'
-                        }) }}
-                    </div>
-                    {{ form_end(form) }}
                 </div>
             </div>
             <div class="annonces-container-btn_create">
@@ -44,55 +46,57 @@
                 <p class="plantName" id="{{ annonce.title }}"></p>
             {% endif %}
         {% endfor %}
-        {% if not form.vars.valid %}
-            <div>
-                {{ form_errors(form) }}
+        {% if noAnnonce == true %}
+            <div class="total-annonce">
+                <p>Aucune annonce n'a été trouvé pour votre recherche...</p>
             </div>
         {% elseif totalAnnoncesFound == 0 %}
             <div class="total-annonce">
-                {{ totalAnnonces }} annonces
+                <p>{{ totalAnnonces }} annonces</p>
             </div>
-            {% else %}
-                <div class="total-annonce">
-                    {{ totalAnnoncesFound }} annonces trouvées sur {{ totalAnnonces }}
-                </div>
+        {% else %}
+            <div class="total-annonce">
+                <p>{{ totalAnnoncesFound }} annonces trouvées sur {{ totalAnnonces }}</p>
+            </div>
         {% endif %}
         <div class="contenuProducts">
             {% for annonce in annonces %}
                 {% if annonce.confirm == false %}
-                    <div class="card">
-                        <a class="img-annonce-flex" href={{ path('annonce_afficher', {'annonceId': annonce.id}) }}>
-                            <div class="image-annonce">
+                    <a class="annonces-ref_card"
+                       data-ref={{ annonce.id }} href={{ path('annonce_afficher', {'annonceId': annonce.id}) }}>
+                        <div class="container-card">
+                            <div class="container-img_city">
                                 {% for image in annonce.images|slice(0,1) %}
-                                    <img src="{{ asset('/uploads/'~ image.name) }}" alt="Image annonce"
-                                         class="imageCardAnnonces"/>
+                                    <img src="{{ asset('/uploads//' ~ image.name) }}"
+                                         alt="{{ annonce.title }}"/>
                                 {% endfor %}
+                                <span class="hP-city">{{ annonce.ville | upper | slice(0, 8) ~ '...' }}</span>
                             </div>
-                            <div class="card-content">
-                                <div class="align-etoile">
-                                    <span class="nom-plante">{{ annonce.title }}</span>
-                                    <p class="etoile">☆</p>
-                                    <p class="prix">
-                                        {{ annonce.priceTotal }}€</p>
+                            <div class="container-text_card">
+                                <div class="container-plant_name">
+                                    <span class="plant-name">{{ annonce.title|upper }}</span>
                                 </div>
-                                <div class="align-livraison">
-                                    {% if annonce.shipement == true %}
-                                        <p class="livraison">
-                                            Livraison possible
-                                        </p>
-                                    {% endif %}
+                                <div class="container-price">
+                                    <p class="price">{{ annonce.priceTotal }} €</p>
+                                </div>
+                                <div class="container-hand_delivery_shipment">
                                     {% if annonce.handDelivery == true %}
-                                        <p class="not-livraison">
-                                            Remise en main propre
+                                        <p class="hand_delivery">
+                                            En main propre
+                                        </p>
+                                    {% endif %}
+                                    {% if annonce.shipement == true %}
+                                        <p class="shipment">
+                                            Livraison
                                         </p>
                                     {% endif %}
                                 </div>
-                                <p class="date-expiration">
-                                    Date d'expiration : {{ annonce.dateExpiration | date ('d/m/Y') }}
-                                </p>
+                                <div class="container-more">
+                                    <p class="more">+ d'infos</p>
+                                </div>
                             </div>
-                        </a>
-                    </div>
+                        </div>
+                    </a>
                 {% endif %}
             {% endfor %}
         </div>

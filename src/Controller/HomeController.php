@@ -106,6 +106,9 @@ class HomeController extends AbstractController
         // Total de toutes les annonces non-vendus correspondant ou non à la recherche de l'utilisateur selon le cas.
         $totalAnnoncesFound = count($annonces);
 
+        // Initialisation d'"aucune annonce" à faux.
+        $noAnnonce = false;
+
         // Si il n'y a pas d'annonce trouvé.
         if ($totalAnnoncesFound == 0) {
 
@@ -116,7 +119,7 @@ class HomeController extends AbstractController
             if ($form->get('title')->getData() != '') {
 
                 // Utilisation du message d'erreur pour indiquer qu'aucune annonce n'a été trouvé.
-                $form->addError(new FormError("Aucune annonce n'a été trouvé pour votre recherche..."));
+                $noAnnonce = true;
             }
 
             // Sinon si l'utilisateur n'a rien saisie pour la recherche.
@@ -126,7 +129,14 @@ class HomeController extends AbstractController
             $totalAnnoncesFound = 0;
         }
 
-        return $this->renderForm('home/annonces.html.twig', compact('annonces', 'totalAnnonces','totalAnnoncesFound','annoncesForScript','form'));
+        return $this->renderForm('home/annonces.html.twig', compact(
+            'annonces',
+            'totalAnnonces',
+            'totalAnnoncesFound',
+            'annoncesForScript',
+            'form',
+            'noAnnonce'
+        ));
     }
 
     // Route de la page À propos.
@@ -208,6 +218,13 @@ class HomeController extends AbstractController
 
                 // Retire l'annonce si elle est antérieure à maintenant et si l'annonce n'est pas vendu.
                 if ($diff->invert == 0 && $annonce->getStatus() == "not sold") {
+                    // Récupération des images de l'annonce
+                    $actualImages = $annonce->getImages();
+                    foreach ($actualImages as $image) {
+                        $entityManager->remove($image);
+                        $entityManager->flush();
+                    }
+
                     $annonceRepository->remove($annonce);
                     $entityManager->flush();
                 }
