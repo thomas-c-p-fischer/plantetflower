@@ -34,7 +34,7 @@
 
 .fullAnnonce {
     display: flex;
-    margin: 0 15em 5em 15em;
+    margin: 0 2em 5em 10em;
 }
 
 .corpsAnnonce {
@@ -70,7 +70,7 @@
 
 .ficheAnnonce {
     padding: 10px 10px;
-    width: 35%;
+    width: 45%;
 }
 
 .dateExpAnnonce {
@@ -79,7 +79,6 @@
 
 .annonceCategory {
     border-bottom: 2px solid #48945D;
-    width: 36em;
     margin-top: 0.5em;
     display: flex;
 }
@@ -114,30 +113,28 @@
 .deliveryMode {
     display: flex;
     flex-direction: column;
-    width: 95%;
+}
+
+.delivery_mod_choice {
+    width: 100%;
 }
 
 .deliveryChoiceLabel {
     border: 2px solid;
     border-radius: 0.5em;
     margin-bottom: 7px;
-    width: 37em;
-}
-
-.deliveryLabel2 > label {
-    margin-right: 1em;
-    margin-left: 2em;
 }
 
 .deliveryInput1 {
     display: flex;
-    margin-left: 18px;
+    justify-content: space-between;
+    height: 50px;
 }
 
 .deliveryInput2 {
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: space-between;
     height: 66px;
 }
 
@@ -145,7 +142,7 @@
     display: flex;
     align-items: center;
     font-size: 2em;
-    margin-left: 2.8em;
+    margin-right: 0.5em;
 }
 
 
@@ -153,37 +150,32 @@
     display: flex;
     align-items: center;
     font-size: 2em;
-
+    margin-right: 0.5em;
 }
 
 .deliveryLabel1 {
     display: flex;
     align-items: center;
-    width: 50%;
-    margin-right: 8em;
 }
 
 .deliveryLabel2 {
     display: flex;
     align-items: center;
-    width: 40%;
-    margin-right: 11.3em;
 }
 
-.deliveryLabel label {
-    width: 53%;
+.deliveryMode label {
+    width: 200px;
+    text-align: center;
 }
 
 .checkboxDelivery {
-    width: 15%;
+    width: 50px;
 }
 
 .deliveryIcone {
     width: 45px;
-    height: 38px;
-    margin-top: 4px;
-}
 
+}
 
 .labelMainPropre {
     width: 15%;
@@ -201,7 +193,7 @@
     background: #C6FFD0;
     border: 2px solid;
     font-size: 17px;
-    width: 35em;
+    width: 100%;
     height: 3em;
     cursor: pointer;
 }
@@ -218,15 +210,17 @@
 
 .container-all_btn_sold_editor {
     display: flex;
-    margin-bottom: 20px;
-    width: 34em;
+    justify-content: space-between;
+    margin: 10px 0 10px;
 }
 
 .container-btn_sold_editor {
-    margin: 10px 0;
+    width: 49%;
 }
 
 .btn-sold_editor {
+    display: flex;
+    justify-content: center;
     background-color: #c6ffd0;
     transition: background-color 0.2s;
     border: 2px solid #48945d;
@@ -246,6 +240,10 @@
     background-color: #48945d;
     transition: background-color 0.2s;
     color: white;
+}
+
+.btn-sold_editor a{
+    width: 100%;
 }
 
 #annonce-delete_btn {
@@ -373,54 +371,6 @@
         display: flex;
     }
 
-    .deliveryChoiceLabel {
-        border: 2px solid;
-        border-radius: 0.5em;
-        margin-bottom: 7px;
-        width: 25em;
-    }
-
-    .deliveryInput1 {
-        display: flex;
-        margin-left: 7px;
-    }
-
-    .deliveryPrice1 {
-        display: flex;
-        align-items: center;
-        font-size: 2em;
-        margin-left: 0;
-    }
-
-    .deliveryLabel2 {
-        display: flex;
-        align-items: center;
-        width: 40%;
-        margin-right: 8.3em;
-    }
-
-    .deliveryLabel > label {
-        width: 78%;
-        margin-left: 2em;
-    }
-
-    .deliveryLabel2 > label {
-        margin-right: 1em;
-    }
-
-    #mode_remise_form_payer {
-        border-radius: 0.5em;
-        background: #C6FFD0;
-        border: 2px solid;
-        font-size: 17px;
-        width: 23.8em;
-        height: 3em;
-        cursor: pointer;
-    }
-
-    #priceShipment {
-        width: 24.8em;
-    }
 
     .annonceDescription {
         color: black;
@@ -456,6 +406,13 @@
 
     .ficheAnnonce {
         width: 90%;
+    }
+
+    .deliveryMode label {
+        width: 180px;
+    }
+    .btn-sold_editor {
+        font-size: 19px;
     }
 
 }
@@ -527,56 +484,11 @@
         width: 30em;
     }
 
-    .annonceCategory {
-        border-bottom: 2px solid #48945D;
-        width: 30em;
-        margin-top: 0.5em;
-        display: flex;
+    .deliveryMode label {
+        width: 180px;
     }
-
-    .deliveryChoiceLabel {
-        border: 2px solid;
-        border-radius: 0.5em;
-        margin-bottom: 7px;
-        width: 30em;
-    }
-
-    .deliveryInput1 {
-        display: flex;
-        margin-left: 16px;
-    }
-
-    .deliveryPrice1 {
-        display: flex;
-        align-items: center;
-        font-size: 2em;
-        margin-left: 0;
-    }
-
-    .deliveryLabel2 {
-        display: flex;
-        align-items: center;
-        width: 40%;
-        margin-right: 8.3em;
-    }
-
-    .deliveryLabel2 > label {
-        margin-right: 3em;
-    }
-
-
-    #mode_remise_form_payer {
-        border-radius: 0.5em;
-        background: #C6FFD0;
-        border: 2px solid;
-        font-size: 17px;
-        width: 28.6em;
-        height: 3em;
-        cursor: pointer;
-    }
-
-    #priceShipment {
-        width: 30em;
+    .btn-sold_editor {
+        font-size: 20px;
     }
 
     .annonceDescription {
@@ -584,6 +496,21 @@
         text-align: justify;
         margin: 0.5em 0 0 0;
     }
+}
 
-
+/* ORDINATEUR L MAX 1410 */
+@media screen and (max-width: 1410px) and (min-width: 1024px) {
+    .fullAnnonce {
+        margin: 0 0 5em 0;
+    }
+    .ficheAnnonce {
+        padding: 10px 0;
+        width: 37%;
+    }
+    .deliveryMode label {
+        width: 180px;
+    }
+    .btn-sold_editor {
+        font-size: 18px;
+    }
 }
