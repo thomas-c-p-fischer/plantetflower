@@ -58,6 +58,16 @@
     width: 40%;
 }
 
+.cea-item li {
+    display: flex;
+    text-align: start;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 15px;
+    font-weight: bold;
+    color: #b02424;
+    margin-bottom: 20px;
+}
+
 .form_cea p {
     display: flex;
     text-align: start;

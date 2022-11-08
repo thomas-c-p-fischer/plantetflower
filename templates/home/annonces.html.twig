@@ -13,31 +13,46 @@
         <div class="globaleProducts_head">
             <div class="annonces-container-title_searchProducts">
                 <h1>
-                    Donnez à vos végétaux une seconde
-                    vie et achetez-en de nouveaux
+                    Recherche ton végétal ici
                 </h1>
-                <div class="annonces-container-position_search">
-                    <div class="annonces-container-search">
-                        {{ form_start(form, {'attr': {'class': 'search-formulaire'}} ) }}
-                        <div class="annonces-search_title">
-                            {{ form_row(form.title, {
-                                'name': 'title',
-                                'id': 'inputSearch',
-                            }) }}
-                        </div>
-                        <div class="annonces-search_btn">
-                            {{ form_row(form.Rechercher, {
-                                'onclick': 'getValue();'
-                            }) }}
-                        </div>
-                        {{ form_end(form) }}
-                    </div>
+                <div class="annonces-container-btn_create" id="container-btn_create_1">
+                    {% if app.user and app.user.owner %}
+                        <a class="btn-create_annonce"
+                           href="{{ path('annonce_ajouter') }}"><strong>+</strong> Ajouter une annonce</a>
+                    {% elseif app.user %}
+
+                    {% else %}
+                        <a class="btn-create_annonce"
+                           href="{{ path('registration_register') }}">Inscrivez-vous pour acheter ou vendre</a>
+                    {% endif %}
                 </div>
             </div>
-            <div class="annonces-container-btn_create">
+            <div class="annonces-container-position_search">
+                <div class="annonces-container-search">
+                    {{ form_start(form, {'attr': {'class': 'search-formulaire'}} ) }}
+                    <div class="annonces-search_title">
+                        {{ form_row(form.title, {
+                            'name': 'title',
+                            'id': 'inputSearch',
+                        }) }}
+                    </div>
+                    <div class="annonces-search_btn">
+                        {{ form_row(form.Rechercher, {
+                            'onclick': 'getValue();'
+                        }) }}
+                    </div>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+            <div class="annonces-container-btn_create" id="container-btn_create_2">
                 {% if app.user and app.user.owner %}
                     <a class="btn-create_annonce"
-                       href="{{ path('annonce_ajouter') }}">Créer une annonce</a>
+                       href="{{ path('annonce_ajouter') }}"><strong>+</strong> Ajouter une annonce</a>
+                {% elseif app.user %}
+
+                {% else %}
+                    <a class="btn-create_annonce"
+                       href="{{ path('registration_register') }}">Inscrivez-vous pour acheter ou vendre</a>
                 {% endif %}
             </div>
         </div>

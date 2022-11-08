@@ -17,6 +17,8 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Notifier\Notification\Notification;
+use Symfony\Component\Notifier\NotifierInterface;
 
 #[Route('/annonce', 'annonce')]
 class AnnonceController extends AbstractController
@@ -113,6 +115,7 @@ class AnnonceController extends AbstractController
     public function createAnnonce(
         Request                $request,
         EntityManagerInterface $entityManager,
+        NotifierInterface      $notifier
     ): Response
     {
         // Création d'une nouvelle annonce
@@ -123,12 +126,39 @@ class AnnonceController extends AbstractController
         // création du formulaire de la création d'une annonce
         $annonceForm->handleRequest($request);
         $images = $annonce->getImages();
+
         // Si le formulaire est envoyé et valide à la fois
         if ($annonceForm->isSubmitted() && $annonceForm->isValid()) {
-            // Envoi de l'annonce et du formulaire à une fonction permettant d'enregistrer en base de données
-            $this->dataSave($annonce, $entityManager, $annonceForm);
-            // Redirection sur l'affichage de cette annonce
-            return $this->redirectToRoute("annonce_afficher", ['annonceId' => $annonce->getId()]);
+            $newImages = array(
+                $annonceForm->get('image_0')->getData(),
+                $annonceForm->get('image_1')->getData(),
+                $annonceForm->get('image_2')->getData()
+            );
+            $nbNewImages = 0;
+            // On boucle sur les nouvelles images
+            foreach ($newImages as $image) {
+                // Si l'image existe
+                if ($image) {
+                    // Le nombre de nouvelles images est incrémenté à +1
+                    $nbNewImages++;
+                }
+            }
+            // Si aucune image
+            if ($nbNewImages < 1) {
+                $annonceForm->addError(new FormError("Vous devez importer au minimum 1 image"));
+
+                // Si aucun mode de remise n'est sélectionné.
+            } else if (!$annonce->isHandDelivery() && !$annonce->isShipement()) {
+                $annonceForm->addError(new FormError("Merci de choisir au minimum un mode de livraison"));
+
+                // Envoi de l'annonce et du formulaire à une fonction permettant d'enregistrer en base de données
+            } else {
+                $this->dataSave($annonce, $entityManager, $annonceForm);
+                // Redirection sur l'affichage de cette annonce
+                $notifier->send(new Notification('Votre annonce a bien été crée.', ['browser']));
+
+                return $this->redirectToRoute("annonce_afficher", ['annonceId' => $annonce->getId()]);
+            }
         }
 
         // Redirection vers la page d'édition de l'annonce

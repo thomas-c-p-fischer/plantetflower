@@ -19,6 +19,13 @@
         <a class="return" href={{ path('home_annonces') }}><img src="{{ asset('media/img/chevron-gauche.png') }}"
                                                                 alt="bouton retour chevron" class="chevronBack"></a>
     </div>
+    {% for message in app.flashes('notification') %}
+        <div class="annonce-message">
+            {{ message }}
+{#            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span>#}
+{#            </button>#}
+        </div>
+    {% endfor %}
     <div class="fullAnnonce">
         <div class="corpsAnnonce">
             {% for image in annonce.images.slice(0,1) %}

@@ -17,6 +17,9 @@
             <div class="form_cea">
                 <div class="form_cea_left">
                     <div class="cea-item">
+                        {% if not annonceForm.vars.valid %}
+                            <p>{{ form_errors(annonceForm) }}</p>
+                        {% endif %}
                         <p>Ajouter jusqu'à 3 photos. (1 photo minimum est obligatoire pour vendre votre végétal)</p>
                     </div>
                     <div class="cea-item container-img_annonce">
@@ -56,11 +59,6 @@
                         <div class="container-img new_img" id="createAnnonce-container-new_img_2">
                             <img id="createAnnonce-new_img_2" src="#">
                         </div>
-                        {% if not annonceForm.vars.valid %}
-                            <div>
-                                {{ form_errors(annonceForm) }}
-                            </div>
-                        {% endif %}
                     </div>
                     <div class="cea-item">
                         <h3>Titre</h3>
@@ -143,6 +141,9 @@
                         </p>
                     </div>
                     <div class="cea-item cea-container-delivery_mod">
+                        <p class="cea-taxes_txt">
+                            Merci de choisir au minimum 1 mode de livraison.
+                        </p>
                         <div class="cea-check_delivery_mod">
                             {{ form_row(annonceForm.handDelivery,{
                                 'id': 'createAnnonce-hand_delivery'
@@ -153,7 +154,10 @@
                             {{ form_row(annonceForm.shipement,{
                                 'id': 'createAnnonce_shipement'
                             }) }}
-                            <h3 class="mode" id="shipement-title">Livraison<wbr> Mondial Relay</h3>
+                            <h3 class="mode" id="shipement-title">Livraison
+                                <wbr>
+                                Mondial Relay
+                            </h3>
                             <img class="img_mondial_relay"
                                  src="{{ asset('media/img/mondialRelay.png') }}"
                                  alt="Logo Mondial Relay">
